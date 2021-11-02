@@ -10,7 +10,7 @@ in {
     default.hello = "World";
   };
   config = mkIf cfg.enable {
-    file."/hello.yaml".source = yaml.generate "hello.yaml" {
+    file."/generate/hello.yaml".source = yaml.generate "hello.yaml" {
       hello = "World";
     };
   };
