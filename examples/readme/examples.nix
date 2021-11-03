@@ -22,10 +22,16 @@
 
   [/generated/hello.yaml](./generated/hello.yaml)
 
-  This README.md is also a module
+  ### Dogfooding
+
+  This README.md is also a module defined as above
+
   ```nix
   ${builtins.readFile ../readme.nix}
   ```
+
+  Fun fact it import [examples.nix](./examples/readme/examples.nix)
+  that also include [readme.nix](./examples/readme.nix), as we can see above
 
   ### Configuration Examples
 
