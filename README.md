@@ -72,7 +72,7 @@ This project is configured by module [project.nix](./project.nix)
   config.files.gitignore.template."Global/Diff" = true;
 }
 
-``
+```
 
 This README.md is also a module defined as above
 

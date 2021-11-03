@@ -27,7 +27,7 @@
   ```nix
   # ./project.nix
   ${builtins.readFile ../../project.nix}
-  ``
+  ```
 
   This README.md is also a module defined as above
 
