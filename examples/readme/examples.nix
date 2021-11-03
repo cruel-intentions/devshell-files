@@ -1,10 +1,10 @@
 ''
-  ## Install Examples
+  <-- ## Install Examples
   
-  <!-- this is also a example o string interpolation -->
   ```nix
   ${builtins.readFile ../../flake.nix}
   ```
+  -->
 
   ## Module Examples
 
@@ -40,5 +40,10 @@
   /generated/hello.yaml
   ```YAML
   ${builtins.readFile ../../generated/hello.yaml}
+  ```
+
+  This README.md is also a module
+  ```nix
+  ${builtins.readFile ../readme.nix}
   ```
 ''

@@ -11,9 +11,7 @@ Modules to help static file creation with [nix](https://nixos.org/guides/how-nix
 - Add this modules to your devshell in flake.nix file: `imports = [ devshell-files.${system}.devShellModules ];`
 - Add any other modules you need
 
-## Install Examples
-
-<!-- this is also a example o string interpolation -->
+<-- ## Install Examples
 
 ```nix
 {
@@ -51,6 +49,7 @@ Modules to help static file creation with [nix](https://nixos.org/guides/how-nix
 }
 
 ```
+-->
 
 ## Module Examples
 
@@ -122,6 +121,24 @@ world = "hello"
 ```YAML
 hello: world
 world: hello
+
+```
+
+This README.md is also a module
+```nix
+# There is a lot things we could use to write dynamic static file
+# Basic intro to nix language https://github.com/tazjin/nix-1p
+# Some nix functions https://teu5us.github.io/nix-lib.html
+
+{pkgs, lib, ...}:
+{
+  config.files.text."/README.md" = builtins.concatStringsSep "\n" [
+    (builtins.readFile ./readme/title.md)
+    (builtins.readFile ./readme/installation.md)
+    (import ./readme/examples.nix)
+    (builtins.readFile ./readme/todo.md)
+  ];
+}
 
 ```
 
