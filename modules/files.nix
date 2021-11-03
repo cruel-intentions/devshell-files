@@ -14,7 +14,7 @@ let
     realOut="$(realpath -m "$out")"
     target="$(realpath -m "$realOut/${file.target}")"
     mkdir -p "$(dirname "$target")"
-    cp "${file.source}" "$target"
+    cp --no-preserve=mode,ownership,timestamps "${file.source}" "$target"
     ${chmod file}
   '';
   startups = lib.mapAttrsToList (n: f: 
