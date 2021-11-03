@@ -28,7 +28,7 @@
   ${builtins.readFile ../readme.nix}
   ```
 
-  Fun fact it import [examples.nix](./examples/readme/examples.nix)
+  Fun fact: it import [examples.nix](./examples/readme/examples.nix)
   that also include [readme.nix](./examples/readme.nix), as we can see above
 
   ### Configuration Examples
@@ -38,10 +38,12 @@
   Copy files of [template](./template/) to your project
 
   ```nix
+  # flake.nix
   ${builtins.readFile ../../template/flake.nix}
   ```
 
   ```nix
+  # my-project-module.nix
   ${builtins.readFile ../../template/my-project-module.nix}
   ```
 ''

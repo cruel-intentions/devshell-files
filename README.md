@@ -70,7 +70,7 @@ This README.md is also a module defined as above
 
 ```
 
-Fun fact it import [examples.nix](./examples/readme/examples.nix)
+Fun fact: it import [examples.nix](./examples/readme/examples.nix)
 that also include [readme.nix](./examples/readme.nix), as we can see above
 
 ### Configuration Examples
@@ -80,6 +80,7 @@ To integrate it with existing project
 Copy files of [template](./template/) to your project
 
 ```nix
+# flake.nix
 {
   description = "Dev Environment";
 
@@ -107,6 +108,7 @@ Copy files of [template](./template/) to your project
 ```
 
 ```nix
+# my-project-module.nix
 {
   config.commands = [
     { package = "devshell.cli"; }
