@@ -1,4 +1,4 @@
-# There is a lot things we could use to write dynamic static file
+# There is a lot things we could use to write static file
 # Basic intro to nix language https://github.com/tazjin/nix-1p
 # Some nix functions https://teu5us.github.io/nix-lib.html
 
