@@ -15,7 +15,7 @@
         in
         pkgs.devshell.mkShell {
           imports = [
-            devshell-files.${system}.devShellModules
+            devshell-files.devShellModules.${system}
             ./my-project-module.nix
           ];
         };

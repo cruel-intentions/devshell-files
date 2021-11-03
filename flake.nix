@@ -36,6 +36,6 @@
   in
   {
     defaultTemplate.path = ./template;
-    defaultTemplate.description = "nix flake new 'github:numtide/devshell'";
+    defaultTemplate.description = "nix flake new -t github:cruel-intentions/devshell-files project";
   } // (flake-utils.lib.eachDefaultSystem systemic);
 }
