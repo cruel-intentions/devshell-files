@@ -5,7 +5,8 @@
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   outputs = { self, flake-utils, devshell, nixpkgs }:
-    flake-utils.lib.eachDefaultSystem (system: {
+  let 
+    systemic = system: {
       devShellModules = {
         imports = [
           ./modules/files.nix
@@ -30,5 +31,11 @@
             ./project.nix
           ];
         };
-    });
+
+    };
+  in
+  {
+    defaultTemplate.path = ./template;
+    defaultTemplate.description = "nix flake new 'github:numtide/devshell'";
+  } // (flake-utils.lib.eachDefaultSystem systemic);
 }
