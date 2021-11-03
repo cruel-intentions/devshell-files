@@ -14,6 +14,7 @@
           ./modules/text.nix
           ./modules/toml.nix
           ./modules/yaml.nix
+          ./modules/gitignore.nix
         ];
       };
       devShell =
@@ -25,9 +26,6 @@
         pkgs.devshell.mkShell {
           imports = [
             self.devShellModules.${system}
-            ./examples/hello.nix
-            ./examples/world.nix
-            ./examples/readme.nix
             ./project.nix
           ];
         };
