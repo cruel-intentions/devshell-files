@@ -19,10 +19,4 @@
   ```nix
   ${builtins.readFile ../world.nix}
   ```
-
-  Some example of madness
-
-  ```nix
-  ${builtins.readFile ./examples.nix}
-  ```
 ''

@@ -14,7 +14,6 @@ Modules to help static file creation with [nix](https://nixos.org/guides/how-nix
 ## Install Examples
 
 <!-- this is also a example o string interpolation -->
-
 ```nix
 {
   description = "devShell file generator helper";
@@ -94,39 +93,13 @@ Your file can be complemented with another file
 
 ```
 
-Some example of madness
+## TODO
 
-````nix
-''
-  ## Install Examples
-
-  <!-- this is also a example o string interpolation -->
-  ```nix
-  ${builtins.readFile ../../flake.nix}
-````
-
-## Module Examples
-
-Creating JSON, TEXT, TOML or YAML files
-
-```nix
-${builtins.readFile ../hello.nix}
-```
-
-Your file can be complemented with another file
-
-```nix
-${builtins.readFile ../world.nix}
-```
-
-Some example of madness
-
-```nix
-${builtins.readFile ./examples.nix}
-```
-
-''
-
-```
-
-```
+- Add modules for especific cases:
+  - gitignore
+  - most common ci/cd configuration
+  - ini files
+- License (part copy and past from home-manager)
+- Documentation
+- Verify if devshell could add it as default
+- Auto commit generated files
