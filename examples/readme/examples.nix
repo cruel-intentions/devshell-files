@@ -1,10 +1,4 @@
 ''
-  <-- ## Install Examples
-  
-  ```nix
-  ${builtins.readFile ../../flake.nix}
-  ```
-  -->
 
   ## Module Examples
 
