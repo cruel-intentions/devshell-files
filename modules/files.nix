@@ -6,6 +6,10 @@ let
     if file.executable == null then ""
     else if file.executable then "chmod +x $target"
     else "chmod -x $target";
+  git-add = file:
+    if file.git-add == null then ""
+    else if file.git-add then "git add $target"
+    else "";
   # Execute this script to update the project's files
   nameToScript = name: builtins.replaceStrings ["/" "."] ["-" "-"] (lib.removePrefix "/" name);
   copy-file = name: file: pkgs.writeShellScriptBin (nameToScript name) ''
@@ -16,6 +20,7 @@ let
     mkdir -p "$(dirname "$target")"
     cp --no-preserve=mode,ownership,timestamps "${file.source}" "$target"
     ${chmod file}
+    ${git-add file}
   '';
   startups = lib.mapAttrsToList (n: f: 
     let name  = nameToScript n;

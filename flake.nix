@@ -14,6 +14,7 @@
           ./modules/text.nix
           ./modules/toml.nix
           ./modules/yaml.nix
+          ./modules/git.nix
           ./modules/gitignore.nix
         ];
       };
