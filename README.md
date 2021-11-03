@@ -14,6 +14,7 @@ Modules to help static file creation with [nix](https://nixos.org/guides/how-nix
 ## Install Examples
 
 <!-- this is also a example o string interpolation -->
+
 ```nix
 {
   description = "devShell file generator helper";
