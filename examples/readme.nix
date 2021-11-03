@@ -8,5 +8,6 @@
     (builtins.readFile ./readme/title.md)
     (builtins.readFile ./readme/installation.md)
     (import ./readme/examples.nix)
+    (builtins.readFile ./readme/todo.md)
   ];
 }
