@@ -48,8 +48,6 @@ world: hello
 
 ```
 
-[/generated/hello.yaml](./generated/hello.yaml)
-
 ### Dogfooding
 
 This README.md is also a module defined as above

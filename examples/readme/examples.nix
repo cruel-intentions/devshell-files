@@ -20,8 +20,6 @@
   ${builtins.readFile ../../generated/hello.yaml}
   ```
 
-  [/generated/hello.yaml](./generated/hello.yaml)
-
   ### Dogfooding
 
   This README.md is also a module defined as above
