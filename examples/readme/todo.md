@@ -4,7 +4,7 @@
   - gitignore
   - most common ci/cd configuration
   - ini files
-- License (part copy and past from home-manager)
+- License (part copy and paste from home-manager)
 - Documentation
 - Verify if devshell could add it as default
 - Auto commit generated files
