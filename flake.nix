@@ -27,6 +27,7 @@
             ./examples/hello.nix
             ./examples/world.nix
             ./examples/readme.nix
+            ./project.nix
           ];
         };
     });

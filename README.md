@@ -11,6 +11,34 @@ Modules to help static file creation with [nix](https://nixos.org/guides/how-nix
 - Add this modules to your devshell in flake.nix file: `imports = [ devshell-files.${system}.devShellModules ];`
 - Add any other modules you need
 
+## Configuration Examples
+
+```nix
+{
+  description = "Dev Environment";
+
+  inputs.devshell.url = "github:numtide/devshell";
+  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.devshell-files.url = "github:cruel-intentions/devshell-files";
+
+  outputs = { self, flake-utils, devshell, devshell-files, nixpkgs }:
+    flake-utils.lib.eachDefaultSystem (system: {
+      devShell =
+        let pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ devshell.overlay ];
+        };
+        in
+        pkgs.devshell.mkShell {
+          imports = [
+            devshell-files.${system}.devShellModules
+            ./my-project-module.nix
+          ];
+        };
+    });
+}
+
+```
 
 ## Module Examples
 
@@ -85,6 +113,7 @@ This README.md is also a module
     (builtins.readFile ./readme/installation.md)
     (import ./readme/examples.nix)
     (builtins.readFile ./readme/todo.md)
+    (builtins.readFile ./readme/issues.md)
   ];
 }
 
@@ -100,3 +129,9 @@ This README.md is also a module
 - Documentation
 - Verify if devshell could add it as default
 - Auto commit generated files
+
+## Issues
+
+This project uses git as version control, if your are using other version control system it may not work.
+
+It also means that it can you work with versioned files.

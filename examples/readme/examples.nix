@@ -1,4 +1,9 @@
 ''
+  ## Configuration Examples
+
+  ```nix
+  ${builtins.readFile ../../template/flake.nix}
+  ```
 
   ## Module Examples
 
