@@ -73,7 +73,7 @@ This README.md is also a module defined as above
 Fun fact: it import [examples.nix](./examples/readme/examples.nix)
 that also include [readme.nix](./examples/readme.nix), as we can see above
 
-### Configuration Examples
+### Configuration Example
 
 To integrate it with existing project
 
