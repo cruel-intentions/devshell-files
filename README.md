@@ -64,7 +64,6 @@ This project is configured by module [project.nix](./project.nix)
     { package = "devshell.cli"; }
     { package = "convco"; }
   ];
-  config.files.git.auto-add = true;
   config.files.gitignore.enable = true;
   config.files.gitignore.template."Global/Archives" = true;
   config.files.gitignore.template."Global/Backup" = true;
