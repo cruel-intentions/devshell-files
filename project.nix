@@ -14,4 +14,6 @@
   config.files.gitignore.template."Global/Archives" = true;
   config.files.gitignore.template."Global/Backup" = true;
   config.files.gitignore.template."Global/Diff" = true;
+  # we don't need it but works as example and test
+  config.files.gitignore.template."VisualStudio" = false; 
 }
