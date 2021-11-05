@@ -21,6 +21,6 @@ As another option, you could use [Nix](https://nixos.org/manual/nix/stable/) as 
 
 Nix integrates well with git and http, it could be also used to read JSON, YAML, TOML, zip and gz files.
 
-In fact Nix isn't a configuration tool but a package manger, we are only using it as configuration tool beause its the language is simple and flexible.
+In fact Nix isn't a configuration tool but a package manger, we are only using it as configuration tool because the language is simple and flexible.
 
 With help of [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](https://github.com/numtide/devshell) you could install any development or deployment tool of its [80 000](https://search.nixos.org/) packages.
