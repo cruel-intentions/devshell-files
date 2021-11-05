@@ -122,65 +122,11 @@ Fun fact: it import [examples.nix](./examples/readme/examples.nix)
 that also include [readme.nix](./examples/readme.nix), as we can see above
 
 
-### Configuration Example
+### Existing projects
 
 To integrate it with existing project
 
-Copy files of [template](./template/) to your project
-
-```nix
-# flake.nix
-{
-  description = "Dev Environment";
-
-  inputs.devshell.url = "github:numtide/devshell";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.devshell-files.url = "github:cruel-intentions/devshell-files";
-
-  outputs = { self, flake-utils, devshell, devshell-files, nixpkgs }:
-    flake-utils.lib.eachDefaultSystem (system: {
-      devShell =
-        let pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ devshell.overlay ];
-        };
-        in
-        pkgs.devshell.mkShell {
-          imports = [
-            devshell-files.devShellModules.${system}
-            ./my-project-module.nix
-          ];
-        };
-    });
-}
-
-```
-
-```nix
-# my-project-module.nix
-{
-  config.commands = [
-    { package = "devshell.cli"; }
-
-    # for more tools search (ie. linters)
-    # https://search.nixos.org/packages?query=lint
-  
-    # convential commit helper
-    # https://github.com/convco/convco
-    { package = "convco"; }
-  ];
-  config.files.text."/hello.txt" = "Hello World!!";
-  config.files.gitignore.enable = true;
-  config.files.gitignore.pattern."other-ignore-pattern" = true;
-  config.files.gitignore.template."Global/Archives" = true;
-  config.files.gitignore.template."Global/Backup" = true;
-  config.files.gitignore.template."Global/Diff" = true;
-  # we don't need it but works as example and test
-  # https://github.com/github/gitignore
-  config.files.gitignore.template."VisualStudio" = false;
-}
-
-```
+Copy and commit files of [template](./template/) to your project.
 
 ## TODO
 

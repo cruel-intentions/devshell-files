@@ -39,19 +39,9 @@
   that also include [readme.nix](./examples/readme.nix), as we can see above
 
 
-  ### Configuration Example
+  ### Existing projects
 
   To integrate it with existing project
 
-  Copy files of [template](./template/) to your project
-
-  ```nix
-  # flake.nix
-  ${builtins.readFile ../../template/flake.nix}
-  ```
-
-  ```nix
-  # my-project-module.nix
-  ${builtins.readFile ../../template/my-project-module.nix}
-  ```
+  Copy and commit files of [template](./template/) to your project.
 ''
