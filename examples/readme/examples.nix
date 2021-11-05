@@ -43,5 +43,5 @@
 
   To integrate it with existing project
 
-  Copy and commit files of [template](./template/) to your project.
+- Create a new project: `nix flake new -t "github:cruel-intentions/devshell-files" ./` 
 ''
