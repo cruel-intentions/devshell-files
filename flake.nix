@@ -3,38 +3,32 @@
 
   inputs.devshell.url = "github:numtide/devshell";
   inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nmd.url = "gitlab:rycee/nmd";
+  inputs.nmd.flake = false;
 
-  outputs = { self, flake-utils, devshell, nixpkgs }:
-  let 
-    systemic = system: {
-      devShellModules = {
-        imports = [
-          ./modules/files.nix
-          ./modules/json.nix
-          ./modules/text.nix
-          ./modules/toml.nix
-          ./modules/yaml.nix
-          ./modules/git.nix
-          ./modules/gitignore.nix
-        ];
-      };
-      devShell =
-        let pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ devshell.overlay ];
-        };
-        in
-        pkgs.devshell.mkShell {
-          imports = [
-            self.devShellModules.${system}
-            ./project.nix
-          ];
-        };
-
-    };
-  in
-  {
+  outputs = { self, flake-utils, devshell, nixpkgs, nmd }:
+  let
+    modules = [
+      ./modules/files.nix
+      ./modules/json.nix
+      ./modules/text.nix
+      ./modules/toml.nix
+      ./modules/yaml.nix
+      ./modules/git.nix
+      ./modules/gitignore.nix
+    ];
+    overlays = [ devshell.overlay ];
+    pkgs = system: import nixpkgs { inherit system overlays; };
+    mkShell = userModules: flake-utils.lib.eachDefaultSystem (system: {
+      devShellModules.imports = userModules;
+      devShell = (pkgs system).devshell.mkShell { imports = modules ++ userModules; };
+    });
+    output = other: (mkShell [ ./project.nix ]) // other;
+  in output {
+    lib.mkShell = mkShell;
+    lib.importTOML = devshell.lib.importTOML;
+    overlay = devshell.overlay;
     defaultTemplate.path = ./template;
     defaultTemplate.description = "nix flake new -t github:cruel-intentions/devshell-files project";
-  } // (flake-utils.lib.eachDefaultSystem systemic);
+  };
 }
