@@ -39,9 +39,4 @@
   that also include [readme.nix](./examples/readme.nix), as we can see above
 
 
-  ### Existing projects
-
-  To integrate it with existing project
-
-- Create a new project: `nix flake new -t "github:cruel-intentions/devshell-files" ./` 
 ''
