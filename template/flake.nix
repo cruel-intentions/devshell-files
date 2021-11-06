@@ -3,5 +3,5 @@
 
   inputs.dsf.url = "github:cruel-intentions/devshell-files";
 
-  outputs = deps: deps.dsf.lib.mkShell [ ./project.nix ];
+  outputs = in: in.dsf.lib.mkShell [ ./project.nix ];
 }
