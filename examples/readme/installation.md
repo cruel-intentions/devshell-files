@@ -1,6 +1,6 @@
 ## Instructions
 
-Install [Nix Flakes](https://nixos.wiki/wiki/Flakes)
+Install [Nix](https://nixos.wiki/wiki/Flakes)
 
 ```sh
 curl -L https://nixos.org/nix/install | sh
@@ -11,13 +11,26 @@ mkdir -p ~/.config/nix
 echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
 ```
 
-# Minimal setup
+#### Basic usage
 
-- New projects:
-  - Run `nix flake new -t github:cruel-intentions/devshell-files my-project`
-  - Add `my-project` to a git
-- Existing projects:
-  - Run `nix flake new -t github:cruel-intentions/devshell-files ./` in project dir
-  - Add flake.nix, flake.lock and project.nix to a git
-- Usage:
-  - Run `nix develop` to generate files
+New projects:
+
+```sh
+nix flake new -t github:cruel-intentions/devshell-files my-project
+cd my-project
+git init
+git add .
+```
+
+Existing projects:
+
+```sh
+nix flake new -t github:cruel-intentions/devshell-files ./
+git add flake.nix, flake.lock project.nix
+```
+
+Generating files:
+
+```sh
+nix develop -c $SHELL
+```
