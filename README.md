@@ -27,7 +27,7 @@ With help of [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](h
 
 ## Instructions
 
-Install [Nix](https://nixos.wiki/wiki/Flakes)
+Installing [Nix](https://nixos.wiki/wiki/Flakes)
 
 ```sh
 curl -L https://nixos.org/nix/install | sh
@@ -38,9 +38,7 @@ mkdir -p ~/.config/nix
 echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
 ```
 
-#### Basic usage
-
-New projects:
+Configuring new projects:
 
 ```sh
 nix flake new -t github:cruel-intentions/devshell-files my-project
@@ -49,14 +47,14 @@ git init
 git add .
 ```
 
-Existing projects:
+Configuring existing projects:
 
 ```sh
 nix flake new -t github:cruel-intentions/devshell-files ./
 git add flake.nix, flake.lock project.nix
 ```
 
-Generating files:
+#### Generating files:
 
 ```sh
 nix develop -c $SHELL
