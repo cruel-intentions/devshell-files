@@ -25,16 +25,33 @@ In fact Nix isn't a configuration tool but a package manger, we are only using i
 
 With help of [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](https://github.com/numtide/devshell) you could install any development or deployment tool of its [80 000](https://search.nixos.org/) packages.
 
-## Usage
+## How
 
-- [Install Nix](https://nixos.org/download.html#nix-quick-install)
-- [Enable experimental-features](https://nixos.wiki/wiki/Flakes#Non-NixOS)
-- New projects:
-  - Create a new project: `nix flake new -t "github:cruel-intentions/devshell-files" my-project`
-  - Add `my-project` to a git repository
-- Existing projects:
-  - In your project run `nix flake new -t "github:cruel-intentions/devshell-files" ./`
-  - Add flake.nix, flake.lock and my-project-module.nix to a git repository
+### Install [Nix Flakes](https://nixos.wiki/wiki/Flakes)
+
+```sh
+curl -L https://nixos.org/nix/install | sh
+
+nix-env -f '<nixpkgs>' -iA nixUnstable
+
+mkdir -p ~/.config/nix
+echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
+```
+
+### New projects:
+
+- Create a new project: `nix flake new -t "github:cruel-intentions/devshell-files" my-project`
+- Add `my-project` to a git repository
+
+
+### Existing projects:
+
+- In your project run `nix flake new -t "github:cruel-intentions/devshell-files" ./`
+- Add flake.nix, flake.lock and project.nix to a git repository
+
+
+### Usage
+
 - To create your static files, run `nix develop` in your project directory
 
 ## Examples
