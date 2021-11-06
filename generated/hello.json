@@ -1,4 +1,7 @@
 {
-  "hello": "world",
-  "world": "hello"
+  "baz": [
+    "foo",
+    "bar"
+  ],
+  "hello": "world"
 }

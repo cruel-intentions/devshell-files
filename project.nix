@@ -10,7 +10,8 @@
     { package = "devshell.cli"; }
     { package = "convco"; }
   ];
-  # configure your files creation
+  # create my .gitignore coping ignore patterns from
+  # github.com/github/gitignore
   config.files.gitignore.enable = true;
   config.files.gitignore.template."Global/Archives" = true;
   config.files.gitignore.template."Global/Backup" = true;
