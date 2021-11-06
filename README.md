@@ -4,20 +4,20 @@ Helps static file/configuration creation with [Nix](https://nixos.org/guides/how
 
 There is a bunch of ways static file/configuration are hard, this will help you generate, validate and distribute JSON, YAML, TOML or TXT.
 
-### Generate
+#### Generate
 
 Your content will be defined in [Nix Language](https://github.com/tazjin/nix-1p), it means you can use variables, functions, imports, read files, etc.
 
 The modular system helps layering configurations, hiding complexity and making it easier for OPS teams.
 
-### Validate
+#### Validate
 
 Your content [modules](https://nixos.org/manual/nixos/stable/index.html#ex-module-syntax) could optionally be well defined and type checked in build proccess with this same tool.
 
 Or you could use [Nix](https://nixos.org/manual/nix/stable/) as package manager and [install any tool](https://search.nixos.org/packages?query=validator) to validate your configuration (ie integrating it with existing JSON Schema).
 
 
-### Distribute
+#### Distribute
 
 Nix integrates well with git and http, it could be also used to read JSON, YAML, TOML, zip and gz files.
 
@@ -25,7 +25,7 @@ In fact Nix isn't a configuration tool but a package manger, we are only using i
 
 With help of [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](https://github.com/numtide/devshell) you could install any development or deployment tool of its [80 000](https://search.nixos.org/) packages.
 
-## Setting up
+## Instructions
 
 Install [Nix Flakes](https://nixos.wiki/wiki/Flakes)
 
@@ -38,11 +38,13 @@ mkdir -p ~/.config/nix
 echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
 ```
 
+# Minimal setup
+
 - New projects:
   - Run `nix flake new -t github:cruel-intentions/devshell-files my-project`
   - Add `my-project` to a git
 - Existing projects:
-  - In your project run `nix flake new -t github:cruel-intentions/devshell-files ./`
+  - Run `nix flake new -t github:cruel-intentions/devshell-files ./` in project dir
   - Add flake.nix, flake.lock and project.nix to a git
 - Usage:
   - Run `nix develop` to generate files
