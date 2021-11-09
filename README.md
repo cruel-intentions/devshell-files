@@ -207,19 +207,19 @@ If one page is too much to you, let just say, think about JSON except:
 #### JSON as NIX
 
 | name | JSON | NIX |
-| ---- | ---- | ---- |
-| array | `["some","array"]` | `["some" "array"]` |
-| bool | `true` | `true` |
-| float | `12.3` | `12.3` |
-| int | `123` | `123` |
+| -- | ---- | ---- |
 | null | `null` | `null` |
-| object | `{"some":"value"}` | `{ some = "value"; };` |
+| bool | `true` | `true` |
+| int | `123` | `123` |
+| float | `12.3` | `12.3` |
 | string | `"string"` | `"string"` |
-| calling-a-function | | `... in my-function "World"` |
-| function | | `my-arg: "Hello ${my-arg}!"` |
+| array | `["some","array"]` | `["some" "array"]` |
+| object | `{"some":"value"}` | `{ some = "value"; }` |
 | multiline-string | | `''... multiline string ... ''` |
-| variable-function | | `let my-function = my-arg: "Hello ${my-arg}!"; in ...` |
 | variables | | `let my-var = 1; other-var = 2; in my-var + other-var` |
+| function | | `my-arg: "Hello ${my-arg}!"` |
+| variable-function | | `let my-function = my-arg: "Hello ${my-arg}!"; in ...` |
+| calling-a-function | | `... in my-function "World"` |
 
 
 #### Modules
