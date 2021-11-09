@@ -28,6 +28,9 @@ We adivise you to divide your modules in at two files:
 - One mostly with config and imports, where your information goes
 
 It has two advantages, you could share options definitions across projects more easily.
+
 And it hides complexity, [hiding complexity is what abstraction is all about](http://mourlot.free.fr/english/fmtaureau.html),
+
 we didn't share options definitions across projects to type less, but because we could use an abstraction that helps hide complexity.
+
 Is the reason why Markdown and YAML are anywhere.
