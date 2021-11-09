@@ -1,7 +1,8 @@
 {
   "baz": [
     "foo",
-    "bar"
+    "bar",
+    "hello"
   ],
   "hello": "world"
 }

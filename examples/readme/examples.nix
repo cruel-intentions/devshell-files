@@ -1,5 +1,5 @@
 ''
-  ## Examples
+  ### Examples
 
   Creating JSON, TEXT, TOML or YAML files
 
@@ -7,7 +7,7 @@
   ${builtins.readFile ../hello.nix}
   ```
 
-  Your file can be complemented with another file
+  Your file can be complemented with another module
 
   ```nix
   ${builtins.readFile ../world.nix}

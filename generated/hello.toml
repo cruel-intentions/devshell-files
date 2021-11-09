@@ -1,2 +1,2 @@
-baz = ["foo", "bar"]
+baz = ["foo", "bar", "hello"]
 hello = "world"

@@ -1,4 +1,5 @@
 baz:
 - foo
 - bar
+- hello
 hello: world
