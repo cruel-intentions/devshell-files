@@ -156,15 +156,15 @@ This README.md is also a module defined as above
 # There is a lot things we could use to write static file
 # Basic intro to nix language https://github.com/tazjin/nix-1p
 # Some nix functions https://teu5us.github.io/nix-lib.html
-
-{pkgs, lib, ...}:
+{lib, ...}:
 {
   config.files.text."/README.md" = builtins.concatStringsSep "\n" [
     (builtins.readFile ./readme/title.md)
     (builtins.readFile ./readme/installation.md)
-    (import ./readme/examples.nix)
+    (builtins.import ./readme/examples.nix)
     (builtins.readFile ./readme/todo.md)
     (builtins.readFile ./readme/issues.md)
+    ((builtins.import ./readme/modules.nix) lib)
   ];
 }
 
@@ -190,3 +190,53 @@ that also include [readme.nix](./examples/readme.nix), as we can see above
 ## Issues
 
 This project uses git as version control, if your are using other version control system it may not work.
+
+## Writing new modules
+
+#### Nix lang
+
+There is an small concise content of [Nix Lang](https://github.com/tazjin/nix-1p).
+
+If one page is too much to you, let just say, think about JSON except:
+
+* `:` defines a new function, `name: "Hello ${name}"`
+* that's why we use `=` instaed of `:`, `{ attr-key = "value"; }`
+* `;` instead of `,` and they aren't optional
+* Array aren't separated by `,` as `[ "some" "value" ]`
+
+#### JSON as NIX
+
+| name | JSON | NIX |
+| ---- | ---- | ---- |
+| array | `["some","array"]` | `["some" "array"]` |
+| bool | `true` | `true` |
+| float | `12.3` | `12.3` |
+| int | `123` | `123` |
+| null | `null` | `null` |
+| object | `{"other-some":{"sub":"other"},"some":"value"}` | `{ some = "value"; other-some = { sub = "other"; }; };` |
+| string | `"string"` | `string` |
+| calling-a-function | | `... in my-function "World"` |
+| function | | `my-arg: "Hello ${my-arg}!"` |
+| multiline-string | | `''... multiline string ... ''` |
+| variable-function | | `let my-function = my-arg: "Hello ${my-arg}!"; in ...` |
+| variables | | `let my-var = 1; other-var = 2; in my-var + other-var` |
+
+
+#### Modules
+
+Modules could be defined in two formats: Functions that return an Object or just Object without any function resulting it.
+
+These functions has at least these nameds params: 
+
+* `config` with all evaluated configs values, 
+* `pkgs` with all [nixpkgs](https://search.nixos.org/) available.
+* `lib` [library](https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions) of useful functions.
+
+And may receive other named params (use `...` to ignore them)
+
+Nix function with named params:
+
+```nix
+{ config, pkgs, ...}: 
+{ imports = []; config = {}; options = {}; }
+```
