@@ -193,18 +193,19 @@ This project uses git as version control, if your are using other version contro
 
 ## Writing new modules
 
-#### Nix lang
+### Nix lang
 
-There is an small concise content of [Nix Lang](https://github.com/tazjin/nix-1p).
+Jump this part if aready know Nix Lang, if don't there is an small concise content of [Nix Lang](https://github.com/tazjin/nix-1p).
 
-If one page is too much to you, let just say, think about JSON except:
+If one page is too much to you, the basic is:
 
-* `:` defines a new function, `name: "Hello ${name}"`
-* that's why we use `=` instaed of `:`, `{ attr-key = "value"; }`
-* `;` instead of `,` and they aren't optional
-* Array aren't separated by `,` as `[ "some" "value" ]`
+- `:` defines a new function, `name: "Hello ''${name}"`
+- that's why we use `=` instaed of `:`, `{ attr-key = "value"; }`
+- `;` instead of `,` and they aren't optional
+- array aren't separated by `,` ie. `[ "some" "value" ]`
 
-#### JSON as NIX
+
+### JSON as NIX
 
 | name | JSON | NIX |
 | -- | ---- | ---- |
@@ -221,22 +222,37 @@ If one page is too much to you, let just say, think about JSON except:
 | variable-function | | `let my-function = my-arg: "Hello ${my-arg}!"; in ...` |
 | calling-a-function | | `... in my-function "World"` |
 
-
-#### Modules
+### Modules
 
 Modules could be defined in two formats: Functions that return an Object or just Object without any function resulting it.
 
 These functions has at least these nameds params: 
 
-* `config` with all evaluated configs values, 
-* `pkgs` with all [nixpkgs](https://search.nixos.org/) available.
-* `lib` [library](https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions) of useful functions.
+- `config` with all evaluated configs values, 
+- `pkgs` with all [nixpkgs](https://search.nixos.org/) available.
+- `lib` [library](https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions) of useful functions.
 
 And may receive other named params (use `...` to ignore them)
 
 Nix function with named params:
 
 ```nix
-{ config, pkgs, ...}: 
+{ config, pkgs, lib, ...}:  # named params fuction
 { imports = []; config = {}; options = {}; }
 ```
+
+All those attributes are optional
+
+- imports: array with paths that points to other modules
+- config: object with information expected at the output (think as inputs)
+- options: object with expected input definition 
+
+We adivise you to divide your modules in at two files:
+- One mostly with options definition
+- One mostly with config and imports, where your information goes
+
+It has two advantages, you could share options definitions across projects more easily.
+And it hides complexity, [hiding complexity is what abstraction is all about](http://mourlot.free.fr/english/fmtaureau.html),
+we didn't share options definitions across projects to type less, but because we could use an abstraction that helps hide complexity.
+Is the reason why Markdown and YAML are anywhere.
+
