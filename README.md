@@ -213,8 +213,8 @@ If one page is too much to you, let just say, think about JSON except:
 | float | `12.3` | `12.3` |
 | int | `123` | `123` |
 | null | `null` | `null` |
-| object | `{"other-some":{"sub":"other"},"some":"value"}` | `{ some = "value"; other-some = { sub = "other"; }; };` |
-| string | `"string"` | `string` |
+| object | `{"some":"value"}` | `{ some = "value"; };` |
+| string | `"string"` | `"string"` |
 | calling-a-function | | `... in my-function "World"` |
 | function | | `my-arg: "Hello ${my-arg}!"` |
 | multiline-string | | `''... multiline string ... ''` |

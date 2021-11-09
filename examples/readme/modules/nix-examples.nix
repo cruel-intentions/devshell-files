@@ -6,16 +6,16 @@
     float = 12.3;
     string = ''string'';
     array = ["some" "array"];
-    object = { some = "value"; other-some = { sub = "other"; }; };
+    object = { some = "value"; };
   };
   nix = {
     null = ''null'';
     bool = ''true'';
     int = ''123'';
     float = ''12.3'';
-    string = ''string'';
+    string = ''"string"'';
     array = ''["some" "array"]'';
-    object = ''{ some = "value"; other-some = { sub = "other"; }; };'';
+    object = ''{ some = "value"; };'';
   };
   unlike-json = {
     multiline-string = "''... multiline string ... ''";
