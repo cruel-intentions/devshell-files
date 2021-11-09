@@ -29,6 +29,18 @@ in {
       "community/AWS/SAM" = true;
     };
   };
+  config.commands = lib.mkIf cfg.enable [
+    {
+      help = "list available ignore templates";
+      package = pkgs.writeShellScriptBin "files-ignore-templates" ''
+        echo "Available Git Ignore Templates:"
+        find ${githubIgnore} -name '*.gitignore' \
+        | sed "s#${githubIgnore}/##" \
+        | sed "s#\.gitignore##" \
+        | sort
+      '';
+    }
+  ];
   config.files.text = lib.mkIf cfg.enable {
     "/.gitignore" = builtins.concatStringsSep "\n" (
       patterns ++ templatePatterns

@@ -135,17 +135,18 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/world.nix
     ./examples/readme.nix
   ];
-  # install development or deployment tools
-  config.commands = [
-    { package = "devshell.cli"; }
-    { package = "convco"; }
-  ];
   # create my .gitignore coping ignore patterns from
   # github.com/github/gitignore
   config.files.gitignore.enable = true;
   config.files.gitignore.template."Global/Archives" = true;
   config.files.gitignore.template."Global/Backup" = true;
   config.files.gitignore.template."Global/Diff" = true;
+  # install development or deployment tools
+  # now we can use 'convco' command
+  config.files.cmds.convco = true;
+  # now we can use 'feat' command (alias to convco)
+  config.files.alias.feat = ''convco commit --feat $@'';
+  # use the command 'menu' to list commands
 }
 
 ```
@@ -255,5 +256,13 @@ It has two advantages, you could share options definitions across projects more 
 
 And it hides complexity, [hiding complexity is what abstraction is all about](http://mourlot.free.fr/english/fmtaureau.html),
 we didn't share options definitions across projects to type less, but because we could reuse an abstraction that helps hiding complexity.
+
+#### Imports
+
+```nix
+{
+  imports = [ ./modules/gitignore.nix ./project.nix ]
+}
+```
 
 

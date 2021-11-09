@@ -10,6 +10,8 @@
   let
     modules = [
       ./modules/files.nix
+      ./modules/cmds.nix
+      ./modules/alias.nix
       ./modules/json.nix
       ./modules/text.nix
       ./modules/toml.nix

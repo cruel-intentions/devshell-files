@@ -1,7 +1,5 @@
 {
   config.commands = [
-    { package = "devshell.cli"; }
-
     # for more tools search (ie. linters)
     # https://search.nixos.org/packages?query=lint
   
