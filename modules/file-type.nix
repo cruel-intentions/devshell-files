@@ -3,13 +3,11 @@ let
   inherit (lib) hasPrefix literalExpression mkDefault mkIf mkOption removePrefix types;
 in
 {
-  # all writes reserved to nix-community
+  # all rights reserved to nix-community
   # copy of https://github.com/nix-community/home-manager/blob/master/modules/lib/file-type.nix
   # Constructs a type suitable for a `devshell.file` like option. The
-  # target path may be either absolute or relative, in which case it
-  # is relative the `basePath` argument (which itself must be an
-  # absolute path).
-  #
+  # target path may be absolute, in which case it
+  # is relative to project root
   # Arguments:
   #   - basePathDesc   docbook compatible description of the base path
   #   - basePath       the file base path
