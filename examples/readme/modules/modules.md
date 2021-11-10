@@ -108,7 +108,7 @@ What need should to is create options definition of that
       };
     };
     default = {};
-    description = "Configure your github actions CI/CD"
+    description = "Configure your github actions CI/CD";
   };
 }
 ```

@@ -57,6 +57,12 @@ git add flake.nix, flake.lock project.nix
 #### Generating files:
 
 ```sh
+nix develop --build
+```
+
+or entering in shell with all commands and alias
+
+```sh
 nix develop -c $SHELL
 ```
 
@@ -335,7 +341,7 @@ What need should to is create options definition of that
       };
     };
     default = {};
-    description = "Configure your github actions CI/CD"
+    description = "Configure your github actions CI/CD";
   };
 }
 ```
