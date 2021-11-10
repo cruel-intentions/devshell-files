@@ -361,7 +361,7 @@ The cool point is that to create our yaml file we only need one config we propos
       { run = config.gh-actions.ci-cd.build; }
       { run = config.gh-actions.ci-cd.test; }
       { run = config.gh-actions.ci-cd.deploy; }
-    ]
+    ];
   };
 }
 ```
