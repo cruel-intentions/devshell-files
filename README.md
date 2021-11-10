@@ -170,9 +170,9 @@ This README.md is also a module defined as above
     (builtins.readFile ./readme/title.md)
     (builtins.readFile ./readme/installation.md)
     (builtins.import ./readme/examples.nix)
+    ((builtins.import ./readme/modules.nix) lib)
     (builtins.readFile ./readme/todo.md)
     (builtins.readFile ./readme/issues.md)
-    ((builtins.import ./readme/modules.nix) lib)
   ];
 }
 
@@ -182,23 +182,6 @@ Fun fact: it import [examples.nix](./examples/readme/examples.nix)
 that also include [readme.nix](./examples/readme.nix), as we can see above
 
 
-
-## TODO
-
-- Add modules for especific cases:
-  - gitignore
-  - most common ci/cd configuration
-  - ini files
-- Use more this project in it self
-- License (part copy and paste from home-manager)
-- Documentation
-- Verify if devshell could add it as default
-- Auto commit generated files
-- Add a command to regenerate files
-
-## Issues
-
-This project uses git as version control, if your are using other version control system it may not work.
 
 ## Writing new modules
 
@@ -394,3 +377,20 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 - lib.types.attrsOf (typed hash map)
 - lib.types.uniq (typed set)
 
+
+## TODO
+
+- Add modules for especific cases:
+  - gitignore
+  - most common ci/cd configuration
+  - ini files
+- Use more this project in it self
+- License (part copy and paste from home-manager)
+- Documentation
+- Verify if devshell could add it as default
+- Auto commit generated files
+- Add a command to regenerate files
+
+## Issues
+
+This project uses git as version control, if your are using other version control system it may not work.
