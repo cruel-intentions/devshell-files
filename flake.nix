@@ -18,6 +18,7 @@
       ./modules/yaml.nix
       ./modules/git.nix
       ./modules/gitignore.nix
+      ./modules/spdx.nix
     ];
     overlays = [ devshell.overlay ];
     pkgs = system: import nixpkgs { inherit system overlays; };

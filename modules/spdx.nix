@@ -12,13 +12,13 @@ let
 in {
   options.files.license.enable = lib.mkEnableOption "Auto generated license file";
   options.files.license.spdx = lib.mkOption {
-    type = lib.types.submodules {
-      name = lib.mkOption {
+    type = lib.types.submodule {
+      options.name = lib.mkOption {
         type = lib.types.str;
         description = "SPDF text name without extension";
         example = "MIT";
       };
-      vars = lib.mkOption {
+      options.vars = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
         description = "Most SPDF templates has some placeholders like <OWNER>, it is case sensitive";
         example = {
@@ -45,13 +45,13 @@ in {
       package = pkgs.writeShellScriptBin "files-spdx-licenses" ''
         echo "Available SPDX Licenses:"
         find ${spdxLicenses}/text/ -name '*.txt' \
-        | sed "s#${spdxLicenses}/##" \
+        | sed "s#${spdxLicenses}/text/##" \
         | sed "s#\.txt##" \
         | sort
       '';
     }
   ];
   config.files.text = lib.mkIf cfg.enable {
-    "/LICENSE" = replaceVars (templateFile cfg.spdx.name) cfg.spdx.vars
+    "/LICENSE" = replaceVars (templateFile cfg.spdx.name) cfg.spdx.vars;
   };
 }

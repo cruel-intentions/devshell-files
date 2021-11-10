@@ -148,12 +148,19 @@ This project is configured by module [project.nix](./project.nix)
   config.files.gitignore.template."Global/Backup" = true;
   config.files.gitignore.template."Global/Diff" = true;
   # install development or deployment tools
-  # now we can use 'convco' command
+  # now we can use 'convco' command (docs) convco.github.io
+  # look at search.nixos.org for more tools
   config.files.cmds.convco = true;
+  # use the command 'menu' to list commands
   # now we can use 'feat' command (alias to convco)
   config.files.alias.feat = ''convco commit --feat $@'';
   config.files.alias.fix = ''convco commit --fix $@'';
-  # use the command 'menu' to list commands
+  # LICENSE file creation
+  # using templates from github.com/spdx/license-list-data
+  config.files.license.enable = true;
+  config.files.license.spdx.name = "MIT";
+  config.files.license.spdx.vars.year = "2021";
+  config.files.license.spdx.vars."copyright holders" = "Cruel Intentions";
 }
 
 ```
@@ -239,7 +246,7 @@ All those attributes are optional
 - config: object with information expected at the output (think as inputs)
 - options: object with expected input definition 
 
-We adivise you to divide your modules in at two files:
+We adivise you to divide your modules in two files:
 - One mostly with options, where your definition goes
 - Other with config, where your information goes
 
@@ -250,8 +257,8 @@ we didn't share options definitions across projects to type less, but because we
 
 #### Options
 
-Imports and configs are simple, and you may saw all those examples till now.
-Please open an issue to clarify if any question about are left.
+Imports and configs are simple, and you saw all those examples till now.
+Please open an issue to clarify any question about them.
 
 Them we need to learn how to create options.
 
@@ -261,7 +268,7 @@ We need create our github action file, it could be done as something like this:
 
 ```nix
 {
-  config.files.yaml."./.github/workflows/ci-cd" = {
+  config.files.yaml."./.github/workflows/ci-cd.yaml" = {
     on = "push";
     # ... rest of github action definition
   };
@@ -289,34 +296,34 @@ What project user (maybe us) really needs to define is:
 
 Now we're hiding complexity, not all, but some.
 
-If we add this to your project.nix we sadly discover that there is no `gh-actions` config available.
+If we add this to our project.nix we discover that there is no `gh-actions` config available.
 
-What need should to is create options definition of that
+What need should to is create options definition of that.
 
 ```nix
 { lib, ...}:
 {
   options.gh-actions.ci-cd = lib.mkOption {
     type = lib.types.submodule {
-      pre-build = lib.mkOption {
+      options.pre-build = lib.mkOption {
         type = lib.types.string;
         default = "echo pre-building";
         example = "npm i";
         description = "Command to run before build";
       };
-      build = lib.mkOption {
+      options.build = lib.mkOption {
         type = lib.type.string;
         default = "echo building";
         example = "npm run build";
         description = "Command to run as build step";
       };
-      test = lib.mkOption {
+      options.test = lib.mkOption {
         type = lib.type.string;
         default = "echo testing";
         example = "npm test";
         description = "Command to run as test step";
       };
-      deploy = lib.mkOption {
+      options.deploy = lib.mkOption {
         type = lib.type.string;
         default = "echo deploying";
         example = "aws s3 sync ./build s3://my-bucket";
@@ -329,16 +336,16 @@ What need should to is create options definition of that
 }
 ```
 
-Good that is it, now we can set config as we said before, but it does nothing, it doesn't create you yaml file.
+Good that is it, now we can set config as we said before, but it does nothing, it doesn't create our yaml file.
 
-Usually people put this next part in same file of previous code, it isn't a requirent, and spliting it here make it simplier to explain.
+Usually people put this next part in same file of previous code, it isn't a requirement, and spliting it here make it simplier to explain.
 
 The cool point is that to create our yaml file we only need one config like we proposed first.
 
 ```nix
 { lib, config, ... }:
 { 
-  config.files.yaml."/.github/workflows/ci-cd" = {
+  config.files.yaml."/.github/workflows/ci-cd.yaml" = {
     on = "push";
     jobs.ci-cd.runs-on = "ubuntu-latest";
     jobs.ci-cd.steps = [
@@ -357,7 +364,7 @@ The cool point is that to create our yaml file we only need one config like we p
 
 Now we only need to import it our project and set 'pre-build', 'build', 'test' and 'deploy' configs
 
-If we try to set something that is not a string to it, one error will raise
+If we try to set something that is not a string to it, one error will raise, typecheking it.
 
 There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-option-types) that can be used (some of them):
 - lib.types.bool 
@@ -381,7 +388,6 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 ## TODO
 
 - Add modules for especific cases:
-  - gitignore
   - most common ci/cd configuration
   - ini files
 - Use more this project in it self
@@ -389,7 +395,6 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 - Documentation
 - Verify if devshell could add it as default
 - Auto commit generated files
-- Add a command to regenerate files
 
 ## Issues
 
