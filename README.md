@@ -369,7 +369,7 @@ Now we only need to import it our project and set 'pre-build', 'build', 'test' a
 
 If we try to set something that is not a string to it, one error will raise
 
-There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-option-types) that can be used:
+There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-option-types) that can be used (some of them):
 - lib.types.bool 
 - lib.types.path 
 - lib.types.package 

@@ -29,8 +29,6 @@ let
         $DEVSHELL_DIR/bin/${name}
       '';
     }) files;
-  generate-file-cmds = lib.mapAttrsToList (n: f: "$DEVSHELL_DIR/bin/${nameToScript n}") files;
-  generate-files = builtins.concatStringsSep "\n" generate-file-cmds;
 in {
   options.file = lib.mkOption {
     description = "Attribute set of files to create into the project root.";
@@ -38,12 +36,5 @@ in {
     type = fileType "<envar>PRJ_ROOT</envar>";
   };
   config.devshell.packages = lib.mapAttrsToList copy-file files;
-  config.commands = [
-    {
-      name = "files";
-      help = "generate files";
-      command = generate-files;
-    }
-  ];
   config.devshell.startup = lib.foldAttrs lib.mergeAttrs {} startups;
 }
