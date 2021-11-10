@@ -35,6 +35,13 @@ in {
     default = {};
     type = fileType "<envar>PRJ_ROOT</envar>";
   };
+  config.commands = [
+    {
+      name = "files";
+      help = "Regenerate files";
+      command = "nix develop --build";
+    }
+  ];
   config.devshell.packages = lib.mapAttrsToList copy-file files;
   config.devshell.startup = lib.foldAttrs lib.mergeAttrs {} startups;
 }

@@ -388,13 +388,9 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 ## TODO
 
 - Add modules for especific cases:
-  - most common ci/cd configuration
   - ini files
-- Use more this project in it self
-- License (part copy and paste from home-manager)
-- Documentation
+  - most common ci/cd configuration
 - Verify if devshell could add it as default
-- Auto commit generated files
 
 ## Issues
 
