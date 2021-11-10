@@ -188,6 +188,7 @@ that also include [readme.nix](./examples/readme.nix), as we can see above
 - Documentation
 - Verify if devshell could add it as default
 - Auto commit generated files
+- Add a command to regenerate files
 
 ## Issues
 
@@ -353,7 +354,7 @@ The cool point is that to create our yaml file we only need one config we propos
     jobs.ci-cd.runs-on = "ubuntu-latest";
     jobs.ci-cd.steps = [
       { uses = "actions/checkout@v1"; }
-      { uses = "cachix/install-nix-action@v13"; with.nix_path = "channel:nixos-unstable"; }
+      { uses = "cachix/install-nix-action@v13"; "with".nix_path = "channel:nixos-unstable"; }
       { run = "nix develop"; }
       # this config comes from arguments
       { run = config.gh-actions.ci-cd.pre-build; }

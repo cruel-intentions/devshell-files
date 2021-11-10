@@ -9,3 +9,4 @@
 - Documentation
 - Verify if devshell could add it as default
 - Auto commit generated files
+- Add a command to regenerate files
