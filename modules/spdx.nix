@@ -1,11 +1,11 @@
 {pkgs, config, lib, ...}: 
 let 
   cfg = config.files.license;
-  spdxLicenses = builtins.fetchGit {
-    url = "https://github.com/spdx/license-list-data";
-    rev = "0372e9ca9d2ae9a86eb8581ec75cd58a266200ff";
+  spdxLicenses = builtins.fetchTarball {
+    url = "https://github.com/cruel-intentions/license-list-data/releases/download/v3.14/text.tar.gz";
+    sha256 = "0s5jizc28kipgc26vp0n3bn3nrp4146v92aypwm5a19fs2a33zrj";
   };
-  templateFile = name: builtins.readFile "${spdxLicenses}/text/${name}.txt";
+  templateFile = name: builtins.readFile "${spdxLicenses}/${name}.txt";
   placeholders = vars: map (name: "<${name}>") (builtins.attrNames vars);
   values = vars: builtins.attrValues vars;
   replaceVars = license: vars: builtins.replaceStrings (placeholders vars) (values vars) license;
@@ -44,8 +44,8 @@ in {
       help = "list available SPDX Licenses";
       package = pkgs.writeShellScriptBin "files-spdx-licenses" ''
         echo "Available SPDX Licenses:"
-        find ${spdxLicenses}/text/ -name '*.txt' \
-        | sed "s#${spdxLicenses}/text/##" \
+        find ${spdxLicenses}/ -name '*.txt' \
+        | sed "s#${spdxLicenses}/##" \
         | sed "s#\.txt##" \
         | sort
       '';

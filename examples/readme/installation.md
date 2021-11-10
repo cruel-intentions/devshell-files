@@ -37,4 +37,6 @@ or entering in shell with all commands and alias
 
 ```sh
 nix develop -c $SHELL
+# to list commands and alias
+# now run: menu 
 ```
