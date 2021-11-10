@@ -344,7 +344,7 @@ Good that is it, now we can set config as we said before, but it does nothing, i
 
 Usually people put this next part in same file of previous code, it isn't a requirent, and spliting it here make it simplier to explain.
 
-The cool point is that to create our yaml file we only need one config we proposed first.
+The cool point is that to create our yaml file we only need one config like we proposed first.
 
 ```nix
 { lib, config, ... }:
