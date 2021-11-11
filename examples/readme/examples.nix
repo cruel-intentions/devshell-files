@@ -35,7 +35,7 @@
   ${builtins.readFile ../readme.nix}
   ```
 
-  Our .gitignore is defined as like this
+  Our .gitignore is defined like this
   ```nix
   # ./examples/gitignore.nix
   ${builtins.readFile ../gitignore.nix}

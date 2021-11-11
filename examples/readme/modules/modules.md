@@ -1,27 +1,32 @@
 ### Modules
 
-Modules could be defined in two formats: Functions that return an Object or just Object without any function resulting it.
+Modules could be defined in two formats:
 
-These functions has at least these named params: 
+#### As function:
+
+These functions has at least these params: 
 
 - `config` with all evaluated configs values, 
 - `pkgs` with all [nixpkgs](https://search.nixos.org/) available.
 - `lib` [library](https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions) of useful functions.
-
-And may receive other named params (use `...` to ignore them)
-
-Nix function with named params:
+- And may receive other named params (use `...` to ignore them)
 
 ```nix
-{ config, pkgs, lib, ...}:  # named params fuction
+{ config, pkgs, lib, ... }:  # parms
+{ imports = []; config = {}; options = {}; }
+```
+
+#### As object:
+
+```nix
 { imports = []; config = {}; options = {}; }
 ```
 
 All those attributes are optional
 
-- imports: array with paths that points to other modules
-- config: object with information expected at the output (think as inputs)
-- options: object with expected input definition 
+- imports: array with paths to other modules
+- config: object with user configurations
+- options: object with our config type definition
 
 We adivise you to divide your modules in two files:
 - One mostly with options, where your definition goes

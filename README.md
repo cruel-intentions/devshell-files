@@ -172,7 +172,7 @@ This README.md is also a module defined as above
 
 ```
 
-Our .gitignore is defined as like this
+Our .gitignore is defined like this
 ```nix
 # ./examples/gitignore.nix
 {
@@ -204,13 +204,13 @@ And our LICENSE file is
 
 ### Nix lang
 
-Jump this part if aready know Nix Lang, if don't there is an small concise content of [Nix Lang](https://github.com/tazjin/nix-1p).
+Jump this part if aready know Nix Lang, if don't there is a small concise content of [Nix Lang](https://github.com/tazjin/nix-1p).
 
 If one page is too much to you, the basic is:
 
-- `:` defines a new function, `name: "Hello ''${name}"`
+- `:` defines a new function, `arg: "Hello ''${arg}"`
 - that's why we use `=` instaed of `:`, `{ attr-key = "value"; }`
-- `;` instead of `,` and they aren't optional
+- `;` instead of `,` and they **aren't optional**
 - array aren't separated by `,` ie. `[ "some" "value" ]`
 
 
@@ -233,28 +233,33 @@ If one page is too much to you, the basic is:
 
 ### Modules
 
-Modules could be defined in two formats: Functions that return an Object or just Object without any function resulting it.
+Modules could be defined in two formats:
 
-These functions has at least these named params: 
+#### As function:
+
+These functions has at least these params: 
 
 - `config` with all evaluated configs values, 
 - `pkgs` with all [nixpkgs](https://search.nixos.org/) available.
 - `lib` [library](https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions) of useful functions.
-
-And may receive other named params (use `...` to ignore them)
-
-Nix function with named params:
+- And may receive other named params (use `...` to ignore them)
 
 ```nix
-{ config, pkgs, lib, ...}:  # named params fuction
+{ config, pkgs, lib, ... }:  # parms
+{ imports = []; config = {}; options = {}; }
+```
+
+#### As object:
+
+```nix
 { imports = []; config = {}; options = {}; }
 ```
 
 All those attributes are optional
 
-- imports: array with paths that points to other modules
-- config: object with information expected at the output (think as inputs)
-- options: object with expected input definition 
+- imports: array with paths to other modules
+- config: object with user configurations
+- options: object with our config type definition
 
 We adivise you to divide your modules in two files:
 - One mostly with options, where your definition goes
