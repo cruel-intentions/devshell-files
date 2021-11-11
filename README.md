@@ -89,27 +89,23 @@ Your file can be complemented with another module
 
 ```nix
 # examples/world.nix
+# almost same as previous example
+# but show some language feature
 let 
   name = "hello"; # a variable
-in  
+in
 {
-  # if you think structural style is better
-  # it works too
   config = {
     files = {
-      json = {
-        "/generated/${name}.json" = { 
-          baz = ["foo" "bar" name];
-        };
-      };
-      toml = {
-        "/generated/${name}.toml" = { 
-          baz = ["foo" "bar" name];
-        };
-      };
+      json."/generated/${name}.json".baz = ["foo" "bar" name];
+      toml."/generated/${name}.toml".baz = ["foo" "bar" name];
       yaml = {
         "/generated/${name}.yaml" = {
-          baz = ["foo" "bar" name ];
+          baz = [
+            "foo"
+            "bar"
+            name
+          ];
         };
       };
     };
@@ -142,27 +138,16 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/hello.nix
     ./examples/world.nix
     ./examples/readme.nix
+    ./examples/gitignore.nix
+    ./examples/license.nix
   ];
-  # create my .gitignore coping ignore patterns from
-  # github.com/github/gitignore
-  config.files.gitignore.enable = true;
-  config.files.gitignore.template."Global/Archives" = true;
-  config.files.gitignore.template."Global/Backup" = true;
-  config.files.gitignore.template."Global/Diff" = true;
   # install development or deployment tools
-  # now we can use 'convco' command (docs) convco.github.io
-  # look at search.nixos.org for more tools
+  # now we can use 'convco' command https://convco.github.io
+  # look at https://search.nixos.org for more tools
   config.files.cmds.convco = true;
-  # use the command 'menu' to list commands
   # now we can use 'feat' command (alias to convco)
   config.files.alias.feat = ''convco commit --feat $@'';
   config.files.alias.fix = ''convco commit --fix $@'';
-  # LICENSE file creation
-  # using templates from github.com/spdx/license-list-data
-  config.files.license.enable = true;
-  config.files.license.spdx.name = "MIT";
-  config.files.license.spdx.vars.year = "2021";
-  config.files.license.spdx.vars."copyright holders" = "Cruel Intentions";
 }
 
 ```
@@ -187,10 +172,33 @@ This README.md is also a module defined as above
 
 ```
 
-Fun fact: it import [examples.nix](./examples/readme/examples.nix)
-that also include [readme.nix](./examples/readme.nix), as we can see above
+Our .gitignore is defined as like this
+```nix
+# ./examples/gitignore.nix
+{
+  # create my .gitignore coping ignore patterns from
+  # github.com/github/gitignore
+  config.files.gitignore.enable = true;
+  config.files.gitignore.template."Global/Archives" = true;
+  config.files.gitignore.template."Global/Backup" = true;
+  config.files.gitignore.template."Global/Diff" = true;
+}
 
+```
 
+And our LICENSE file is
+```nix
+# ./examples/license.nix
+{
+  # LICENSE file creation
+  # using templates from https://github.com/spdx/license-list-data
+  config.files.license.enable = true;
+  config.files.license.spdx.name = "MIT";
+  config.files.license.spdx.vars.year = "2021";
+  config.files.license.spdx.vars."copyright holders" = "Cruel Intentions";
+}
+
+```
 
 ## Writing new modules
 

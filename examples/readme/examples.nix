@@ -35,8 +35,15 @@
   ${builtins.readFile ../readme.nix}
   ```
 
-  Fun fact: it import [examples.nix](./examples/readme/examples.nix)
-  that also include [readme.nix](./examples/readme.nix), as we can see above
+  Our .gitignore is defined as like this
+  ```nix
+  # ./examples/gitignore.nix
+  ${builtins.readFile ../gitignore.nix}
+  ```
 
-
+  And our LICENSE file is
+  ```nix
+  # ./examples/license.nix
+  ${builtins.readFile ../license.nix}
+  ```
 ''
