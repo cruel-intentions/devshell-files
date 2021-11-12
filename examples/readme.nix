@@ -10,5 +10,6 @@
     ((builtins.import ./readme/modules.nix) lib)
     (builtins.readFile ./readme/todo.md)
     (builtins.readFile ./readme/issues.md)
+    (builtins.readFile ./readme/seeAlso.md)
   ];
 }

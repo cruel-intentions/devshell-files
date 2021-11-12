@@ -167,6 +167,7 @@ This README.md is also a module defined as above
     ((builtins.import ./readme/modules.nix) lib)
     (builtins.readFile ./readme/todo.md)
     (builtins.readFile ./readme/issues.md)
+    (builtins.readFile ./readme/seeAlso.md)
   ];
 }
 
@@ -410,3 +411,12 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 ## Issues
 
 This project uses git as version control, if your are using other version control system it may not work.
+
+### See also
+* [DevShell](https://github.com/numtide/devshell)
+* [Home Manager](https://github.com/nix-community/home-manager)
+* [Nix OS](https://nixos.org/)
+* [Nix Ecosystem](https://nixos.wiki/wiki/Nix_Ecosystem)
+* [Makes](https://github.com/fluidattacks/makes)
+* [Nix.Dev](https://nix.dev/)
+* [Nixology](https://www.youtube.com/watch?v=NYyImy-lqaA&list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs)
