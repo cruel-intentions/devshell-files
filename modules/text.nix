@@ -11,7 +11,7 @@ let
   };
 in {
   options.files.${format} = lib.mkOption {
-    type = lib.types.attrsOf lib.types.string;
+    type = lib.types.attrsOf lib.types.lines;
     description = "${format} files";
     default = {};
   };
