@@ -1,14 +1,26 @@
 format: {pkgs, config, lib, ...}: 
-let 
+let
+  yj-args.json = "-jji";
+  yj-args.yaml = "-jy";
+  yj-args.toml = "-jti";
+  yj-args.hcl = "-jc";
+  yj-arg = yj-args.${format};
   cfg = config.files.${format};
-  generator = pkgs.formats.${format} {};
+  type = (pkgs.formats.json {}).type;
+  generate = name: value: pkgs.runCommand name {
+      nativeBuildInputs = [ pkgs.yj ];
+      value = builtins.toJSON value;
+      passAsFile = [ "value" ];
+    } ''
+      cat "$valuePath"| yj ${yj-arg} > "$out"
+    '';
   toFile = name: value: {
-    source = generator.generate (builtins.baseNameOf name) value;
+    source = generate (builtins.baseNameOf name) value;
     git-add = lib.mkIf config.files.git.auto-add true;
   };
 in {
   options.files.${format} = lib.mkOption {
-    type = lib.types.attrsOf generator.type;
+    type = lib.types.attrsOf type;
     description = "${format} files";
     default = {};
   };

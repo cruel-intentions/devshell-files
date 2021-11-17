@@ -16,6 +16,7 @@
       ./modules/text.nix
       ./modules/toml.nix
       ./modules/yaml.nix
+      ./modules/hcl.nix
       ./modules/git.nix
       ./modules/gitignore.nix
       ./modules/spdx.nix

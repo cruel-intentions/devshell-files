@@ -1,5 +1,5 @@
 baz:
-- foo
-- bar
-- hello
+  - foo
+  - bar
+  - hello
 hello: world
