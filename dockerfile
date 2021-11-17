@@ -5,13 +5,13 @@
 # nix is available to Linux, Mac and (with WSL) Windows
 #
 # edit project.nix and run
-# >> docker run --rm -it (docker build -q .)
-#
+# >> docker run --rm -v `pwd`:/app -it `docker build -q .`
+# then
+# >> nix develop inside docker
 
 FROM nixpkgs/nix-flakes
 
 # Start your project
 WORKDIR /app
-COPY . .
-ENTRYPOINT nix develop -c $SHELL
-VOLUME ["/app"]
+VOLUME /app
+ENTRYPOINT bash
