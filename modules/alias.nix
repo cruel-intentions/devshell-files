@@ -15,6 +15,7 @@ in {
     type = lib.types.attrsOf lib.types.string;
     example = "echo hello";
     description = "Description for use in the NixOS manual.";
+    default = {};
   };
   config.commands = aliasses;
 }

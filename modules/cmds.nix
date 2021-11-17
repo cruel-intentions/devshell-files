@@ -8,6 +8,7 @@ in {
     example = "convco";
     type = lib.types.attrsOf lib.types.bool;
     description = "Add commands to the environment.";
+    default = {};
   };
   config.commands = cmds;
 }
