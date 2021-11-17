@@ -414,9 +414,9 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 This project uses git as version control, if your are using other version control system it may not work.
 
 ### See also
+* [Nix](https://nixos.org/)
 * [DevShell](https://github.com/numtide/devshell)
 * [Home Manager](https://github.com/nix-community/home-manager)
-* [Nix OS](https://nixos.org/)
 * [Nix Ecosystem](https://nixos.wiki/wiki/Nix_Ecosystem)
 * [Makes](https://github.com/fluidattacks/makes)
 * [Nix.Dev](https://nix.dev/)

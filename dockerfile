@@ -10,3 +10,4 @@ FROM nixpkgs/nix-flakes
 WORKDIR /app
 COPY . .
 ENTRYPOINT nix develop -c $SHELL
+VOLUME ["/app"]

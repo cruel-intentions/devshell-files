@@ -1,7 +1,7 @@
 ### See also
+* [Nix](https://nixos.org/)
 * [DevShell](https://github.com/numtide/devshell)
 * [Home Manager](https://github.com/nix-community/home-manager)
-* [Nix OS](https://nixos.org/)
 * [Nix Ecosystem](https://nixos.wiki/wiki/Nix_Ecosystem)
 * [Makes](https://github.com/fluidattacks/makes)
 * [Nix.Dev](https://nix.dev/)
