@@ -5,4 +5,5 @@ lib:
   ${builtins.readFile ./modules/nix-lang.md}
   ${builtins.import ./modules/json-vs-nix.nix lib}
   ${builtins.readFile ./modules/modules.md}
+  ${builtins.readFile ./modules/share.md}
 ''

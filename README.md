@@ -316,7 +316,7 @@ Now we're hiding complexity, not all, but some.
 
 If we add this to our project.nix we discover that there is no `gh-actions` config available.
 
-What need should to is create options definition of that.
+To create it we add `options` definition of that.
 
 ```nix
 { lib, ...}:
@@ -324,25 +324,25 @@ What need should to is create options definition of that.
   options.gh-actions.ci-cd = lib.mkOption {
     type = lib.types.submodule {
       options.pre-build = lib.mkOption {
-        type = lib.types.string;
+        type = lib.types.str;
         default = "echo pre-building";
         example = "npm i";
         description = "Command to run before build";
       };
       options.build = lib.mkOption {
-        type = lib.type.string;
+        type = lib.types.str;
         default = "echo building";
         example = "npm run build";
         description = "Command to run as build step";
       };
       options.test = lib.mkOption {
-        type = lib.type.string;
+        type = lib.types.str;
         default = "echo testing";
         example = "npm test";
         description = "Command to run as test step";
       };
       options.deploy = lib.mkOption {
-        type = lib.type.string;
+        type = lib.types.str;
         default = "echo deploying";
         example = "aws s3 sync ./build s3://my-bucket";
         description = "Command to run as deploy step";
@@ -354,33 +354,56 @@ What need should to is create options definition of that.
 }
 ```
 
-Good that is it, now we can set config as we said before, but it does nothing, it doesn't create our yaml file.
+Good, that is it, now we can set config as we said before, but it does nothing, it doesn't create our yaml file.
 
-Usually people put this next part in same file of previous code, it isn't a requirement, and spliting it here make it simplier to explain.
+Usually people put the next part in same file of previous code, it isn't a requirement, and spliting it here make it simplier to explain.
 
 The cool point is that to create our yaml file we only need one config like we proposed first.
 
 ```nix
 { lib, config, ... }:
+let
+  cfg = config.gh-actions.ci-cd;
+  cmd = step: "nix develop --command gh-actions-ci-cd-${step}";
+in
 { 
-  config.files.yaml."/.github/workflows/ci-cd.yaml" = {
+  imports = [ ./gh-actions-options.nix ];
+  config.files.alias = lib.mkIf cfg.enable {
+    gh-actions-ci-cd-pre-build = cfg.pre-build;
+    gh-actions-ci-cd-build = cfg.build;
+    gh-actions-ci-cd-test = cfg.test;
+    gh-actions-ci-cd-deploy = cfg.deploy;
+  };
+  config.files.yaml."/.github/workflows/ci-cd.yaml" = lib.mkIf cfg.enable {
     on = "push";
     jobs.ci-cd.runs-on = "ubuntu-latest";
     jobs.ci-cd.steps = [
-      { uses = "actions/checkout@v1"; }
-      { uses = "cachix/install-nix-action@v13"; "with".nix_path = "channel:nixos-unstable"; }
-      { run = "nix develop"; }
+      { uses = "actions/checkout@v2.4.0"; }
+      { 
+        uses = "cachix/install-nix-action@v15";
+        "with".nix_path = "channel:nixos-unstable";
+        "with".extra_nix_config = ''
+          access-tokens = github.com=${"$"}{{ secrets.GITHUB_TOKEN }}
+        '';
+      }
       # this config comes from arguments
-      { run = config.gh-actions.ci-cd.pre-build; }
-      { run = config.gh-actions.ci-cd.build; }
-      { run = config.gh-actions.ci-cd.test; }
-      { run = config.gh-actions.ci-cd.deploy; }
+      { run = cmd "pre-build"; name = "Pre Build"; }
+      { run = cmd "build"; name = "Build"; }
+      { run = cmd "test"; name = "Test"; }
+      { run = cmd "deploy"; name = "Deploy"; }
     ];
   };
 }
 ```
 
-Now we only need to import it our project and set 'pre-build', 'build', 'test' and 'deploy' configs
+Now we only need to import it on our project and set 'pre-build', 'build', 'test' and 'deploy' configs
+
+```nix
+{
+  config.gh-actions.ci-cd.enable = true;
+  config.gh-actions.ci-cd.deploy = "echo 'habemus lux'";
+}
+```
 
 If we try to set something that is not a string to it, one error will raise, typecheking it.
 
@@ -401,6 +424,28 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 - lib.types.listOf (typed array)
 - lib.types.attrsOf (typed hash map)
 - lib.types.uniq (typed set)
+
+### Sharing our module
+
+Now to not just copy and past it everywhere, we could create a git repository. Ie. [gh-actions](https://github.com/cruel-intentions/gh-actions)
+
+Then we could let nix manage it for us adding it to flake.nix file like
+
+```nix
+{
+  description = "Dev Environment";
+
+  inputs.dsf.url = "github:cruel-intentions/devshell-files";
+  inputs.gha.url = "github:cruel-intentions/gh-actions";
+  # for private repository use git url
+  # inputs.gha.url = "git+ssh://git@github.com/cruel-intentions/gh-actions.git";
+
+  outputs = inputs: inputs.dsf.lib.mkShell [
+    "${inputs.gha}/gh-actions.nix"
+    ./project.nix
+  ];
+}
+```
 
 
 ## TODO
