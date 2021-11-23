@@ -34,5 +34,5 @@ in
     output.html.no-section-label = true;
     output.html.fold.enable = true;
   };
-  config.files.gitignore.pattern."gh-page" = true;
+  config.files.gitignore.pattern."gh-pages" = true;
 }
