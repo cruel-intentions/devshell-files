@@ -6,8 +6,6 @@
   - [Generating files](#generating-files)
 - [Examples](#examples)
   - [Dogfooding](#dogfooding)
-  - [](#)
-  - [](#)
 - [Writing new modules](#writing-new-modules)
   - [Nix lang](#nix-lang)
   - [JSON as NIX](#json-as-nix)
