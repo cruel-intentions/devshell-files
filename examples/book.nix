@@ -1,16 +1,17 @@
 {lib, ...}:
 let
-  org-url = "https://github.com/cruel-intentions";
   project = "devshell-files";
+  author = "cruel-intentions";
+  org-url = "https://github.com/${author}";
 in
 {
   config.files.text."/gh-pages/src/SUMMARY.md" = ''
     # SUMMARY
     - [Introduction](./introduction.md)
-    - [Instalation](./installation.md)
+    - [Installation](./installation.md)
     - [Examples](./examples.md)
     - [Modules](./modules.md)
-    - [Todo](./todo.md)
+    - [TODO](./todo.md)
     - [Issues](./issues.md)
     - [See Also](./seeAlso.md)
   '';
@@ -35,4 +36,16 @@ in
     output.html.fold.enable = true;
   };
   config.files.gitignore.pattern."gh-pages" = true;
+  config.files.alias.gh-pages-it = ''
+    files
+    cd gh-pages
+    mdbook build
+    cd book
+    git init
+    git checkout -b gh-pages
+    git add .
+    git remote add origin git@github.com:${author}/${project}.git
+    git commit -m "docs(gh-pages): update gh-pages" .
+    git push -u origin gh-pages --force
+  '';
 }

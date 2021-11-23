@@ -4,6 +4,7 @@
 {lib, ...}:
 {
   config.files.text."/README.md" = builtins.concatStringsSep "\n" [
+    (builtins.readFile ./readme/toc.md)
     (builtins.readFile ./readme/title.md)
     (builtins.readFile ./readme/installation.md)
     (builtins.import ./readme/examples.nix)
