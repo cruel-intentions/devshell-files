@@ -15,7 +15,7 @@ in
     - [Issues](./issues.md)
     - [See Also](./seeAlso.md)
   '';
-  config.files.text."/gh-pages/src/introduction.md" = builtins.readFile ./readme/title.md;
+  config.files.text."/gh-pages/src/introduction.md" = builtins.readFile ./readme/about.md;
   config.files.text."/gh-pages/src/installation.md" = builtins.readFile ./readme/installation.md;
   config.files.text."/gh-pages/src/examples.md" = builtins.import ./readme/examples.nix;
   config.files.text."/gh-pages/src/modules.md" = builtins.import ./readme/modules.nix lib;

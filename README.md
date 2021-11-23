@@ -1,4 +1,5 @@
-- [Intro](#devshell-files)
+# Devshell Files Maker
+- [About](#about)
   - [Generate](#generate)
   - [Validate](#validate)
   - [Distribute](#distribute)
@@ -18,7 +19,7 @@
 - [Issues](#issues)
 - [See also](#see-also)
 
-# devshell-files
+## About
 
 Helps static file/configuration creation with [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](https://github.com/numtide/devshell).
 
@@ -184,8 +185,9 @@ This README.md is also a module defined as above
 {lib, ...}:
 {
   config.files.text."/README.md" = builtins.concatStringsSep "\n" [
+    "# Devshell Files Maker"
     (builtins.readFile ./readme/toc.md)
-    (builtins.readFile ./readme/title.md)
+    (builtins.readFile ./readme/about.md)
     (builtins.readFile ./readme/installation.md)
     (builtins.import ./readme/examples.nix)
     ((builtins.import ./readme/modules.nix) lib)

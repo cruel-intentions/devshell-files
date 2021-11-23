@@ -1,4 +1,4 @@
-- [Intro](#devshell-files)
+- [About](#about)
   - [Generate](#generate)
   - [Validate](#validate)
   - [Distribute](#distribute)

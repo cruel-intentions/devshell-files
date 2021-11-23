@@ -1,4 +1,4 @@
-# devshell-files
+## About
 
 Helps static file/configuration creation with [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](https://github.com/numtide/devshell).
 

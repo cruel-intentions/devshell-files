@@ -4,8 +4,9 @@
 {lib, ...}:
 {
   config.files.text."/README.md" = builtins.concatStringsSep "\n" [
+    "# Devshell Files Maker"
     (builtins.readFile ./readme/toc.md)
-    (builtins.readFile ./readme/title.md)
+    (builtins.readFile ./readme/about.md)
     (builtins.readFile ./readme/installation.md)
     (builtins.import ./readme/examples.nix)
     ((builtins.import ./readme/modules.nix) lib)
