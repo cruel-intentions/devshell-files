@@ -22,7 +22,7 @@ in {
   };
   options.files.gitignore.template = lib.mkOption {
     type = lib.types.attrsOf lib.types.bool;
-    description = "Gitignore template from github/gitignore";
+    description = "Append gitignore template from https://github.com/github/gitignore";
     default = {};
     example = {
       Android = true;

@@ -21,8 +21,11 @@ let
 in {
   options.files.${format} = lib.mkOption {
     type = lib.types.attrsOf type;
-    description = "${format} files";
+    description = ''
+      Create ${format} files with correponding content
+    '';
     default = {};
+    example."/hello.${format}".greeting = "hello World";
   };
   config.file = lib.mapAttrs toFile cfg;
 }

@@ -10,17 +10,18 @@ let
   values = vars: builtins.attrValues vars;
   replaceVars = license: vars: builtins.replaceStrings (placeholders vars) (values vars) license;
 in {
-  options.files.license.enable = lib.mkEnableOption "Auto generated license file";
+  options.files.license.enable = lib.mkEnableOption "auto generated license file";
   options.files.license.spdx = lib.mkOption {
     type = lib.types.submodule {
       options.name = lib.mkOption {
         type = lib.types.str;
-        description = "SPDF text name without extension";
+        description = "SPDX text name without extension";
         example = "MIT";
       };
       options.vars = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
-        description = "Most SPDF templates has some placeholders like <OWNER>, it is case sensitive";
+        description = "Most SPDX templates has some placeholders like &lt;OWNER&gt;, it is case sensitive";
+        default = {};
         example = {
           "year" = "2021";
           "OWNER" = "cruel-intentions";
@@ -29,7 +30,7 @@ in {
         };
       };
     };
-    description = "Use SPDF as template https://github.com/spdx/license-list-data/tree/master/text";
+    description = "Use SPDX as template https://github.com/spdx/license-list-data/tree/master/text";
     default = {};
     example = {
       name = "MIT";

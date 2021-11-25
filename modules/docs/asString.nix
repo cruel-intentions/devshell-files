@@ -4,10 +4,9 @@ let
   if builtins.isNull (builtins.match ".*\n.*" v) then ''"${v}"''
   else
   ''
-    ${ident}''''
-    ${ident}${v}
-    ${ident}''''
-  '';
+    ${"''"}
+    ${ident}  ${builtins.replaceStrings ["\n"] ["\n${ident}  "] v}
+    ${ident}${"''"}'';
   arr = ident: v:
   if builtins.length v  == 0 then "[]"
   else

@@ -15,7 +15,7 @@ let
     else "";
   optionToMd = opt:
     ''
-      #### config.${builtins.replaceStrings ["<" ">"] ["&gt;" "&lt;"] opt.name}
+      #### config.${builtins.replaceStrings ["<" ">"] ["&lt;" "&gt;"] opt.name}
     
       ${opt.description}
 
