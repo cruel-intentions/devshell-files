@@ -14,6 +14,18 @@ in
     - [TODO](./todo.md)
     - [Issues](./issues.md)
     - [See Also](./seeAlso.md)
+    - [Current Modules](./modules/alias.md)
+      - [alias module](./modules/alias.md)
+      - [cmds module](./modules/cmds.md)
+      - [files module](./modules/files.md)
+      - [git module](./modules/git.md)
+      - [gitignore module](./modules/gitignore.md)
+      - [hcl module](./modules/hcl.md)
+      - [json module](./modules/json.md)
+      - [spdx module](./modules/spdx.md)
+      - [text module](./modules/text.md)
+      - [toml module](./modules/toml.md)
+      - [yaml module](./modules/yaml.md)
   '';
   config.files.text."/gh-pages/src/introduction.md" = builtins.readFile ./readme/about.md;
   config.files.text."/gh-pages/src/installation.md" = builtins.readFile ./readme/installation.md;
