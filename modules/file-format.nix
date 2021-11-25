@@ -26,6 +26,7 @@ in {
     '';
     default = {};
     example."/hello.${format}".greeting = "hello World";
+    example."/hellows.${format}".greetings = [ ["Hello World"] ["Ola Mundo" ["Holla Que Tal"]]];
   };
   config.file = lib.mapAttrs toFile cfg;
 }

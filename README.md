@@ -569,7 +569,7 @@ in
 </details>
 
 
-And publish this mdbook with github pages with `book-as-gh-pages` alias
+And publish this mdbook to github pages with `book-as-gh-pages` alias.
 
 
 

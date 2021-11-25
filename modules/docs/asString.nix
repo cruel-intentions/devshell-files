@@ -7,18 +7,21 @@ let
     ${"''"}
     ${ident}  ${builtins.replaceStrings ["\n"] ["\n${ident}  "] v}
     ${ident}${"''"}'';
+
+  lvObj = ident: v: ''${ident}${asString ident v}'';
   arr = ident: v:
   if builtins.length v  == 0 then "[]"
   else
   ''
-    ${ident}[
-    ${builtins.concatStringsSep "\n" (map (asString "$ident  ") v)}
-    ${ident}]
-  '';
+    [
+    ${builtins.concatStringsSep "\n" (map (lvObj "${ident}  ") v)}
+    ${ident}]'';
+
   keyQuote = k:
   if builtins.isNull (builtins.match ".*[ .'+=$%¨*()!@#/].*" k)
   then k
   else ''"${k}"'';
+
   kvObj = ident: k: v: ''${ident}${keyQuote k} = ${asString ident v};'';
   attrsAsList = f: v: builtins.attrValues (builtins.mapAttrs f v);
   obj = ident: v:
