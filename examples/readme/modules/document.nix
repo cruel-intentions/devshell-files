@@ -14,7 +14,7 @@ ${builtins.readFile ../../docs.nix}
 
 
 <details>
-<summary>We could also generated an mdbook with it</summary>
+<summary>We could also generate a mdbook with it</summary>
 <br>
 
 
@@ -28,4 +28,7 @@ ${builtins.readFile ../../book.nix}
 </details>
 
 
+And publish this mdbook with github pages with `book-as-gh-pages` alias
+
 ''
+

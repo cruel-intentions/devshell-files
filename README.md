@@ -518,7 +518,7 @@ To documento our modules is simple, we just need to use `config.files.docs` as f
 
 
 <details>
-<summary>We could also generated an mdbook with it</summary>
+<summary>We could also generate a mdbook with it</summary>
 <br>
 
 
@@ -568,6 +568,8 @@ in
 
 </details>
 
+
+And publish this mdbook with github pages with `book-as-gh-pages` alias
 
 
 
