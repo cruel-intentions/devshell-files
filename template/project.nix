@@ -20,13 +20,13 @@
   # config.files.cmds.nodejs-14_x = true; # installs node, npm and npx
   # config.files.cmds.yarn = true;
   # config.files.cmds.python39 = true;
-  # config.files.cmds.poetry = true;
+  # config.files.cmds.pipenv = true;
   # config.files.cmds.conda = true;
   # config.files.cmds.ruby_3_0 = true; # installs ruby and gem
   # config.files.cmds.go_1_17 = true;
   # config.files.cmds.rustc = true;
   # config.files.cmds.cargo = true;
-  # config.files.cmds.awscli2 = true;
+  # config.files.cmds.awscli = true;
   # config.files.cmds.azure-cli = true;
   # config.files.cmds.terraform = true;
   # look at https://search.nixos.org for more tools

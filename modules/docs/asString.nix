@@ -17,7 +17,7 @@ let
     ${ident}]
   '';
   keyQuote = k:
-  if builtins.isNull (builtins.match ".*[ .'+=$%¨&*()!@#/].*" k)
+  if builtins.isNull (builtins.match ".*[ .'+=$%¨*()!@#/].*" k)
   then k
   else ''"${k}"'';
   kvObj = ident: k: v: ''${ident}${keyQuote k} = ${asString ident v};'';

@@ -173,9 +173,6 @@ This project is configured by module [project.nix](./project.nix)
   config.files.alias.feat = ''convco commit --feat $@'';
   config.files.alias.fix = ''convco commit --fix $@'';
   config.files.alias.docs = ''convco commit --docs $@'';
-  config.files.docs."/gh-pages/src/modules/spdx.md".modules = [ ./modules/spdx.nix ];
-  config.files.docs."/gh-pages/src/modules/spdx.yaml".modules = [ ./modules/spdx.nix ];
-  config.files.docs."/gh-pages/src/modules/spdx.yaml".format = "yaml";
 }
 
 ```

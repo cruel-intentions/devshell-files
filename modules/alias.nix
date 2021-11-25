@@ -13,8 +13,8 @@ let
 in {
   options.files.alias = lib.mkOption {
     type = lib.types.attrsOf lib.types.string;
-    example = "echo hello";
-    description = "Description for use in the NixOS manual.";
+    example.hello = "echo hello";
+    description = "bash script to create an alias";
     default = {};
   };
   config.commands = aliasses;

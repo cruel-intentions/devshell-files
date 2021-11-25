@@ -1,22 +1,28 @@
 moduleDocs:
 let
-  asString = import ./asString.nix "";
+  asString = import ./asString.nix "  ";
   ifSection = section: opt:
     if builtins.hasAttr section opt then
     ''
       **${section}**
     
       ```nix
-      ${asString opt.${section} or ""}
+      {
+        config.${opt.name} = ${asString opt.${section} or ""};
+      }
       ```
     ''
     else "";
   optionToMd = opt:
     ''
-      #### ${opt.name}
+      #### config.${builtins.replaceStrings ["<" ">"] ["&gt;" "&lt;"] opt.name}
     
       ${opt.description}
-    
+
+      **type**
+
+      ${opt.type}
+      
       ${ifSection "example" opt}
       ${ifSection "default" opt}
     '';
