@@ -3,61 +3,35 @@ let
   project = "devshell-files";
   author = "cruel-intentions";
   org-url = "https://github.com/${author}";
+  edit-path = "${org-url}/${project}/edit/master/guide/{path}";
 in
 {
-  config.files.text."/gh-pages/src/SUMMARY.md" = ''
-    # SUMMARY
-    - [Introduction](./introduction.md)
-    - [Installation](./installation.md)
-    - [Examples](./examples.md)
-    - [Modules](./modules.md)
-    - [TODO](./todo.md)
-    - [Issues](./issues.md)
-    - [See Also](./seeAlso.md)
-    - [Current Modules](./modules/alias.md)
-      - [alias module](./modules/alias.md)
-      - [cmds module](./modules/cmds.md)
-      - [files module](./modules/files.md)
-      - [git module](./modules/git.md)
-      - [gitignore module](./modules/gitignore.md)
-      - [hcl module](./modules/hcl.md)
-      - [json module](./modules/json.md)
-      - [spdx module](./modules/spdx.md)
-      - [text module](./modules/text.md)
-      - [toml module](./modules/toml.md)
-      - [yaml module](./modules/yaml.md)
-  '';
+  config.files.mdbook.enable = true;
+  config.files.mdbook.authors = ["Cruel Intentions <${org-url}>"];
+  config.files.mdbook.language = "en";
+  config.files.mdbook.gh-author = author;
+  config.files.mdbook.gh-project = project;
+  config.files.mdbook.multilingual = false;
+  config.files.mdbook.title = "Nix DevShell Files Maker";
+  config.files.mdbook.output.html.fold.enable = true;
+  config.files.mdbook.output.html.no-section-label = true;
+  config.files.mdbook.output.html.site-url = "/${project}/";
+  config.files.mdbook.output.html.git-repository-icon = "fa-github";
+  config.files.mdbook.output.html.git-repository-url = "${org-url}/${project}";
+  config.files.mdbook.output.html.edit-url-template = edit-path;
+  config.files.mdbook.summary = builtins.readFile ./summary.md;
   config.files.text."/gh-pages/src/introduction.md" = builtins.readFile ./readme/about.md;
   config.files.text."/gh-pages/src/installation.md" = builtins.readFile ./readme/installation.md;
   config.files.text."/gh-pages/src/examples.md" = builtins.import ./readme/examples.nix;
-  config.files.text."/gh-pages/src/modules.md" = builtins.import ./readme/modules.nix lib;
+  config.files.text."/gh-pages/src/modules.md" = "## Writing new modules";
+  config.files.text."/gh-pages/src/nix-lang.md" =  builtins.readFile ./readme/modules/nix-lang.md;
+  config.files.text."/gh-pages/src/json-nix.md" =  builtins.import ./readme/modules/json-vs-nix.nix lib;
+  config.files.text."/gh-pages/src/module-spec.md" =  builtins.readFile ./readme/modules/modules.md;
+  config.files.text."/gh-pages/src/share.md" =  builtins.readFile ./readme/modules/share.md;
+  config.files.text."/gh-pages/src/document.md" =  builtins.import ./readme/modules/document.nix;
   config.files.text."/gh-pages/src/todo.md" = builtins.readFile ./readme/todo.md;
   config.files.text."/gh-pages/src/issues.md" = builtins.readFile ./readme/issues.md;
   config.files.text."/gh-pages/src/seeAlso.md" = builtins.readFile ./readme/seeAlso.md;
-  config.files.cmds.mdbook = true;
-  config.files.toml."/gh-pages/mdbook.toml" = {
-    book.authors = ["Cruel Intentions <${org-url}>"];
-    book.language = "en";
-    book.multilingual = false;
-    book.title = "Nix DevShell Files Maker";
-    output.html.git-repository-url = "${org-url}/${project}";
-    output.html.git-repository-icon = "fa-github";
-    output.html.edit-url-template = "${org-url}/${project}/edit/master/guide/{path}";
-    output.html.site-url = "/${project}/";
-    output.html.no-section-label = true;
-    output.html.fold.enable = true;
-  };
+  config.files.text."/gh-pages/src/modules-docs.md" = ''## Builtin Modules'';
   config.files.gitignore.pattern."gh-pages" = true;
-  config.files.alias.gh-pages-it = ''
-    files
-    cd gh-pages
-    mdbook build
-    cd book
-    git init
-    git checkout -b gh-pages
-    git add .
-    git remote add origin git@github.com:${author}/${project}.git
-    git commit -m "docs(gh-pages): update gh-pages" .
-    git push -u origin gh-pages --force
-  '';
 }

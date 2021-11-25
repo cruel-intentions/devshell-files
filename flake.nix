@@ -21,6 +21,7 @@
       ./modules/gitignore.nix
       ./modules/spdx.nix
       ./modules/docs.nix
+      ./modules/mdbook.nix
     ];
     overlays = [ devshell.overlay ];
     pkgs = system: import nixpkgs { inherit system overlays; };

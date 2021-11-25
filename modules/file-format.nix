@@ -2,7 +2,7 @@ format: {pkgs, config, lib, ...}:
 let
   yj-args.json = "-jji";
   yj-args.yaml = "-jy";
-  yj-args.toml = "-jti";
+  yj-args.toml = "-jt";
   yj-args.hcl = "-jc";
   yj-arg = yj-args.${format};
   cfg = config.files.${format};

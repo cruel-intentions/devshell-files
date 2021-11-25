@@ -14,6 +14,7 @@
     - [As object](#as-object)
     - [Options](#options)
   - [Sharing our module](#sharing-our-module)
+  - [Document our module](#document-our-module)
 - [TODO](#todo)
 - [Issues](#issues)
 - [See also](#see-also)
