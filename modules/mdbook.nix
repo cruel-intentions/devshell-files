@@ -5,6 +5,7 @@ let
 in
 {
   options.files.mdbook = lib.mkOption {
+    default = {};
     description = ''
       Helps with mdbook creation https://rust-lang.github.io/mdBook/
 
