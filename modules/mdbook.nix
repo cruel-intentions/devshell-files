@@ -145,14 +145,16 @@ in
     };
   };
   config.files.alias.publish-as-gh-pages = lib.mkIf cfg.enable ''
-    files
+    git config --global user.name $GITHUB_ACTOR
+    git config --global user.email $GITHUB_ACTOR'@users.noreply.github.com'
+    git checkout --orphan gh-pages
+    git rm --cached -r .
     cd .${cfg.root-dir}
     mdbook build
-    cd book
-    git init
-    git checkout -b gh-pages
-    git add .
-    git remote add origin git@github.com:${cfg.gh-author}/${cfg.gh-project}.git
+    cd ../
+    mv  .${cfg.root-dir}/book/* ./
+    rm -rf gh-pages
+    git add . 
     git commit -m "docs(gh-pages): update gh-pages" .
     git push -u origin gh-pages --force
   '';
