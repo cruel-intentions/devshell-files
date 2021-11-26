@@ -146,7 +146,7 @@ in
   };
   config.files.alias.publish-as-gh-pages = lib.mkIf cfg.enable ''
     files
-    cd ${cfg.root-dir}
+    cd .${cfg.root-dir}
     mdbook build
     cd book
     git init
