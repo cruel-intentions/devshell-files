@@ -38,8 +38,8 @@ let
       default = "text";
     };
     options.modules = lib.mkOption {
-      type = lib.types.nonEmptyListOf lib.types.path;
-      description = "paths to modules to be documented";
+      type = lib.types.nonEmptyListOf lib.types.anything;
+      description = "modules (paths, functions, attrset) to be documented";
       example = [ ./modules/gitignore.nix ];
     };
     options.mapper = lib.mkOption {
