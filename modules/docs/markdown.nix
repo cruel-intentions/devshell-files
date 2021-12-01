@@ -4,7 +4,7 @@ let
   ifSection = section: opt:
     if builtins.hasAttr section opt then
     ''
-      **${section}**
+      #### ${section}
     
       ```nix
       {
@@ -15,11 +15,11 @@ let
     else "";
   optionToMd = opt:
     ''
-      #### config.${builtins.replaceStrings ["<" ">"] ["&lt;" "&gt;"] opt.name}
+      ## config.${builtins.replaceStrings ["<" ">"] ["&lt;" "&gt;"] opt.name}
     
       ${opt.description}
 
-      **type**
+      #### type
 
       ${opt.type}
       
