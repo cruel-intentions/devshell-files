@@ -7,4 +7,5 @@ lib:
   ${builtins.readFile ./modules/modules.md}
   ${builtins.readFile ./modules/share.md}
   ${builtins.import ./modules/document.nix}
+  ${builtins.readFile ./modules/builtins.md}
 ''

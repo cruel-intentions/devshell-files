@@ -10,7 +10,7 @@
   - [Share Our Module](./share.md)
   - [Document It](./document.md)
 ---
-- [Builtin Modules](./modules-docs.md)
+- [Builtin Modules](./builtins.md)
   - [alias module](./modules/alias.md)
   - [cmds module](./modules/cmds.md)
   - [files module](./modules/files.md)

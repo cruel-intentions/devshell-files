@@ -15,6 +15,7 @@
     - [Options](#options)
   - [Sharing our module](#sharing-our-module)
   - [Document our module](#document-our-module)
+- [Builtin modules](#builtin-modules)
 - [TODO](#todo)
 - [Issues](#issues)
 - [See also](#see-also)

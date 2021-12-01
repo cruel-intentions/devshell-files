@@ -29,9 +29,9 @@ in
   config.files.text."/gh-pages/src/module-spec.md" = builtins.readFile ./readme/modules/modules.md;
   config.files.text."/gh-pages/src/share.md" = builtins.readFile ./readme/modules/share.md;
   config.files.text."/gh-pages/src/document.md" = builtins.import ./readme/modules/document.nix;
+  config.files.text."/gh-pages/src/builtins.md" = builtins.readFile ./readme/modules/builtins.md;
   config.files.text."/gh-pages/src/todo.md" = builtins.readFile ./readme/todo.md;
   config.files.text."/gh-pages/src/issues.md" = builtins.readFile ./readme/issues.md;
   config.files.text."/gh-pages/src/seeAlso.md" = builtins.readFile ./readme/seeAlso.md;
-  config.files.text."/gh-pages/src/modules-docs.md" = ''## Builtin Modules'';
   config.files.gitignore.pattern."gh-pages" = true;
 }
