@@ -8,14 +8,14 @@ let
     
       ```nix
       {
-        config.${opt.name} = ${asString opt.${section} or ""};
+        ${opt.name} = ${asString opt.${section} or ""};
       }
       ```
     ''
     else "";
   optionToMd = opt:
     ''
-      ## config.${builtins.replaceStrings ["<" ">"] ["&lt;" "&gt;"] opt.name}
+      ## ${builtins.replaceStrings ["<" ">"] ["&lt;" "&gt;"] opt.name}
     
       ${opt.description}
 

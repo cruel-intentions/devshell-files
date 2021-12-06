@@ -37,10 +37,40 @@ It has two advantages, you could share options definitions across projects more 
 And it hides complexity, [hiding complexity is what abstraction is all about](http://mourlot.free.fr/english/fmtaureau.html),
 we didn't share options definitions across projects to type less, but because we could reuse an abstraction that helps hiding complexity.
 
-#### Options
+#### Imports
 
-Imports and configs are simple, and you saw all those examples till now.
-Please open an issue to clarify any question about them.
+Points to other files we want import in this module
+
+```nix
+{ 
+  imports = [
+    ./gh-actions-options.nix
+    ./some-other-module.nix
+  ];
+}
+```
+
+#### Config
+
+Are values to your options
+
+```nix
+{
+  config.gh-actions.ci-cd.pre-build = "npm i";
+}
+```
+
+Note that if your file has only imports and config we could ommit `config`.
+
+And this file is the same
+
+```nix
+{
+  gh-actions.ci-cd.pre-build = "npm i";
+}
+```
+
+#### Options
 
 Them we need to learn how to create options.
 
@@ -50,7 +80,7 @@ We need create our github action file, it could be done as something like this:
 
 ```nix
 {
-  config.files.yaml."./.github/workflows/ci-cd.yaml" = {
+  files.yaml."./.github/workflows/ci-cd.yaml" = {
     on = "push";
     # ... rest of github action definition
   };
@@ -65,14 +95,14 @@ What project user (maybe us) really needs to define is:
 
 ```nix
 {
-  config.gh-actions.ci-cd.pre-build = "npm i";
-  config.gh-actions.ci-cd.build = "npm run build";
-  config.gh-actions.ci-cd.test = "npm run test";
-  config.gh-actions.ci-cd.deploy = "aws s3 sync ./build s3://some-s3-bucket";
+  gh-actions.ci-cd.pre-build = "npm i";
+  gh-actions.ci-cd.build = "npm run build";
+  gh-actions.ci-cd.test = "npm run test";
+  gh-actions.ci-cd.deploy = "aws s3 sync ./build s3://some-s3-bucket";
   # in the best of worlds this two aren't required but craw command
   # to seek dependecies is hard (we sucked at hiding complexity)
-  config.files.cmds.aws-cli = true;
-  config.files.cmds.nodejs-14_x = true;
+  files.cmds.aws-cli = true;
+  files.cmds.nodejs-14_x = true;
 }
 ```
 
@@ -132,13 +162,13 @@ let
 in
 { 
   imports = [ ./gh-actions-options.nix ];
-  config.files.alias = lib.mkIf cfg.enable {
+  files.alias = lib.mkIf cfg.enable {
     gh-actions-ci-cd-pre-build = cfg.pre-build;
     gh-actions-ci-cd-build = cfg.build;
     gh-actions-ci-cd-test = cfg.test;
     gh-actions-ci-cd-deploy = cfg.deploy;
   };
-  config.files.yaml."/.github/workflows/ci-cd.yaml" = lib.mkIf cfg.enable {
+  files.yaml."/.github/workflows/ci-cd.yaml" = lib.mkIf cfg.enable {
     on = "push";
     jobs.ci-cd.runs-on = "ubuntu-latest";
     jobs.ci-cd.steps = [
@@ -164,8 +194,8 @@ Now we only need to import it on our project and set 'pre-build', 'build', 'test
 
 ```nix
 {
-  config.gh-actions.ci-cd.enable = true;
-  config.gh-actions.ci-cd.deploy = "echo 'habemus lux'";
+  gh-actions.ci-cd.enable = true;
+  gh-actions.ci-cd.deploy = "echo 'habemus lux'";
 }
 ```
 

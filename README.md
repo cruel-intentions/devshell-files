@@ -100,11 +100,11 @@ Creating JSON, TEXT, TOML or YAML files
 #
 # this is one nix file
 {
-  config.files.json."/generated/hello.json".hello = "world";
-  config.files.toml."/generated/hello.toml".hello = "world";
-  config.files.yaml."/generated/hello.yaml".hello = "world";
-  config.files.hcl."/generated/hello.hcl".hello = "world";
-  config.files.text."/generated/hello.txt" = "world";
+  files.json."/generated/hello.json".hello = "world";
+  files.toml."/generated/hello.toml".hello = "world";
+  files.yaml."/generated/hello.yaml".hello = "world";
+  files.hcl."/generated/hello.hcl".hello = "world";
+  files.text."/generated/hello.txt" = "world";
 }
 
 ```
@@ -119,18 +119,16 @@ let
   name = "hello"; # a variable
 in
 {
-  config = {
-    files = {
-      json."/generated/${name}.json".baz = ["foo" "bar" name];
-      toml."/generated/${name}.toml".baz = ["foo" "bar" name];
-      yaml = {
-        "/generated/${name}.yaml" = {
-          baz = [
-            "foo"
-            "bar"
-            name
-          ];
-        };
+  files = {
+    json."/generated/${name}.json".baz = ["foo" "bar" name];
+    toml."/generated/${name}.toml".baz = ["foo" "bar" name];
+    yaml = {
+      "/generated/${name}.yaml" = {
+        baz = [
+          "foo"
+          "bar"
+          name
+        ];
       };
     };
   };
@@ -170,11 +168,11 @@ This project is configured by module [project.nix](./project.nix)
   # install development or deployment tools
   # now we can use 'convco' command https://convco.github.io
   # look at https://search.nixos.org for more tools
-  config.files.cmds.convco = true;
+  files.cmds.convco = true;
   # now we can use 'feat' command (alias to convco)
-  config.files.alias.feat = ''convco commit --feat $@'';
-  config.files.alias.fix = ''convco commit --fix $@'';
-  config.files.alias.docs = ''convco commit --docs $@'';
+  files.alias.feat = ''convco commit --feat $@'';
+  files.alias.fix = ''convco commit --fix $@'';
+  files.alias.docs = ''convco commit --docs $@'';
 }
 
 ```
@@ -187,7 +185,7 @@ This README.md is also a module defined as above
 # Some nix functions https://teu5us.github.io/nix-lib.html
 {lib, ...}:
 {
-  config.files.text."/README.md" = builtins.concatStringsSep "\n" [
+  files.text."/README.md" = builtins.concatStringsSep "\n" [
     "# Devshell Files Maker"
     (builtins.readFile ./readme/toc.md)
     (builtins.readFile ./readme/about.md)
@@ -208,10 +206,10 @@ Our .gitignore is defined like this
 {
   # create my .gitignore coping ignore patterns from
   # github.com/github/gitignore
-  config.files.gitignore.enable = true;
-  config.files.gitignore.template."Global/Archives" = true;
-  config.files.gitignore.template."Global/Backup" = true;
-  config.files.gitignore.template."Global/Diff" = true;
+  files.gitignore.enable = true;
+  files.gitignore.template."Global/Archives" = true;
+  files.gitignore.template."Global/Backup" = true;
+  files.gitignore.template."Global/Diff" = true;
 }
 
 ```
@@ -222,10 +220,10 @@ And our LICENSE file is
 {
   # LICENSE file creation
   # using templates from https://github.com/spdx/license-list-data
-  config.files.license.enable = true;
-  config.files.license.spdx.name = "MIT";
-  config.files.license.spdx.vars.year = "2021";
-  config.files.license.spdx.vars."copyright holders" = "Cruel Intentions";
+  files.license.enable = true;
+  files.license.spdx.name = "MIT";
+  files.license.spdx.vars.year = "2021";
+  files.license.spdx.vars."copyright holders" = "Cruel Intentions";
 }
 
 ```
@@ -300,10 +298,40 @@ It has two advantages, you could share options definitions across projects more 
 And it hides complexity, [hiding complexity is what abstraction is all about](http://mourlot.free.fr/english/fmtaureau.html),
 we didn't share options definitions across projects to type less, but because we could reuse an abstraction that helps hiding complexity.
 
-#### Options
+#### Imports
 
-Imports and configs are simple, and you saw all those examples till now.
-Please open an issue to clarify any question about them.
+Points to other files we want import in this module
+
+```nix
+{ 
+  imports = [
+    ./gh-actions-options.nix
+    ./some-other-module.nix
+  ];
+}
+```
+
+#### Config
+
+Are values to your options
+
+```nix
+{
+  config.gh-actions.ci-cd.pre-build = "npm i";
+}
+```
+
+Note that if your file has only imports and config we could ommit `config`.
+
+And this file is the same
+
+```nix
+{
+  gh-actions.ci-cd.pre-build = "npm i";
+}
+```
+
+#### Options
 
 Them we need to learn how to create options.
 
@@ -313,7 +341,7 @@ We need create our github action file, it could be done as something like this:
 
 ```nix
 {
-  config.files.yaml."./.github/workflows/ci-cd.yaml" = {
+  files.yaml."./.github/workflows/ci-cd.yaml" = {
     on = "push";
     # ... rest of github action definition
   };
@@ -328,14 +356,14 @@ What project user (maybe us) really needs to define is:
 
 ```nix
 {
-  config.gh-actions.ci-cd.pre-build = "npm i";
-  config.gh-actions.ci-cd.build = "npm run build";
-  config.gh-actions.ci-cd.test = "npm run test";
-  config.gh-actions.ci-cd.deploy = "aws s3 sync ./build s3://some-s3-bucket";
+  gh-actions.ci-cd.pre-build = "npm i";
+  gh-actions.ci-cd.build = "npm run build";
+  gh-actions.ci-cd.test = "npm run test";
+  gh-actions.ci-cd.deploy = "aws s3 sync ./build s3://some-s3-bucket";
   # in the best of worlds this two aren't required but craw command
   # to seek dependecies is hard (we sucked at hiding complexity)
-  config.files.cmds.aws-cli = true;
-  config.files.cmds.nodejs-14_x = true;
+  files.cmds.aws-cli = true;
+  files.cmds.nodejs-14_x = true;
 }
 ```
 
@@ -395,13 +423,13 @@ let
 in
 { 
   imports = [ ./gh-actions-options.nix ];
-  config.files.alias = lib.mkIf cfg.enable {
+  files.alias = lib.mkIf cfg.enable {
     gh-actions-ci-cd-pre-build = cfg.pre-build;
     gh-actions-ci-cd-build = cfg.build;
     gh-actions-ci-cd-test = cfg.test;
     gh-actions-ci-cd-deploy = cfg.deploy;
   };
-  config.files.yaml."/.github/workflows/ci-cd.yaml" = lib.mkIf cfg.enable {
+  files.yaml."/.github/workflows/ci-cd.yaml" = lib.mkIf cfg.enable {
     on = "push";
     jobs.ci-cd.runs-on = "ubuntu-latest";
     jobs.ci-cd.steps = [
@@ -427,8 +455,8 @@ Now we only need to import it on our project and set 'pre-build', 'build', 'test
 
 ```nix
 {
-  config.gh-actions.ci-cd.enable = true;
-  config.gh-actions.ci-cd.deploy = "echo 'habemus lux'";
+  gh-actions.ci-cd.enable = true;
+  gh-actions.ci-cd.deploy = "echo 'habemus lux'";
 }
 ```
 
@@ -498,18 +526,18 @@ To documento our modules is simple, we just need to use `config.files.docs` as f
 # examples/docs.nix
 
 {
-  config.files.docs."/gh-pages/src/modules/git.md".modules = [ ../modules/git.nix ];
-  config.files.docs."/gh-pages/src/modules/hcl.md".modules = [ ../modules/hcl.nix ];
-  config.files.docs."/gh-pages/src/modules/cmds.md".modules = [ ../modules/cmds.nix ];
-  config.files.docs."/gh-pages/src/modules/json.md".modules = [ ../modules/json.nix ];
-  config.files.docs."/gh-pages/src/modules/spdx.md".modules = [ ../modules/spdx.nix ];
-  config.files.docs."/gh-pages/src/modules/text.md".modules = [ ../modules/text.nix ];
-  config.files.docs."/gh-pages/src/modules/toml.md".modules = [ ../modules/toml.nix ];
-  config.files.docs."/gh-pages/src/modules/yaml.md".modules = [ ../modules/yaml.nix ];
-  config.files.docs."/gh-pages/src/modules/alias.md".modules = [ ../modules/alias.nix ];
-  config.files.docs."/gh-pages/src/modules/files.md".modules = [ ../modules/files.nix ];
-  config.files.docs."/gh-pages/src/modules/mdbook.md".modules = [ ../modules/mdbook.nix ];
-  config.files.docs."/gh-pages/src/modules/gitignore.md".modules = [ ../modules/gitignore.nix ];
+  files.docs."/gh-pages/src/modules/git.md".modules = [ ../modules/git.nix ];
+  files.docs."/gh-pages/src/modules/hcl.md".modules = [ ../modules/hcl.nix ];
+  files.docs."/gh-pages/src/modules/cmds.md".modules = [ ../modules/cmds.nix ];
+  files.docs."/gh-pages/src/modules/json.md".modules = [ ../modules/json.nix ];
+  files.docs."/gh-pages/src/modules/spdx.md".modules = [ ../modules/spdx.nix ];
+  files.docs."/gh-pages/src/modules/text.md".modules = [ ../modules/text.nix ];
+  files.docs."/gh-pages/src/modules/toml.md".modules = [ ../modules/toml.nix ];
+  files.docs."/gh-pages/src/modules/yaml.md".modules = [ ../modules/yaml.nix ];
+  files.docs."/gh-pages/src/modules/alias.md".modules = [ ../modules/alias.nix ];
+  files.docs."/gh-pages/src/modules/files.md".modules = [ ../modules/files.nix ];
+  files.docs."/gh-pages/src/modules/mdbook.md".modules = [ ../modules/mdbook.nix ];
+  files.docs."/gh-pages/src/modules/gitignore.md".modules = [ ../modules/gitignore.nix ];
 }
 
 
@@ -534,34 +562,46 @@ let
   edit-path = "${org-url}/${project}/edit/master/guide/{path}";
 in
 {
-  config.files.mdbook.enable = true;
-  config.files.mdbook.authors = ["Cruel Intentions <${org-url}>"];
-  config.files.mdbook.language = "en";
-  config.files.mdbook.gh-author = author;
-  config.files.mdbook.gh-project = project;
-  config.files.mdbook.multilingual = false;
-  config.files.mdbook.title = "Nix DevShell Files Maker";
-  config.files.mdbook.output.html.fold.enable = true;
-  config.files.mdbook.output.html.no-section-label = true;
-  config.files.mdbook.output.html.site-url = "/${project}/";
-  config.files.mdbook.output.html.git-repository-icon = "fa-github";
-  config.files.mdbook.output.html.git-repository-url = "${org-url}/${project}";
-  config.files.mdbook.output.html.edit-url-template = edit-path;
-  config.files.mdbook.summary = builtins.readFile ./summary.md;
-  config.files.text."/gh-pages/src/introduction.md" = builtins.readFile ./readme/about.md;
-  config.files.text."/gh-pages/src/installation.md" = builtins.readFile ./readme/installation.md;
-  config.files.text."/gh-pages/src/examples.md" = builtins.import ./readme/examples.nix;
-  config.files.text."/gh-pages/src/modules.md" = "## Writing new modules";
-  config.files.text."/gh-pages/src/nix-lang.md" = builtins.readFile ./readme/modules/nix-lang.md;
-  config.files.text."/gh-pages/src/json-nix.md" = builtins.import ./readme/modules/json-vs-nix.nix lib;
-  config.files.text."/gh-pages/src/module-spec.md" = builtins.readFile ./readme/modules/modules.md;
-  config.files.text."/gh-pages/src/share.md" = builtins.readFile ./readme/modules/share.md;
-  config.files.text."/gh-pages/src/document.md" = builtins.import ./readme/modules/document.nix;
-  config.files.text."/gh-pages/src/builtins.md" = builtins.readFile ./readme/modules/builtins.md;
-  config.files.text."/gh-pages/src/todo.md" = builtins.readFile ./readme/todo.md;
-  config.files.text."/gh-pages/src/issues.md" = builtins.readFile ./readme/issues.md;
-  config.files.text."/gh-pages/src/seeAlso.md" = builtins.readFile ./readme/seeAlso.md;
-  config.files.gitignore.pattern."gh-pages" = true;
+  files.mdbook.enable = true;
+  files.mdbook.authors = ["Cruel Intentions <${org-url}>"];
+  files.mdbook.language = "en";
+  files.mdbook.gh-author = author;
+  files.mdbook.gh-project = project;
+  files.mdbook.multilingual = false;
+  files.mdbook.title = "Nix DevShell Files Maker";
+  files.mdbook.output.html.fold.enable = true;
+  files.mdbook.output.html.no-section-label = true;
+  files.mdbook.output.html.site-url = "/${project}/";
+  files.mdbook.output.html.git-repository-icon = "fa-github";
+  files.mdbook.output.html.git-repository-url = "${org-url}/${project}";
+  files.mdbook.output.html.edit-url-template = edit-path;
+  files.mdbook.summary = builtins.readFile ./summary.md;
+  files.text."/gh-pages/src/introduction.md" = builtins.readFile ./readme/about.md;
+  files.text."/gh-pages/src/installation.md" = builtins.readFile ./readme/installation.md;
+  files.text."/gh-pages/src/examples.md" = builtins.import ./readme/examples.nix;
+  files.text."/gh-pages/src/modules.md" = "## Writing new modules";
+  files.text."/gh-pages/src/nix-lang.md" = builtins.readFile ./readme/modules/nix-lang.md;
+  files.text."/gh-pages/src/json-nix.md" = builtins.import ./readme/modules/json-vs-nix.nix lib;
+  files.text."/gh-pages/src/module-spec.md" = builtins.readFile ./readme/modules/modules.md;
+  files.text."/gh-pages/src/share.md" = builtins.readFile ./readme/modules/share.md;
+  files.text."/gh-pages/src/document.md" = builtins.import ./readme/modules/document.nix;
+  files.text."/gh-pages/src/builtins.md" = builtins.readFile ./readme/modules/builtins.md;
+  files.text."/gh-pages/src/todo.md" = builtins.readFile ./readme/todo.md;
+  files.text."/gh-pages/src/issues.md" = builtins.readFile ./readme/issues.md;
+  files.text."/gh-pages/src/seeAlso.md" = builtins.readFile ./readme/seeAlso.md;
+  files.gitignore.pattern."gh-pages" = true;
+  files.alias.publish-as-gh-pages-local = ''
+    ORIGIN=`git remote get-url origin`
+    cd gh-pages
+    mdbook build
+    cd book
+    git init .
+    git add .
+    git checkout -b gh-pages
+    git commit -m "docs(gh-pages): update gh-pages" .
+    git remote add origin $ORIGIN
+    git push -u origin gh-pages --force
+  '';  
 }
 
 ```
@@ -579,18 +619,18 @@ Builtin Modules are modules defined with this same package.
 
 They are already included when we use this package.
 
-- `config.files.alias`, create bash script alias
-- `config.files.cmds`, install packages from [nix repository](https://search.nixos.org/)
-- `config.files.docs`, convert our modules file into markdown using [nmd](https://gitlab.com/rycee/nmd)
-- `config.files.git`, configure git with file creation
-- `config.files.gitignore`, copy .gitignore from [templates](https://github.com/github/gitignore/)
-- `config.files.hcl`, create HCL files with nix syntax
-- `config.files.json`, create JSON files with nix syntax
-- `config.files.spdx`, copy LICENSE from [templates](https://github.com/spdx/license-list-data/tree/master/text)
-- `config.files.text`, create free text files with nix syntax
-- `config.files.toml`, create TOML files with nix syntax
-- `config.files.yaml`, create YAML files with nix syntax
-- `config.files.mdbook`, convert your markdown files to HTML using [mdbook](https://rust-lang.github.io/mdBook/)
+- `files.alias`, create bash script alias
+- `files.cmds`, install packages from [nix repository](https://search.nixos.org/)
+- `files.docs`, convert our modules file into markdown using [nmd](https://gitlab.com/rycee/nmd)
+- `files.git`, configure git with file creation
+- `files.gitignore`, copy .gitignore from [templates](https://github.com/github/gitignore/)
+- `files.hcl`, create HCL files with nix syntax
+- `files.json`, create JSON files with nix syntax
+- `files.spdx`, copy LICENSE from [templates](https://github.com/spdx/license-list-data/tree/master/text)
+- `files.text`, create free text files with nix syntax
+- `files.toml`, create TOML files with nix syntax
+- `files.yaml`, create YAML files with nix syntax
+- `files.mdbook`, convert your markdown files to HTML using [mdbook](https://rust-lang.github.io/mdBook/)
 
 
 Our [documentation](https://cruel-intentions.github.io/devshell-files/) is generated by `files.text`, `files.docs` and `files.mdbook`

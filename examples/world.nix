@@ -5,18 +5,16 @@ let
   name = "hello"; # a variable
 in
 {
-  config = {
-    files = {
-      json."/generated/${name}.json".baz = ["foo" "bar" name];
-      toml."/generated/${name}.toml".baz = ["foo" "bar" name];
-      yaml = {
-        "/generated/${name}.yaml" = {
-          baz = [
-            "foo"
-            "bar"
-            name
-          ];
-        };
+  files = {
+    json."/generated/${name}.json".baz = ["foo" "bar" name];
+    toml."/generated/${name}.toml".baz = ["foo" "bar" name];
+    yaml = {
+      "/generated/${name}.yaml" = {
+        baz = [
+          "foo"
+          "bar"
+          name
+        ];
       };
     };
   };

@@ -3,7 +3,7 @@
 # Some nix functions https://teu5us.github.io/nix-lib.html
 {lib, ...}:
 {
-  config.files.text."/README.md" = builtins.concatStringsSep "\n" [
+  files.text."/README.md" = builtins.concatStringsSep "\n" [
     "# Devshell Files Maker"
     (builtins.readFile ./readme/toc.md)
     (builtins.readFile ./readme/about.md)
