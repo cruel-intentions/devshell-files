@@ -6,6 +6,7 @@ let
   toList = names: lib.ca;
   githubIgnore = builtins.fetchGit {
     url = "https://github.com/github/gitignore";
+    ref = "main";
     rev = "cdd9e946da421758c6f42c427c7bc65c8326155d";
   };
   enabledTemplates = builtins.attrNames (lib.filterAttrs (name: value: value) cfg.template);
