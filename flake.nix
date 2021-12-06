@@ -22,6 +22,7 @@
       ./modules/spdx.nix
       ./modules/docs.nix
       ./modules/mdbook.nix
+      ./modules/direnv.nix
     ];
     overlays = [ devshell.overlay ];
     pkgs = system: import nixpkgs { inherit system overlays; };
