@@ -8,13 +8,13 @@ let
     sha256 = "0yxb48afvccn8vvpkykzcr4q1rgv8jsijqncia7a5ffzshcrwrnh";
   };
   nmd = import nmd-src { inherit pkgs; };
-  setup-module = {
+  setup-module = args: {
     imports = [{
-      _module.args = {
-        pkgs = lib.mkForce (nmd.scrubDerivations "pkgs" pkgs);
+      _module.check = false;
+      _module.args = args // {
+        pkgs = args.lib.mkForce (nmd.scrubDerivations "pkgs" args.pkgs);
         pkgs_i686 = lib.mkForce { };
       };
-      _module.check = false;
     }];
   };
   module-docs = name: cfg:
