@@ -7,18 +7,22 @@ let
     rev = "2398aa79ab12aa7aba14bc3b08a6efd38ebabdc5";
     sha256 = "0yxb48afvccn8vvpkykzcr4q1rgv8jsijqncia7a5ffzshcrwrnh";
   };
-  nmd = import nmd-src { inherit pkgs; };
-  setup-module = args: {
-    imports = [{
-      _module.check = false;
-      _module.args = args // {
-        pkgs = (args.lib or lib).mkForce (nmd.scrubDerivations "pkgs" (args.pkgs or pkgs));
-        pkgs_i686 = (args.lib or lib).mkForce { };
-      };
-    }];
-  };
   module-docs = name: cfg:
     let 
+      cfgPkgs = if cfg.pkgs == null then pkgs else cfg.pkgs;
+      cfgLib  = if cfg.lib  == null then lib  else cfg.lib;
+      nmd = import nmd-src { pkgs = cfgPkgs; lib  = cfgLib; };
+      setup-module = args: {
+        imports = [{
+          _module.check = false;
+          _module.args = args // {
+            pkgs = (args.lib or cfgLib).mkForce (
+              nmd.scrubDerivations "pkgs" (args.pkgs or cfgPkgs)
+            );
+            pkgs_i686 = (args.lib or cfgLib).mkForce { };
+          };
+        }];
+      };
       docs = nmd.buildModulesDocs {
         modules = cfg.modules ++ [ setup-module ];
         moduleRootPaths = [ ./. ];
@@ -41,6 +45,18 @@ let
       type = lib.types.nonEmptyListOf lib.types.anything;
       description = "modules (paths, functions, attrset) to be documented";
       example = [ ./modules/gitignore.nix ];
+    };
+    options.lib = lib.mkOption {
+      type = lib.types.nullOr lib.types.anything;
+      description = "lib to be used in documentation";
+      default = null;
+      example = {};
+    };
+    options.pkgs = lib.mkOption {
+      type = lib.types.nullOr lib.types.anything;
+      description = "pkgs to be used in documentation";
+      default = null;
+      example = {};
     };
     options.mapper = lib.mkOption {
       type = lib.types.path;
