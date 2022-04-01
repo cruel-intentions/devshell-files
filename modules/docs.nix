@@ -12,8 +12,8 @@ let
     imports = [{
       _module.check = false;
       _module.args = args // {
-        pkgs = args.lib.mkForce (nmd.scrubDerivations "pkgs" args.pkgs);
-        pkgs_i686 = lib.mkForce { };
+        pkgs = (args.lib or lib).mkForce (nmd.scrubDerivations "pkgs" (args.pkgs or pkgs));
+        pkgs_i686 = (args.lib or lib).mkForce { };
       };
     }];
   };
