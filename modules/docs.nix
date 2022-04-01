@@ -9,13 +9,13 @@ let
   };
   module-docs = name: cfg:
     let 
-      cfgPkgs = 
+      cfgPkgs =
         if cfg.pkgs == null 
         then builtins.trace "pkgs default" pkgs 
         else builtins.trace "pkgs from config" cfg.pkgs;
-      cfgLib  = 
+      cfgLib  =
         if cfg.lib  == null
-        then builtins.trace "libs default" lib
+        then builtins.trace "libs default" cfgPkgs.lib
         else builtins.trace "libs from config" cfg.lib;
       nmd = import nmd-src { pkgs = cfgPkgs; lib  = cfgLib; };
       setup-module = args: {
