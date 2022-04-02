@@ -14,7 +14,7 @@ let
         }];
       };
       buildModulesDocs = pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
-        evalModulesArgs = cfg.args;
+        evalModulesArgs = cfg.evalModulesArgs;
       };
       docs = buildModulesDocs {
         channelName     = "";
@@ -39,7 +39,7 @@ let
       example     = [ ./modules/gitignore.nix ];
       type        = lib.types.nonEmptyListOf lib.types.anything;
     };
-    options.args = lib.mkOption {
+    options.evalModulesArgs = lib.mkOption {
       default     = {};
       description = "evalModules arguments for module load";
       example     = { inputs = { }; pkgs = {}; lib = {}; };
