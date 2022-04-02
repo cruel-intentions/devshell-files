@@ -13,8 +13,8 @@ let
           _module.args.pkgs = lib.mkForce (nmd.scrubDerivations "pkgs" pkgs);
         }];
       };
-      buildModulesDocs = pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
-        evalModulesArgs = builtins.trace (builtins.attrNames cfg.args) cfg.args;
+      buildModulesDocs = builtins.trace (builtins.attrNames cfg.args) pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
+        evalModulesArgs = cfg.args;
       };
       docs = nmd.buildModulesDocs {
         channelName     = "";
