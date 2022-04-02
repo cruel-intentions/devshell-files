@@ -16,16 +16,16 @@ let
       cfgLib  =
         if cfg.lib  == null
         then builtins.trace "libs default" cfgPkgs.lib
-        else builtins.trace "libs from config" cfg.lib;
+        else builtins.trace (builtins.attrNames cfg.lib) cfg.lib;
       nmd = import nmd-src { pkgs = cfgPkgs; lib  = cfgLib; };
       setup-module = args: {
         imports = [{
           _module.check = false;
-          _module.args = args // {
-            pkgs = (args.lib or cfgLib).mkForce (
-              nmd.scrubDerivations "pkgs" (args.pkgs or cfgPkgs)
+          _module.args = {
+            pkgs = cfgLib.mkForce (
+              nmd.scrubDerivations "pkgs" cfgPkgs
             );
-            pkgs_i686 = (args.lib or cfgLib).mkForce { };
+            pkgs_i686 = cfgLib.mkForce { };
           };
         }];
       };
