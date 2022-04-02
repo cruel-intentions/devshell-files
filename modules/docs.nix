@@ -30,7 +30,7 @@ let
         }];
       };
       docs = nmd.buildModulesDocs {
-        modules = cfg.modules ++ [ setup-module ];
+        modules = cfg.modules; # ++ [ setup-module ];
         moduleRootPaths = [ ./. ];
         mkModuleUrl = path: path;
         channelName = "";
