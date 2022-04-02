@@ -14,7 +14,7 @@ let
         }];
       };
       buildModulesDocs = pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
-        evalModulesArgs = cfg.args;
+        evalModulesArgs = builtins.trace (builtins.attrNames cfg.args) cfg.args;
       };
       docs = nmd.buildModulesDocs {
         channelName     = "";
