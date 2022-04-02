@@ -1,32 +1,20 @@
 { pkgs, lib, config,...}:
 let
-  nmd-src = pkgs.fetchFromGitLab {
-    name   = "nmd";
-    owner  = "yestinh";
-    repo   = "nmd";
-    rev    = "1b59d4f836098691cb6771e2a8674c56346e1eac";
-    sha256 = "sha256-DrYjvJphTLz+hTYvc4O06cgCJJIhK4Eh1r23MJZcq3U=";
+  nmd-src = builtins.fetchTarball {
+    url    = "https://gitlab.com/hugosenari/nmd/-/archive/evalModulesArgs/nmd-evalModulesArgs.tar.bz2";
+    sha256 = "1qkzkx1nxpfvpcvxsfy2fzsalh6gcrrpnnijwpmfbpwg2v2s98ww";
   };
+  nmd = pkgs.callPackage nmd-src {};
   module-docs = name: cfg:
     let 
-      cfgPkgs =
-        if cfg.pkgs == null 
-        then pkgs 
-        else cfg.pkgs;
-      cfgLib  =
-        if cfg.lib  == null
-        then cfgPkgs.lib
-        else cfg.lib;
-      nmd = import nmd-src { pkgs = cfgPkgs; lib  = cfgLib; };
       setup-module = args: {
         imports = [{
           _module.check = false;
-          _module.args  = {
-            pkgs = cfgLib.mkForce (
-              nmd.scrubDerivations "pkgs" cfgPkgs
-            );
-          };
+          _module.args.pkgs = lib.mkForce (nmd.scrubDerivations "pkgs" pkgs);
         }];
+      };
+      buildModulesDocs = pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
+        evalModulesArgs = cfg.args;
       };
       docs = nmd.buildModulesDocs {
         channelName     = "";
@@ -51,17 +39,11 @@ let
       example     = [ ./modules/gitignore.nix ];
       type        = lib.types.nonEmptyListOf lib.types.anything;
     };
-    options.lib = lib.mkOption {
-      default     = null;
-      description = "lib to be used in documentation";
-      example     = {};
-      type        = lib.types.nullOr lib.types.anything;
-    };
-    options.pkgs = lib.mkOption {
-      default     = null;
-      description = "pkgs to be used in documentation";
-      example     = {};
-      type        = lib.types.nullOr lib.types.anything;
+    options.args = lib.mkOption {
+      default     = {};
+      description = "evalModules arguments for module load";
+      example     = { inputs = { }; pkgs = {}; lib = {}; };
+      type        = lib.types.anything;
     };
     options.mapper = lib.mkOption {
       default     = ./docs/indentity.nix;
