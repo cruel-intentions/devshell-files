@@ -1,10 +1,12 @@
 {
-  description = "devShell file generator helper";
+  description = ''
+    devShell file generator helper
+  '';
 
-  inputs.devshell.url = "github:numtide/devshell";
+  inputs.devshell.url    = "github:numtide/devshell";
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nmd.url = "gitlab:rycee/nmd";
-  inputs.nmd.flake = false;
+  inputs.nmd.url         = "gitlab:rycee/nmd";
+  inputs.nmd.flake       = false;
 
   outputs = { self, flake-utils, devshell, nixpkgs, nmd }:
   let
@@ -24,18 +26,20 @@
       ./modules/mdbook.nix
       ./modules/direnv.nix
     ];
+    output   = other: (mkShell [ ./project.nix ]) // other;
     overlays = [ devshell.overlay ];
-    pkgs = system: import nixpkgs { inherit system overlays; };
-    mkShell = userModules: flake-utils.lib.eachDefaultSystem (system: {
-      devShellModules.imports = userModules;
-      devShell = (pkgs system).devshell.mkShell { imports = modules ++ userModules; };
+    pkgs     = system: import nixpkgs { inherit system overlays; };
+    mkShell  = imports: flake-utils.lib.eachDefaultSystem (system: {
+      devShellModules = { inherit imports; };
+      devShell        = (pkgs system).devshell.mkShell { imports = modules ++ imports; };
     });
-    output = other: (mkShell [ ./project.nix ]) // other;
   in output {
-    lib.mkShell = mkShell;
+    defaultTemplate.path        = ./template;
+    defaultTemplate.description = ''
+      nix flake new -t github:cruel-intentions/devshell-files project
+    '';
     lib.importTOML = devshell.lib.importTOML;
-    overlay = devshell.overlay;
-    defaultTemplate.path = ./template;
-    defaultTemplate.description = "nix flake new -t github:cruel-intentions/devshell-files project";
+    lib.mkShell    = mkShell;
+    overlay        = devshell.overlay;
   };
 }

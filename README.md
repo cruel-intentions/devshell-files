@@ -163,7 +163,7 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/gitignore.nix
     ./examples/license.nix
     ./examples/docs.nix
-    ./examples/book.nix
+  #  ./examples/book.nix
   ];
   # install development or deployment tools
   # now we can use 'convco' command https://convco.github.io
@@ -171,7 +171,7 @@ This project is configured by module [project.nix](./project.nix)
   files.cmds.convco = true;
   # now we can use 'feat' command (alias to convco)
   files.alias.feat = ''convco commit --feat $@'';
-  files.alias.fix = ''convco commit --fix $@'';
+  files.alias.fix  = ''convco commit --fix  $@'';
   files.alias.docs = ''convco commit --docs $@'';
 }
 
@@ -526,18 +526,18 @@ To documento our modules is simple, we just need to use `config.files.docs` as f
 # examples/docs.nix
 
 {
-  files.docs."/gh-pages/src/modules/git.md".modules = [ ../modules/git.nix ];
-  files.docs."/gh-pages/src/modules/hcl.md".modules = [ ../modules/hcl.nix ];
-  files.docs."/gh-pages/src/modules/cmds.md".modules = [ ../modules/cmds.nix ];
-  files.docs."/gh-pages/src/modules/json.md".modules = [ ../modules/json.nix ];
-  files.docs."/gh-pages/src/modules/spdx.md".modules = [ ../modules/spdx.nix ];
-  files.docs."/gh-pages/src/modules/text.md".modules = [ ../modules/text.nix ];
-  files.docs."/gh-pages/src/modules/toml.md".modules = [ ../modules/toml.nix ];
-  files.docs."/gh-pages/src/modules/yaml.md".modules = [ ../modules/yaml.nix ];
-  files.docs."/gh-pages/src/modules/alias.md".modules = [ ../modules/alias.nix ];
-  files.docs."/gh-pages/src/modules/files.md".modules = [ ../modules/files.nix ];
-  files.docs."/gh-pages/src/modules/mdbook.md".modules = [ ../modules/mdbook.nix ];
+  files.docs."/gh-pages/src/modules/alias.md".modules     = [ ../modules/alias.nix     ];
+  files.docs."/gh-pages/src/modules/cmds.md".modules      = [ ../modules/cmds.nix      ];
+  files.docs."/gh-pages/src/modules/files.md".modules     = [ ../modules/files.nix     ];
+  files.docs."/gh-pages/src/modules/git.md".modules       = [ ../modules/git.nix       ];
   files.docs."/gh-pages/src/modules/gitignore.md".modules = [ ../modules/gitignore.nix ];
+  files.docs."/gh-pages/src/modules/hcl.md".modules       = [ ../modules/hcl.nix       ];
+  files.docs."/gh-pages/src/modules/json.md".modules      = [ ../modules/json.nix      ];
+  files.docs."/gh-pages/src/modules/mdbook.md".modules    = [ ../modules/mdbook.nix    ];
+  files.docs."/gh-pages/src/modules/spdx.md".modules      = [ ../modules/spdx.nix      ];
+  files.docs."/gh-pages/src/modules/text.md".modules      = [ ../modules/text.nix      ];
+  files.docs."/gh-pages/src/modules/toml.md".modules      = [ ../modules/toml.nix      ];
+  files.docs."/gh-pages/src/modules/yaml.md".modules      = [ ../modules/yaml.nix      ];
 }
 
 

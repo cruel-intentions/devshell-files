@@ -3,7 +3,7 @@ let
   cfg = config.files.alias;
   toAlias = name: {
     inherit name;
-    help = builtins.head (lib.splitString "\n" cfg.${name});
+    help    = builtins.head (lib.splitString "\n" cfg.${name});
     command = ''
       ${cfg.${name}}
     '';
@@ -12,10 +12,10 @@ let
   aliasses = map toAlias (builtins.attrNames cfg);
 in {
   options.files.alias = lib.mkOption {
-    type = lib.types.attrsOf lib.types.string;
+    default       = {};
+    description   = "bash script to create an alias";
     example.hello = "echo hello";
-    description = "bash script to create an alias";
-    default = {};
+    type          = lib.types.attrsOf lib.types.string;
   };
   config.commands = aliasses;
 }

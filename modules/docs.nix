@@ -21,20 +21,19 @@ let
       setup-module = args: {
         imports = [{
           _module.check = false;
-          _module.args = {
+          _module.args  = {
             pkgs = cfgLib.mkForce (
               nmd.scrubDerivations "pkgs" cfgPkgs
             );
-            pkgs_i686 = cfgLib.mkForce { };
           };
         }];
       };
       docs = nmd.buildModulesDocs {
-        modules = cfg.modules; # ++ [ setup-module ];
+        channelName     = "";
+        docBook         = {};
+        mkModuleUrl     = path: path;
         moduleRootPaths = [ ./. ];
-        mkModuleUrl = path: path;
-        channelName = "";
-        docBook = {};
+        modules         = cfg.modules ++ [ setup-module ];
       };
       docsData = (import cfg.mapper) docs.optionsDocs;
     in 
@@ -42,32 +41,32 @@ let
     else (import cfg.template) docsData;
   docs-info = lib.types.submodule {
     options.format = lib.mkOption {
-      type = lib.types.enum ["json" "toml" "yaml" "hcl" "text"];
+      default     = "text";
       description = "format of documentation";
-      example = "json";
-      default = "text";
+      example     = "json";
+      type        = lib.types.enum ["json" "toml" "yaml" "hcl" "text"];
     };
     options.modules = lib.mkOption {
-      type = lib.types.nonEmptyListOf lib.types.anything;
       description = "modules (paths, functions, attrset) to be documented";
-      example = [ ./modules/gitignore.nix ];
+      example     = [ ./modules/gitignore.nix ];
+      type        = lib.types.nonEmptyListOf lib.types.anything;
     };
     options.lib = lib.mkOption {
-      type = lib.types.nullOr lib.types.anything;
+      default     = null;
       description = "lib to be used in documentation";
-      default = null;
-      example = {};
+      example     = {};
+      type        = lib.types.nullOr lib.types.anything;
     };
     options.pkgs = lib.mkOption {
-      type = lib.types.nullOr lib.types.anything;
+      default     = null;
       description = "pkgs to be used in documentation";
-      default = null;
-      example = {};
+      example     = {};
+      type        = lib.types.nullOr lib.types.anything;
     };
     options.mapper = lib.mkOption {
-      type = lib.types.path;
-      default = ./docs/indentity.nix;
-      example = ./docs/indentity.nix;
+      default     = ./docs/indentity.nix;
+      example     = ./docs/indentity.nix;
+      type        = lib.types.path;
       description = ''
         Path of nix files with function that
         receives `moduleDocs`
@@ -76,9 +75,9 @@ let
       '';
     };
     options.template = lib.mkOption {
-      type = lib.types.path;
-      default = ./docs/markdown.nix;
-      example = ./docs/markdown.nix;
+      default     = ./docs/markdown.nix;
+      example     = ./docs/markdown.nix;
+      type        = lib.types.path;
       description = ''
         Only used when format is `text`
         Path of nix file with function that
@@ -90,15 +89,15 @@ let
       '';
     };
   };
-  configs = config.files.docs;
+  configs  = config.files.docs;
   ofFormat = format: cfgs: lib.filterAttrs (n: cfg: cfg.format == format) cfgs;
 in
 {
   options.files.docs = lib.mkOption {
-    type = lib.types.attrsOf docs-info;
-    description = "attrsOf <docPath, module-info>";
-    default = {};
+    default     = {};
     example."/docs/gitignore.md".modules = [ ./gitignore.nix ];
+    description = "attrsOf <docPath, module-info>";
+    type        = lib.types.attrsOf docs-info;
   };
   config.files.hcl  = builtins.mapAttrs module-docs (ofFormat "hcl"  configs);
   config.files.json = builtins.mapAttrs module-docs (ofFormat "json" configs);

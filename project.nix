@@ -15,6 +15,6 @@
   files.cmds.convco = true;
   # now we can use 'feat' command (alias to convco)
   files.alias.feat = ''convco commit --feat $@'';
-  files.alias.fix = ''convco commit --fix $@'';
+  files.alias.fix  = ''convco commit --fix  $@'';
   files.alias.docs = ''convco commit --docs $@'';
 }
