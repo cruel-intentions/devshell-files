@@ -1,10 +1,11 @@
 { pkgs, lib, config,...}:
 let
   nmd-src = pkgs.fetchFromGitLab {
-    name = "nmd";
-    owner = "yestinh";
-    repo = "nmd";
-    rev = "1b59d4f836098691cb6771e2a8674c56346e1eac";
+    name   = "nmd";
+    owner  = "yestinh";
+    repo   = "nmd";
+    rev    = "1b59d4f836098691cb6771e2a8674c56346e1eac";
+    sha256 = "sha256-DrYjvJphTLz+hTYvc4O06cgCJJIhK4Eh1r23MJZcq3U=";
   };
   module-docs = name: cfg:
     let 
