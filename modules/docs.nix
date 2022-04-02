@@ -16,7 +16,7 @@ let
       buildModulesDocs = builtins.trace (builtins.attrNames cfg.args) pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
         evalModulesArgs = cfg.args;
       };
-      docs = nmd.buildModulesDocs {
+      docs = buildModulesDocs {
         channelName     = "";
         docBook         = {};
         mkModuleUrl     = path: path;
