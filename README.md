@@ -163,7 +163,7 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/gitignore.nix
     ./examples/license.nix
     ./examples/docs.nix
-  #  ./examples/book.nix
+    ./examples/book.nix
   ];
   # install development or deployment tools
   # now we can use 'convco' command https://convco.github.io
