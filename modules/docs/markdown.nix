@@ -1,6 +1,10 @@
 moduleDocs:
 let
   asString = import ./asString.nix "  ";
+  ifVal = section: opt:
+    if (builtins.hasAttr section opt) && opt.${section} != null then
+    opt.${section}
+    else "";
   ifSection = section: opt:
     if builtins.hasAttr section opt then
     ''
@@ -17,7 +21,7 @@ let
     ''
       ## ${builtins.replaceStrings ["<" ">"] ["&lt;" "&gt;"] opt.name}
     
-      ${opt.description}
+      ${ifVal "description" opt}
 
       #### type
 
