@@ -13,7 +13,7 @@ let
           _module.args.pkgs = lib.mkForce (nmd.scrubDerivations "pkgs" pkgs);
         }];
       };
-      buildModulesDocs = builtins.trace (builtins.attrNames cfg.args) pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
+      buildModulesDocs = pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
         evalModulesArgs = cfg.args;
       };
       docs = buildModulesDocs {
