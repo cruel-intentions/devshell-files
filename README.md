@@ -620,6 +620,7 @@ in
   files.mdbook.output.html.git-repository-url  = "${org-url}/${project}";
   files.mdbook.output.html.no-section-label    = true;
   files.mdbook.output.html.site-url            = "/${project}/";
+  files.gitignore.pattern.gh-pages             = true;
   files.text."/gh-pages/src/introduction.md" = builtins.readFile ./readme/about.md;
   files.text."/gh-pages/src/installation.md" = builtins.readFile ./readme/installation.md;
   files.text."/gh-pages/src/examples.md"     = builtins.import   ./readme/examples.nix;
@@ -633,8 +634,7 @@ in
   files.text."/gh-pages/src/todo.md"         = builtins.readFile ./readme/todo.md;
   files.text."/gh-pages/src/issues.md"       = builtins.readFile ./readme/issues.md;
   files.text."/gh-pages/src/seeAlso.md"      = builtins.readFile ./readme/seeAlso.md;
-  files.gitignore.pattern.gh-pages      = true;
-  files.alias.publish-as-gh-pages-local = ''
+  files.alias.publish-as-gh-pages-from-local = ''
     # same as publish-as-gh-pages but works local
     ORIGIN=`git remote get-url origin`
     cd gh-pages

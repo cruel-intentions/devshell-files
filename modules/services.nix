@@ -80,18 +80,19 @@ in
       {name} must be a executable command that runs forever.
 
       `s6` is a special name to auto start [s6](http://skarnet.org/software/s6/)
-      our process supervisor, it control all other services.
+      the process supervisor, it control all other services.
 
       If we don't set s6 service, we could start it running `initSrvs`
 
       Optionally could exist a {name}-finish command to stop it properly
+
       Optionally could exist a {name}-log    command to log  it properly
+
+      Default log informations goes to $PRJ_DATA_DIR/log/{name}/current
 
       See [S6 documentation](http://skarnet.org/software/s6/s6-supervise.html)
 
       We can use config.files.alias to help create your services scripts
-
-      Log informations goes to $PRJ_DATA_DIR/log/{name}/current
 
       examples:
 
