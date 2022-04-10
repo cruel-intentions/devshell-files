@@ -30,7 +30,7 @@
     ];
     output   = other: (mkShell [ ./project.nix ]) // other;
     overlays = [ devshell.overlay ];
-    pkgs     = system: import nixpkgs { inherit system overlays; };
+    pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
     mkShell  = imports: flake-utils.lib.eachDefaultSystem (system: {
       devShellModules = { inherit imports; };
       devShell        = (pkgs system).devshell.mkShell { imports = modules ++ imports; };
