@@ -1,3 +1,5 @@
+.data
+.direnv
 /gh-pages/src/SUMMARY.md
 gh-pages
 # It's better to unpack these files and commit the raw source because

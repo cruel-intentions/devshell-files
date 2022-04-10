@@ -25,6 +25,7 @@
       ./modules/docs.nix
       ./modules/mdbook.nix
       ./modules/direnv.nix
+      ./modules/services.nix
     ];
     output   = other: (mkShell [ ./project.nix ]) // other;
     overlays = [ devshell.overlay ];
