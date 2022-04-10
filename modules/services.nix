@@ -14,8 +14,14 @@ let
     value.executable = true;
     value.text       = ''
       #!/usr/bin/env sh
-      exec 2>&1
-      exec s6-log -b n4 s100000 $PRJ_DATA_DIR/log/${name}/
+      if command -v ${name}-log &> /dev/null
+      then
+        exec 2>&1
+        exec ${name}-log
+      else
+        exec 2>&1
+        exec s6-log -b n4 s100000 $PRJ_DATA_DIR/log/${name}/
+      fi
     '';
   };
   mkS6Stop = name: {
@@ -23,8 +29,11 @@ let
     value.executable = true;
     value.text       = ''
       #!/usr/bin/env sh
-      exec 2>&1
-      exec ${name}-finish || true
+      if command -v ${name}-finish &> /dev/null
+      then
+        exec 2>&1
+        exec ${name}-finish
+      fi
     '';
   };
   rmS6Srv  = name: {
@@ -70,16 +79,19 @@ in
 
       {name} must be a executable command that runs forever.
 
-      's6' is a special name to auto start [s6](http://skarnet.org/software/s6/)
+      `s6` is a special name to auto start [s6](http://skarnet.org/software/s6/)
       our process supervisor, it control all other services.
 
-      If you don't set s6 service, we could start it running `initSrvs`
+      If we don't set s6 service, we could start it running `initSrvs`
 
       Optionally could exist a {name}-finish command to stop it properly
+      Optionally could exist a {name}-log    command to log  it properly
 
       See [S6 documentation](http://skarnet.org/software/s6/s6-supervise.html)
 
-      You can use config.files.alias to help you create your services scripts
+      We can use config.files.alias to help create your services scripts
+
+      Log informations goes to $PRJ_DATA_DIR/log/{name}/current
 
       examples:
 
