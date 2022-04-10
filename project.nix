@@ -9,6 +9,7 @@
     ./examples/docs.nix
     ./examples/book.nix
     ./examples/services.nix
+    ./examples/nim.nix
   ];
   # install development or deployment tools
   # now we can use 'convco' command https://convco.github.io

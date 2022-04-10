@@ -12,6 +12,7 @@ They are already included when we use this package.
 - `files.hcl`, create HCL files with nix syntax
 - `files.json`, create JSON files with nix syntax
 - `files.mdbook`, convert your markdown files to HTML using [mdbook](https://rust-lang.github.io/mdBook/)
+- `files.nim`, similar to `files.alias`, but compiles [Nim](https://github.com/nim-lang/Nim/wiki#getting-started) code
 - `files.services`, process supervisor for development services using [s6](http://skarnet.org/software/s6)
 - `files.spdx`, copy LICENSE from [templates](https://github.com/spdx/license-list-data/tree/master/text)
 - `files.text`, create free text files with nix syntax
