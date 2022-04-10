@@ -49,7 +49,7 @@ let
   mkS6Ends = names: builtins.listToAttrs (map mkS6Stop names);
   rmS6Srvs = names: builtins.listToAttrs (map rmS6Srv  names);
   mkS6Dirs = names: builtins.listToAttrs (map mkLogDir names);
-  filtSrvs = boole: lib.filterAttrs (n: v: n != "s6" && v == boole);
+  filtSrvs = boole: lib.filterAttrs (n: v: n != "initSrvs" && v == boole);
   liveSrvs = builtins.attrNames (filtSrvs true  config.files.services);
   deadSrvs = builtins.attrNames (filtSrvs false config.files.services);
   initSrvs = ''
@@ -67,7 +67,7 @@ let
     "zzzzzz-ssssss-start".text = "scanSrvs" + lib.optionalString autoSrvs "|| initSrvs &";
   };
   haveSrvs = builtins.length liveSrvs > 0;
-  autoSrvs = haveSrvs && config.files.services.s6 or false;
+  autoSrvs = haveSrvs && config.files.services.initSrvs or false;
 in
 {
   options.files.services = lib.mkOption {
@@ -79,20 +79,22 @@ in
 
       {name} must be a executable command that runs forever.
 
-      `s6` is a special name to auto start [s6](http://skarnet.org/software/s6/)
-      the process supervisor, it control all other services.
+      Optionally could exist a {name}-finish command to stop it properly.
 
-      If we don't set s6 service, we could start it running `initSrvs`
+      Optionally could exist a {name}-log    command to log  it properly.
 
-      Optionally could exist a {name}-finish command to stop it properly
+      Default log informations goes to $PRJ_DATA_DIR/log/{name}/current .
 
-      Optionally could exist a {name}-log    command to log  it properly
+      `initSrvs` is a special name to auto start the process supervisor 
+      [s6](http://skarnet.org/software/s6/), it control all other services.
 
-      Default log informations goes to $PRJ_DATA_DIR/log/{name}/current
+      If we don't set initSrvs service, we can start it running `initSrvs`.
+ 
+      S6 wont stop by itself, we should run `stopSrvs` when it's done.
 
-      See [S6 documentation](http://skarnet.org/software/s6/s6-supervise.html)
+      See [S6 documentation](http://skarnet.org/software/s6/s6-supervise.html).
 
-      We can use config.files.alias to help create your services scripts
+      We can use config.files.alias to help create your services scripts.
 
       examples:
 
@@ -100,8 +102,8 @@ in
 
       ```nix
       {
-        # Make S6 start when you enter in shell
-        files.services.s6    = true;
+        # Make all services start when you enter in shell
+        files.services.initSrvs    = true;
 
         # Use hello configured below as service
         files.services.hello = true;
@@ -126,8 +128,7 @@ in
       ```
 
       Know bugs:
-      - S6 wont stop by itself, 
-        - run `stopSrvs` when it's done
+
       - Turning off service by removing its entry may not work
         - please set it to false at least once
         - or remove all .data/services directory
