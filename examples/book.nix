@@ -22,13 +22,13 @@ in
   files.mdbook.output.html.site-url            = "/${project}/";
   files.text."/gh-pages/src/introduction.md" = builtins.readFile ./readme/about.md;
   files.text."/gh-pages/src/installation.md" = builtins.readFile ./readme/installation.md;
-  files.text."/gh-pages/src/examples.md"     = builtins.import ./readme/examples.nix;
+  files.text."/gh-pages/src/examples.md"     = builtins.import   ./readme/examples.nix;
   files.text."/gh-pages/src/modules.md"      = "## Writing new modules";
   files.text."/gh-pages/src/nix-lang.md"     = builtins.readFile ./readme/modules/nix-lang.md;
-  files.text."/gh-pages/src/json-nix.md"     = builtins.import ./readme/modules/json-vs-nix.nix lib;
+  files.text."/gh-pages/src/json-nix.md"     = builtins.import   ./readme/modules/json-vs-nix.nix lib;
   files.text."/gh-pages/src/module-spec.md"  = builtins.readFile ./readme/modules/modules.md;
   files.text."/gh-pages/src/share.md"        = builtins.readFile ./readme/modules/share.md;
-  files.text."/gh-pages/src/document.md"     = builtins.import ./readme/modules/document.nix;
+  files.text."/gh-pages/src/document.md"     = builtins.import   ./readme/modules/document.nix;
   files.text."/gh-pages/src/builtins.md"     = builtins.readFile ./readme/modules/builtins.md;
   files.text."/gh-pages/src/todo.md"         = builtins.readFile ./readme/todo.md;
   files.text."/gh-pages/src/issues.md"       = builtins.readFile ./readme/issues.md;
