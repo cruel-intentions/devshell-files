@@ -588,11 +588,7 @@ To documento our modules is simple, we just need to use `config.files.docs` as f
   };
 }
 
-
-
 ```
-
-
 
 <details>
 <summary>We could also generate a mdbook with it</summary>
