@@ -35,6 +35,7 @@ in
   files.text."/gh-pages/src/seeAlso.md" = builtins.readFile ./readme/seeAlso.md;
   files.gitignore.pattern."gh-pages" = true;
   files.alias.publish-as-gh-pages-local = ''
+    # same as publish-as-gh-pages but works local
     ORIGIN=`git remote get-url origin`
     cd gh-pages
     mdbook build
