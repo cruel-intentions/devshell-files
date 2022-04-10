@@ -1,6 +1,6 @@
-### Modules
+### Module
 
-Modules could be defined in two formats:
+Modules can be defined in two formats:
 
 #### As function:
 
@@ -12,23 +12,31 @@ These functions has at least these params:
 - And may receive other named params (use `...` to ignore them)
 
 ```nix
-{ config, pkgs, lib, ... }:                   # function parms
-{ imports = []; config = {}; options = {}; }  # function result/module info
+{ config, pkgs, lib, ... }: # function parms
+{                           # function result/module info
+  imports = [];
+  config  = {};
+  options = {};
+}  
 ```
 
 #### As attrset, aka. object (JS), dict (Python):
 
 ```nix
-{ imports = []; config = {}; options = {}; }  # result/module info
+{  # module info
+  imports = [];
+  config  = {};
+  options = {};
+}
 ```
 
 All those attributes are optional
 
-- imports: array with paths to other modules
-- config: object with user configurations
+- imports: array  with paths to other modules
+- config:  object with project configurations
 - options: object with our config type definition
 
-We adivise you to divide your modules in two files:
+We adivise you to split your modules in two files:
 - One mostly with options, where your definition goes
 - Other with config, where your information goes
 
@@ -39,7 +47,7 @@ we didn't share options definitions across projects to type less, but because we
 
 #### Imports
 
-Points to other files we want import in this module
+Points to other module files we want import in this module
 
 ```nix
 { 
@@ -47,6 +55,27 @@ Points to other files we want import in this module
     ./gh-actions-options.nix
     ./some-other-module.nix
   ];
+}
+```
+
+If your need import a plain nix file (not a module) you can use `builtins.import` function
+
+```nix
+{
+  # hello.txt: Hello World!
+  config.files.text."/foo/hello.txt" = import ./hello.txt;
+}
+```
+
+There are also a JSON and TOML helpers
+```nix
+{ lib, ...}:
+{
+  # hello.json: { "msg": "Hello World!"; }
+  config.files.text."/foo/hello.txt" = (lib.importJSON ./hello.json).msg;
+  config.files.text."/foo/hellO.txt" = 
+    let hello = lib.importTOML ./hello.toml) 
+    in hello.msg;
 }
 ```
 
@@ -60,9 +89,9 @@ Are values to your options
 }
 ```
 
-Note that if your file has only imports and config we could ommit `config`.
+If your file has only `imports` or `config` we could ommit `config`.
 
-And this file is the same
+And this file produce the same result
 
 ```nix
 {
@@ -94,55 +123,63 @@ Since most of our config are just: 'get code', 'build', 'test', 'install'
 What project user (maybe us) really needs to define is:
 
 ```nix
+# any module file (maybe project.nix)
 {
-  gh-actions.ci-cd.pre-build = "npm i";
-  gh-actions.ci-cd.build = "npm run build";
-  gh-actions.ci-cd.test = "npm run test";
-  gh-actions.ci-cd.deploy = "aws s3 sync ./build s3://some-s3-bucket";
-  # in the best of worlds this two aren't required but craw command
-  # to seek dependecies is hard (we sucked at hiding complexity)
-  files.cmds.aws-cli = true;
+  # commands required to run your build steps
+  files.cmds.aws-cli     = true;
   files.cmds.nodejs-14_x = true;
+
+  # our build steps
+  gh-actions.ci-cd.pre-build = "npm i";
+  gh-actions.ci-cd.build     = "npm run build";
+  gh-actions.ci-cd.test      = "npm run test";
+  gh-actions.ci-cd.deploy    = "aws s3 sync ./build s3://some-s3-bucket";
 }
 ```
 
-Now we're hiding complexity, not all, but some.
+Now we're hiding (some) complexity.
 
-If we add this to our project.nix we discover that there is no `gh-actions` config available.
+If we add this to our project.nix we discover that there is no `gh-actions` config available, and command to generate project files fails.
 
 To create it we add `options` definition of that.
 
 ```nix
+# gh-actions-options.nix
 { lib, ...}:
 {
+  # defines um gh-actions.ci-cd option of type dict/object/attrset (submodule)
   options.gh-actions.ci-cd = lib.mkOption {
     type = lib.types.submodule {
+      # defines a property 'gh-actions.ci-cd.pre-build'
       options.pre-build = lib.mkOption {
-        type = lib.types.str;
-        default = "echo pre-building";
-        example = "npm i";
+        default     = "echo pre-building";
         description = "Command to run before build";
+        example     = "npm i";
+        type        = lib.types.str;
       };
+      # defines a property 'gh-actions.ci-cd.build'
       options.build = lib.mkOption {
-        type = lib.types.str;
-        default = "echo building";
-        example = "npm run build";
+        default     = "echo building";
         description = "Command to run as build step";
+        example     = "npm run build";
+        type        = lib.types.str;
       };
+      # defines a property 'gh-actions.ci-cd.test'
       options.test = lib.mkOption {
-        type = lib.types.str;
-        default = "echo testing";
-        example = "npm test";
+        default     = "echo testing";
         description = "Command to run as test step";
+        example     = "npm test";
+        type        = lib.types.str;
       };
+      # defines a property 'gh-actions.ci-cd.deploy'
       options.deploy = lib.mkOption {
-        type = lib.types.str;
-        default = "echo deploying";
-        example = "aws s3 sync ./build s3://my-bucket";
+        default     = "echo deploying";
         description = "Command to run as deploy step";
+        example     = "aws s3 sync ./build s3://my-bucket";
+        type        = lib.types.str;
       };
     };
-    default = {};
+    default     = {};
     description = "Configure your github actions CI/CD";
   };
 }
@@ -155,36 +192,23 @@ Usually people put the next part in same file of previous code, it isn't a requi
 The cool point is that to create our yaml file we only need one config like we proposed first.
 
 ```nix
+# gh-actions.nix
 { lib, config, ... }:
-let
-  cfg = config.gh-actions.ci-cd;
-  cmd = step: "nix develop --command gh-actions-ci-cd-${step}";
-in
 { 
+  # import our options definitions
   imports = [ ./gh-actions-options.nix ];
-  files.alias = lib.mkIf cfg.enable {
-    gh-actions-ci-cd-pre-build = cfg.pre-build;
-    gh-actions-ci-cd-build = cfg.build;
-    gh-actions-ci-cd-test = cfg.test;
-    gh-actions-ci-cd-deploy = cfg.deploy;
-  };
-  files.yaml."/.github/workflows/ci-cd.yaml" = lib.mkIf cfg.enable {
+
+  # define output file usiging user defined configurations
+  files.yaml."/.github/workflows/ci-cd.yaml" = {
     on = "push";
     jobs.ci-cd.runs-on = "ubuntu-latest";
-    jobs.ci-cd.steps = [
+    jobs.ci-cd.steps   = [
       { uses = "actions/checkout@v2.4.0"; }
-      { 
-        uses = "cachix/install-nix-action@v15";
-        "with".nix_path = "channel:nixos-unstable";
-        "with".extra_nix_config = ''
-          access-tokens = github.com=${"$"}{{ secrets.GITHUB_TOKEN }}
-        '';
-      }
-      # this config comes from arguments
-      { run = cmd "pre-build"; name = "Pre Build"; }
-      { run = cmd "build"; name = "Build"; }
-      { run = cmd "test"; name = "Test"; }
-      { run = cmd "deploy"; name = "Deploy"; }
+      # read step scripts from `config.gh-actions.ci-cd`
+      { name = "Pre Build"; run = config.gh-actions.ci-cd.pre-build; }
+      { name = "Build";     run = config.gh-actions.ci-cd.build";    }
+      { name = "Test";      run = config.gh-actions.ci-cd.test";     }
+      { name = "Deploy";    run = config.gh-actions.ci-cd.deploy";   }
     ];
   };
 }
@@ -193,13 +217,20 @@ in
 Now we only need to import it on our project and set 'pre-build', 'build', 'test' and 'deploy' configs
 
 ```nix
+# any other module file, maybe project.nix
 {
-  gh-actions.ci-cd.enable = true;
-  gh-actions.ci-cd.deploy = "echo 'habemus lux'";
+  imports = [ ./gh-actions.nix ];
+  gh-actions.ci-cd.pre-build = "echo 'paranaue'";
+  gh-actions.ci-cd.build     = "echo 'paranaue parana'";
+  gh-actions.ci-cd.build     = "echo 'paranaue'";
+  gh-actions.ci-cd.deploy    = ''
+    echo "paranaue 
+            parana"
+  '';
 }
 ```
 
-If we try to set something that is not a string to it, one error will raise, typecheking it.
+If we try to set something that is not a string to it, an error will raise, typecheking it.
 
 There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-option-types) that can be used (some of them):
 - lib.types.bool 
@@ -218,3 +249,8 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 - lib.types.listOf (typed array)
 - lib.types.attrsOf (typed hash map)
 - lib.types.uniq (typed set)
+
+And lib has some modules [helpers functions](https://teu5us.github.io/nix-lib.html#lib.modules.mkif) like:
+- lib.mkIf          : to only set a property if some informaiton is true
+- lib.optionals     : to return an array or an empty array
+- lib.optionalString: to return an array or an empty string
