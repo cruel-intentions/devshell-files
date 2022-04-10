@@ -12,14 +12,14 @@ These functions has at least these params:
 - And may receive other named params (use `...` to ignore them)
 
 ```nix
-{ config, pkgs, lib, ... }:  # parms
-{ imports = []; config = {}; options = {}; }
+{ config, pkgs, lib, ... }:                   # function parms
+{ imports = []; config = {}; options = {}; }  # function result/module info
 ```
 
-#### As object:
+#### As attrset, aka. object (JS), dict (Python):
 
 ```nix
-{ imports = []; config = {}; options = {}; }
+{ imports = []; config = {}; options = {}; }  # result/module info
 ```
 
 All those attributes are optional
