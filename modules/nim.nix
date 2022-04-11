@@ -1,26 +1,28 @@
 {pkgs, config, lib, ...}:
 let
   # Create a Nim binary
-  nimFlags    = "--threads:on --gc:orc -d:release --opt:speed --hints:off -w:off -d:ssl";
+  nimFlags    = "--threads:on --mm:orc -d:release --opt:speed --hints:off -w:off -d:ssl --parallelBuild:1";
   writeNimBin = name: code:
     pkgs.runCommandCC name
     {
       inherit name code;
-      executable = true;
-      buildInputs = [pkgs.nim pkgs.openssl.dev];
-      propagatedBuildInputs = [pkgs.openssl pkgs.pcre pkgs.nim];
-      passAsFile = ["code"];
-      # Pointless to do this on a remote machine.
-      preferLocalBuild = true;
       allowSubstitutes = false;
+      laziness         = builtins.readFile ./nim/laziness.nim;
+      executable       = true;
+      buildInputs      = [pkgs.nim pkgs.openssl.dev];
+      passAsFile       = ["code" "laziness"];
+      preferLocalBuild = true;
+      propagatedBuildInputs = [pkgs.openssl pkgs.pcre pkgs.nim];
+      # Pointless to do this on a remote machine.
     }
     ''
-    n=$out/bin/$name
+      n=$out/bin/$name
       mkdir -p "$(dirname "$n")"
-    mv "$codePath" code.nim
-    nim c \
-      ${nimFlags} \
-      --nimcache:./cache -o:"$n" code.nim
+      mv "$codePath"     $name.nim
+      mv "$lazinessPath" laziness.nim
+      nim c \
+        ${nimFlags} \
+        --nimcache:./cache -o:"$n" $name.nim
     '';
   nimCfg    = config.files.nim;
   nimCmds   = map nimToCmd (builtins.attrNames nimCfg);
@@ -28,7 +30,7 @@ let
     inherit name;
     help    = builtins.head (lib.splitString "\n" nimCfg.${name});
     package = writeNimBin name ''
-      ${builtins.readFile ./nim/laziness.nim}
+      include laziness
       ${nimCfg.${name}}
     '';
   };
@@ -69,7 +71,9 @@ in {
 
       Vars:
       - PRJ_ROOT : devshell PRJ_ROOT env information
-      - ARGS     : seq[string] command arguments
+      - ARGS     : Arguments command arguments
+      - NO_ARGS  : empty arguments
+      - PWD      : DirPath(".")
 
       Procs:
       - arg  : get arg n, defaul="", ie. `1.arg`
@@ -82,6 +86,12 @@ in {
         - [] : get JsonNode in pat  of object, `myObj[myPath]`
         - set: set JsonNode in path of object, `myPath.set(myObj, myVal)`
         - []=: set JsonNode in path of object, `myObj[myPath] = myVal`
+
+      [Using](https://blog.johnnovak.net/2020/12/21/nim-apocrypha-vol.-i/#6-nbsp-using-keyword:
+      - sep : string
+      - dir : string
+      - path: JsonPath
+      - obj : JsonNode
 
       Imports:
       - Import almost all std libraries

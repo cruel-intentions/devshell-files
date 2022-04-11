@@ -1,3 +1,5 @@
+{.experimental: "notnil".}
+
 import std/[
   algorithm,
   asyncdispatch,
@@ -64,48 +66,85 @@ proc env(name: JsonNode; default: string = ""): string =
 proc env(name: JsonNode; default: JsonNode): string =
   getEnv name.getStr($name), default.getStr($default)
 
+type Arguments = distinct seq[string]
+
+proc args(args: seq[string]): Arguments =
+  cast[Arguments](args)
+
 let 
-  ARGS     = commandLineParams().mapIt it.quoteShell
+  ARGS     = args commandLineParams()
+  NO_ARGS  = args @[]
   PRJ_ROOT = env "PRJ_ROOT"
 
-proc cd(dir: string): void =
-  setCurrentDir dir
+type DirPath = distinct string
 
-proc cmd(cmdName: string; arguments: seq[string] = @[]; dir: string = "."): int =
-  execShellCmd fmt"""cd {dir}; {cmdName} {arguments.join " "} """
+proc dirPath(dir: string): DirPath =
+  DirPath dir
 
-proc cmd(cmdName: string; dir: string = "."): int =
-  execShellCmd fmt"""cd {dir}; {cmdName}"""
+let
+  PWD = dirPath $CurDir
 
+using dir: DirPath
+
+proc `$`(dir): string =
+  cast[string](dir).expandFilename
+
+proc cd(dir): void =
+  setCurrentDir $dir
+
+using args: Arguments
+
+proc `$`(args): string =
+  cast[seq[string]](args).mapIt(it.quoteShell).join(" ")
+
+proc `[]`(args; slice: HSlice): Arguments =
+  cast[Arguments](cast[seq[string]](args)[slice])
+
+proc cmd(cmdName: string; args = NO_ARGS; dir = PWD): int {.discardable.} =
+  execCmdEx(
+    cmdName,
+    input      = $args,
+    options    = {poUsePath, poParentStreams},
+    workingDir = $dir
+  )[1]
+
+proc exec(cmdName: string; args = NO_ARGS; dir = PWD): bool {.discardable.} =
+  quit cmd(cmdName, args, dir)
 
 ## JSON HELPERS
 type JsonPath = distinct seq[string]
 
-proc jPath(path: string; sep: char = '/'): JsonPath =
+using sep: char
+
+proc jPath(path: string; sep = '/'): JsonPath =
   JsonPath path.split(sep)
 
-proc `$`(path: JsonPath; sep: char = '/'): string =
+using path: JsonPath
+
+proc `$`(path; sep = '/'): string =
   cast[seq[string]](path).join($sep)
 
-proc `&`(path: JsonPath; complement: JsonPath): JsonPath {.borrow.}
+proc `&`(path; complement: JsonPath): JsonPath {.borrow.}
 
-proc `/`(path: JsonPath; complement: JsonPath): JsonPath =
+proc `/`(path; complement: JsonPath): JsonPath =
   path & complement
 
-proc `/`(path: JsonPath; complement: string; sep: char = '/'): JsonPath =
+proc `/`(path; complement: string; sep = '/'): JsonPath =
   path / complement.jPath(sep)
 
-proc get(path: JsonPath; obj: JsonNode; default: JsonNode = newJNull()): JsonNode =
+using obj: JsonNode
+
+proc get(path; obj; default: JsonNode = newJNull()): JsonNode =
   result = obj
   for trace in cast[seq[string]](path):
     result = result.getOrDefault trace
   if result.isNil:
     result = default
 
-proc `[]`(obj: JsonNode; path: JsonPath): JsonNode =
+proc `[]`(obj; path): JsonNode =
   path.get obj
 
-proc set(path: JsonPath; obj: JsonNode; val: JsonNode): void =
+proc set(path; obj: JsonNode; val: JsonNode): void =
   var 
     lastObj   = obj
     traces    = cast[seq[string]](path)
@@ -121,20 +160,20 @@ proc set(path: JsonPath; obj: JsonNode; val: JsonNode): void =
     lastObj[trace] = nextObj
     lastObj = nextObj
 
-proc `[]=`(obj: JsonNode; path: JsonPath; val: JsonNode): void =
+proc `[]=`(obj; path; val: JsonNode): void =
   path.set obj, val
 
-proc `[]=`(obj: JsonNode; path: JsonPath; val: string): void =
+proc `[]=`(obj; path; val: string): void =
   path.set obj, %* val
 
-proc `[]=`(obj: JsonNode; path: JsonPath; val: enum): void =
+proc `[]=`(obj; path; val: enum): void =
   path.set obj, %* val
 
-proc `[]=`(obj: JsonNode; path: JsonPath; val: SomeInteger): void =
+proc `[]=`(obj; path; val: SomeInteger): void =
   path.set obj, %* val
 
-proc `[]=`(obj: JsonNode; path: JsonPath; val: SomeFloat): void =
+proc `[]=`(obj; path; val: SomeFloat): void =
   path.set obj, %* val
 
-proc `[]=`(obj: JsonNode; path: JsonPath; val: bool): void =
+proc `[]=`(obj; path; val: bool): void =
   path.set obj, %* val

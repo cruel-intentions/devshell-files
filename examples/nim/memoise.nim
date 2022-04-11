@@ -1,11 +1,10 @@
 # memoise command execution: memoise {time} {cmd} ...{args}
 
 let
-  params  = ARGS[1 .. ^1].join " "
-  key     = $params.secureHash
+  params  = ARGS[1 .. ^1]
+  key     = $ secureHash $params
   tmpDir  = getTempDir() / "memoize"
   tmpFile = tmpDir / fmt"{key}.json"
-
 
 if not dirExists tmpDir:
   createDir tmpDir
@@ -18,7 +17,7 @@ let cache = parseJson readFile tmpFile
 if cache["ttl"].getInt < now().toTime.toUnix:
   let 
     (output,
-    exitCode) = execCmdEx params
+    exitCode) = execCmdEx $params
     interval  = parseInt arg 1
     expiresAt = now() + interval.seconds
   cache["code"] = %* exitCode
