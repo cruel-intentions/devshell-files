@@ -20,7 +20,7 @@ let
         exec ${name}-log
       else
         exec 2>&1
-        exec s6-log -b n4 s100000 $PRJ_DATA_DIR/log/${name}/
+        exec s6-log -b n4 s100000 $PRJ_SRVS_LOG/${name}/
       fi
     '';
   };
@@ -38,11 +38,11 @@ let
   };
   rmS6Srv  = name: {
     name  = "00-rm-service-${name}-file";
-    value.text = "rm -rf $PRJ_DATA_DIR/services/${name}";
+    value.text = "rm -rf $PRJ_SRVS_DIR/${name}";
   };
   mkLogDir = name: {
     name  = "00-add-service-${name}-log-dir";
-    value.text = "mkdir -p $PRJ_DATA_DIR/log/${name}";
+    value.text = "mkdir -p $PRJ_SRVS_LOG/${name}";
   };
   mkS6Runs = names: builtins.listToAttrs (map mkS6Run  names);
   mkS6Logs = names: builtins.listToAttrs (map mkS6Log  names);
@@ -53,18 +53,27 @@ let
   liveSrvs = builtins.attrNames (filtSrvs true  config.files.services);
   deadSrvs = builtins.attrNames (filtSrvs false config.files.services);
   initSrvs = ''
-    s6-svscan       $PRJ_DATA_DIR/services &> \
-      $PRJ_ROOT/.data/services/scan-errors.log &
+    s6-svscan       $PRJ_SRVS_DIR &> \
+      $PRJ_SRVS_LOG/scan-errors.log &
   '';
   scanSrvs = ''
-    s6-svscanctl -h $PRJ_DATA_DIR/services &> \
-      $PRJ_ROOT/.data/services/sctl-errors.log
+    s6-svscanctl -h $PRJ_SRVS_DIR &> \
+      $PRJ_SRVS_LOG/sctl-errors.log
   '';
   stopSrvs = ''
-    s6-svscanctl -t $PRJ_DATA_DIR/services
+    s6-svscanctl -t $PRJ_SRVS_DIR
   '';
   stUpSrvs = lib.optionalAttrs haveSrvs { 
-    "zzzzzz-ssssss-start".text = "scanSrvs" + lib.optionalString autoSrvs "|| initSrvs &";
+    "zzzzzz-ssssss-start".text = ''
+      # set down all services
+      find $PRJ_SRVS_DIR -maxdepth 1 -mindepth 1 -type d -exec touch {}/down \; \
+        &>/dev/null || true
+      # set up enabled services
+      rm $PRJ_SRVS_DIR/{.s6-svscan,${builtins.concatStringsSep "," liveSrvs}}/down \
+        &>/dev/null || true
+      # rescan services
+      scanSrvs ${lib.optionalString autoSrvs "|| initSrvs &"}
+    '';
   };
   haveSrvs = builtins.length liveSrvs > 0;
   autoSrvs = haveSrvs && config.files.services.initSrvs or false;
@@ -83,7 +92,7 @@ in
 
       Optionally could exist a {name}-log    command to log  it properly.
 
-      Default log informations goes to $PRJ_DATA_DIR/log/{name}/current .
+      Default log informations goes to $PRJ_SRVS_LOG/{name}/current .
 
       `initSrvs` is a special name to auto start the process supervisor 
       [s6](http://skarnet.org/software/s6/), it control all other services.
@@ -92,32 +101,15 @@ in
  
       S6 wont stop by itself, we should run `stopSrvs` when it's done.
 
+      It defines two env vars:
+      - PRJ_SRVS_DIR: $PRJ_DATA_DIR/services
+      - PRJ_SRVS_LOG: $PRJ_DATA_DIR/log
+
       See [S6 documentation](http://skarnet.org/software/s6/s6-supervise.html).
 
       We can use config.files.alias to help create your services scripts.
 
       examples:
-
-      Create your own service with bash
-
-      ```nix
-      {
-        # Make all services start when you enter in shell
-        files.services.initSrvs    = true;
-
-        # Use hello configured below as service
-        files.services.hello = true;
-
-        # Creates an hello command in terminal
-        files.alias.hello    = ${"''"}
-          while :
-          do
-            echo "Hello World!"
-          	sleep 60
-          done
-        ${"''"};
-      }
-       ```
 
       Use some program as service
 
@@ -127,11 +119,30 @@ in
       ${builtins.readFile ../examples/services.nix}
       ```
 
-      Know bugs:
+      Create your own service with bash
 
-      - Turning off service by removing its entry may not work
-        - please set it to false at least once
-        - or remove all .data/services directory
+      ```nix
+      {
+        # Make all services start when you enter in shell
+        files.services.initSrvs = true;
+
+        # Use hello configured below as service
+        files.services.hello    = true;
+
+        # Creates an hello command in terminal
+        files.alias.hello       = ${"''"}
+          while :
+          do
+            echo "Hello World!"
+          	sleep 60
+          done
+        ${"''"};
+      }
+       ```
+
+
+      Know bugs:
+      - Integration with direnv isn't, ok when configured to auto start
     '';
   };
   config.files.alias.stopSrvs = lib.mkIf haveSrvs stopSrvs;
@@ -140,4 +151,8 @@ in
   config.devshell.packages    = lib.mkIf haveSrvs [ pkgs.s6 ];
   config.devshell.startup     = stUpSrvs // (rmS6Srvs deadSrvs) // (mkS6Dirs liveSrvs);
   config.file = (mkS6Runs liveSrvs) // (mkS6Logs liveSrvs) // (mkS6Ends liveSrvs);
+  config.env = lib.optionals haveSrvs [
+    { name = "PRJ_SRVS_DIR"; eval = "$PRJ_DATA_DIR/services"; }
+    { name = "PRJ_SRVS_LOG"; eval = "$PRJ_DATA_DIR/log"; }
+  ];
 }

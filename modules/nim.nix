@@ -79,7 +79,7 @@ in {
       - arg  : get arg n, defaul="", ie. `1.arg`
       - env  : get env name, default="", ie. `"PRJ_ROOT".env`
       - cd   : set current dir
-      - cmd  : execute {cmd}, arguments=@[], dir="."
+      - exec : execute {cmd}, arguments=@[], dir="."
       - jpath: creates a JsonPath (*isn't JsonPath compliant)
         - /  : concat two paths
         - get: get JsonNode in path of object, `myPath.get(myObj)`
