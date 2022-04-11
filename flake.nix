@@ -9,8 +9,8 @@
   outputs = { self, flake-utils, devshell, nixpkgs }@inputs:
   let
     modules = [
-      ./modules/inputs.nix
       ./modules/files.nix
+      ./modules/inputs.nix
       ./modules/cmds.nix
       ./modules/alias.nix
       ./modules/json.nix
@@ -34,7 +34,7 @@
         imports = modules 
         ++ [{ 
             files.inputs.flake-utils = "${flake-utils}";
-            files.inputs.devshell = "${devshell}";
+            files.inputs.devshell    = "${devshell}";
           }]
           ++ imports;
       };

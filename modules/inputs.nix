@@ -6,6 +6,6 @@ in {
     default     = {};
     description = "Attrset with all devshell-files inputs";
     example     = { nixpkgs = {}; };
-    type        = lib.types.attrsOf lib.types.anything;
+    type        = lib.types.attrsOf lib.types.path;
   };
 }
