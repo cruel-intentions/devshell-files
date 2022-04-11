@@ -103,7 +103,7 @@ Creating JSON, TEXT, TOML or YAML files
   files.json."/generated/hello.json".hello = "world";
   files.toml."/generated/hello.toml".hello = "world";
   files.yaml."/generated/hello.yaml".hello = "world";
-  files.hcl."/generated/hello.hcl".hello = "world";
+  files.hcl."/generated/hello.hcl".hello   = "world";
   files.text."/generated/hello.txt" = "world";
 }
 
@@ -175,6 +175,10 @@ This project is configured by module [project.nix](./project.nix)
   files.alias.feat = ''convco commit --feat $@'';
   files.alias.fix  = ''convco commit --fix  $@'';
   files.alias.docs = ''convco commit --docs $@'';
+  files.alias.alou = ''
+    #!/usr/bin/env python
+    print("Alo!") # is hello in portuguese
+  '';
 }
 
 ```

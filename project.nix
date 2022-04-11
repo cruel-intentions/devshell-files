@@ -19,4 +19,8 @@
   files.alias.feat = ''convco commit --feat $@'';
   files.alias.fix  = ''convco commit --fix  $@'';
   files.alias.docs = ''convco commit --docs $@'';
+  files.alias.alou = ''
+    #!/usr/bin/env python
+    print("Alo!") # is hello in portuguese
+  '';
 }
