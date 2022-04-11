@@ -5,12 +5,11 @@
 
   inputs.devshell.url    = "github:numtide/devshell";
   inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nmd.url         = "gitlab:rycee/nmd";
-  inputs.nmd.flake       = false;
 
-  outputs = { self, flake-utils, devshell, nixpkgs, nmd }:
+  outputs = { self, flake-utils, devshell, nixpkgs }@inputs:
   let
     modules = [
+      ./modules/inputs.nix
       ./modules/files.nix
       ./modules/cmds.nix
       ./modules/alias.nix
@@ -33,7 +32,11 @@
     pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
     mkShell  = imports: flake-utils.lib.eachDefaultSystem (system: {
       devShellModules = { inherit imports; };
-      devShell        = (pkgs system).devshell.mkShell { imports = modules ++ imports; };
+      devShell        = (pkgs system).devshell.mkShell {
+        imports = modules 
+          ++ [{ files = { inherit inputs; }; }]
+          ++ imports;
+      };
     });
   in output {
     defaultTemplate.path        = ./template;

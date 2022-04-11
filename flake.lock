@@ -76,28 +76,11 @@
         "type": "indirect"
       }
     },
-    "nmd": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1648078774,
-        "narHash": "sha256-rWaMxlODw2uji55ANn+t0/20elreUGvvY9FaRNbBJMo=",
-        "owner": "rycee",
-        "repo": "nmd",
-        "rev": "de522bdd533350b3afb41e1ce9b3afb72922fba2",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "rycee",
-        "repo": "nmd",
-        "type": "gitlab"
-      }
-    },
     "root": {
       "inputs": {
         "devshell": "devshell",
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_2",
-        "nmd": "nmd"
+        "nixpkgs": "nixpkgs_2"
       }
     }
   },
