@@ -33,8 +33,8 @@
       devShell        = (pkgs system).devshell.mkShell {
         imports = modules 
         ++ [{ 
-            files.inputs.flake-utils = "${flake-utils}";
-            files.inputs.devshell    = "${devshell}";
+            files.deps.flake-utils = "${flake-utils}";
+            files.deps.devshell    = "${devshell}";
           }]
           ++ imports;
       };
