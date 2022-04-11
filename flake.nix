@@ -6,11 +6,10 @@
   inputs.devshell.url    = "github:numtide/devshell";
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
-  outputs = { self, flake-utils, devshell, nixpkgs }@inputs:
+  outputs = { self, flake-utils, devshell, nixpkgs }:
   let
     modules = [
       ./modules/files.nix
-      ./modules/inputs.nix
       ./modules/cmds.nix
       ./modules/alias.nix
       ./modules/json.nix
@@ -27,19 +26,13 @@
       ./modules/services.nix
       ./modules/nim.nix
     ];
-    pkgs     = system:  nixpkgs.legacyPackages.${system}.extend devshell.overlay;
+    output   = other: (mkShell [ ./project.nix ]) // other;
+    overlays = [ devshell.overlay ];
+    pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
     mkShell  = imports: flake-utils.lib.eachDefaultSystem (system: {
       devShellModules = { inherit imports; };
-      devShell        = (pkgs system).devshell.mkShell {
-        imports = modules 
-        ++ [{ 
-            files.deps.flake-utils = "${flake-utils}";
-            files.deps.devshell    = "${devshell}";
-          }]
-          ++ imports;
-      };
+      devShell        = (pkgs system).devshell.mkShell { imports = modules ++ imports; };
     });
-    output   = other:   (mkShell [ ./project.nix ]) // other;
   in output {
     defaultTemplate.path        = ./template;
     defaultTemplate.description = ''
