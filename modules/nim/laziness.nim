@@ -104,19 +104,8 @@ proc `$`(args): string =
 proc `[]`(args; slice: HSlice): Arguments =
   cast[Arguments](cast[seq[string]](args)[slice])
 
-proc cmd(cmdName: string; args; dir = PWD): int {.discardable.} =
-  execCmdEx(
-    cmdName,
-    input      = $args,
-    options    = {poUsePath, poParentStreams},
-    workingDir = $dir
-  )[1]
-
-proc cmd(cmdName: string; dir): int {.discardable.} =
-  cmd(cmdName, NO_ARGS, dir=dir)
-
 proc exec(cmdName: string; args; dir = PWD): bool {.discardable.} =
-  quit cmd(cmdName, args, dir)
+  quit execShellCmd(fmt"cd {dir}; exec {cmdName} {args}")
 
 proc exec(cmdName: string; dir): bool {.discardable.} =
   exec(cmdName, NO_ARGS, dir)
