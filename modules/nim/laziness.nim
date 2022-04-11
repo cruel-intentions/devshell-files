@@ -74,7 +74,6 @@ proc args(args: seq[string]): Arguments =
 let 
   ARGS     = args commandLineParams()
   NO_ARGS  = args @[]
-  PRJ_ROOT = env "PRJ_ROOT"
 
 type DirPath = distinct string
 
@@ -83,11 +82,16 @@ proc dirPath(dir: string): DirPath =
 
 let
   PWD = dirPath $CurDir
+  PRJ_ROOT = dirPath env "PRJ_ROOT"
 
 using dir: DirPath
 
 proc `$`(dir): string =
   cast[string](dir).expandFilename
+
+proc `/`(dir; other: string): DirPath {.borrow.}
+
+proc `/`(dir; other: DirPath): DirPath {.borrow.}
 
 proc cd(dir): void =
   setCurrentDir $dir
