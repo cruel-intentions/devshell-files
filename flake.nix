@@ -27,17 +27,19 @@
       ./modules/services.nix
       ./modules/nim.nix
     ];
-    output   = other: (mkShell [ ./project.nix ]) // other;
-    overlays = [ devshell.overlay ];
-    pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
+    pkgs     = system:  nixpkgs.legacyPackages.${system}.extend devshell.overlay;
     mkShell  = imports: flake-utils.lib.eachDefaultSystem (system: {
       devShellModules = { inherit imports; };
       devShell        = (pkgs system).devshell.mkShell {
         imports = modules 
-          ++ [{ files = { inherit inputs; }; }]
+        ++ [{ 
+            files.inputs.flake-utils = "${flake-utils}";
+            files.inputs.devshell = "${devshell}";
+          }]
           ++ imports;
       };
     });
+    output   = other:   (mkShell [ ./project.nix ]) // other;
   in output {
     defaultTemplate.path        = ./template;
     defaultTemplate.description = ''
