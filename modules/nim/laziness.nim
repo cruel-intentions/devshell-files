@@ -100,7 +100,7 @@ proc `$`(args): string =
 proc `[]`(args; slice: HSlice): Arguments =
   cast[Arguments](cast[seq[string]](args)[slice])
 
-proc cmd(cmdName: string; args = NO_ARGS; dir = PWD): int {.discardable.} =
+proc cmd(cmdName: string; args; dir = PWD): int {.discardable.} =
   execCmdEx(
     cmdName,
     input      = $args,
@@ -108,8 +108,14 @@ proc cmd(cmdName: string; args = NO_ARGS; dir = PWD): int {.discardable.} =
     workingDir = $dir
   )[1]
 
-proc exec(cmdName: string; args = NO_ARGS; dir = PWD): bool {.discardable.} =
+proc cmd(cmdName: string; dir): int {.discardable.} =
+  cmd(cmdName, NO_ARGS, dir=dir)
+
+proc exec(cmdName: string; args; dir = PWD): bool {.discardable.} =
   quit cmd(cmdName, args, dir)
+
+proc exec(cmdName: string; dir): bool {.discardable.} =
+  exec(cmdName, NO_ARGS, dir)
 
 ## JSON HELPERS
 type JsonPath = distinct seq[string]
