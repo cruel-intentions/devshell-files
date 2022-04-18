@@ -580,7 +580,7 @@ To documento our modules is simple, we just need to use `config.files.docs` as f
   files.docs."/gh-pages/src/modules/json.md".modules      = [ ../modules/json.nix        ];
   files.docs."/gh-pages/src/modules/mdbook.md".modules    = [ ../modules/mdbook.nix      ];
   files.docs."/gh-pages/src/modules/nim.md".modules       = [ ../modules/nim.nix         ];
-  files.docs."/gh-pages/src/modules/rc.md".modules        = [ ../modules/services/rc.nix ];
+  files.docs."/gh-pages/src/modules/rc.md".modules        = [ ../modules/services/rc-devshell.nix ];
   files.docs."/gh-pages/src/modules/services.md".modules  = [ ../modules/services.nix    ];
   files.docs."/gh-pages/src/modules/spdx.md".modules      = [ ../modules/spdx.nix        ];
   files.docs."/gh-pages/src/modules/text.md".modules      = [ ../modules/text.nix        ];

@@ -22,21 +22,29 @@ proc initCluster(line: string): Cluster =
     status: lineCols[^1]
   )
 
-proc initClusters(): Clusters = initHashSet[Cluster]()
+proc initClusters(): Clusters =
+  initHashSet[Cluster]()
 
 proc notify(clusters): void =
-  if clusters.len == 0: return
-  let msgs = clusters.mapIt(it.name & " " & it.status).join "\n"
-  discard execCmdEx fmt"""notify-desktop --icon=network-server '{msgs}'"""
+  let 
+    msgs = clusters.mapIt it.name & " " & it.status
+    msg  = msgs.join "\n"
+
+  if msg.len > 0:
+    discard execCmdEx fmt"""notify-desktop --icon=network-server '{msgs}'"""
 
 proc fetchClusters(): Clusters =
-  let (o, c) = execCmdEx fmt"databricks clusters list"
-  o.strip(chars={'\n'}).split('\n').mapIt(it.initCluster).toHashSet
+  let 
+    (o, c)   = execCmdEx fmt"databricks clusters list"
+    lines    = o.strip(chars={'\n'}).split('\n')
+    clusters = lines.mapIt it.initCluster
+  clusters.toHashSet
 
 var 
   clustersThen = initClusters()
   clustersNow  = initClusters()
-  interval     = initDuration(minutes = parseInt arg(1, "3"))
+  interval     = initDuration(
+    minutes = parseInt arg(1, "3"))
 
 while true:
   clustersNow  = fetchClusters()

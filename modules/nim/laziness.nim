@@ -82,6 +82,10 @@ proc dirPath(dir: string): DirPath =
 
 let
   PWD = dirPath $CurDir
+
+include envs
+
+let
   PRJ_ROOT = dirPath env "PRJ_ROOT"
 
 using dir: DirPath

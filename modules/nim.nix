@@ -1,31 +1,43 @@
 {pkgs, config, lib, ...}:
 let
   # Create a Nim binary
-  nimFlags    = "--threads:on --mm:orc -d:release --hints:off -w:off -d:ssl --parallelBuild:4 --cc:tcc --tlsEmulation:on";
+  nimFlags    = "-w:off -d:ssl --threads:on --mm:orc --hints:off --parallelBuild:4 --cc:tcc --tlsEmulation:on";
+  devShellEnv = pkgs.writeTextFile {
+    name = "devShellEnvs.nim";
+    text = builtins.concatStringsSep "\n" (
+      map ({ name, ...}: ''let ${name} = env "${name}"'') config.env
+    );
+  };
   writeNimBin = name: code:
     pkgs.runCommandCC name
     {
       inherit name code;
-      allowSubstitutes = false;
       laziness         = builtins.readFile ./nim/laziness.nim;
-      executable       = true;
-      buildInputs      = [pkgs.nim pkgs.openssl.dev pkgs.tinycc];
       passAsFile       = ["code" "laziness"];
-      preferLocalBuild = true;
-      propagatedBuildInputs = [pkgs.openssl pkgs.pcre pkgs.nim];
-      # Pointless to do this on a remote machine.
+      propagatedBuildInputs = [pkgs.openssl pkgs.pcre pkgs.nim pkgs.tinycc];
     }
     ''
-      mkdir -p $out/src
+      mkdir -p $out/nim/src/devshell
       mkdir -p $out/bin
-      mv "$codePath"     "$name".nim
-      mv "$lazinessPath" "laziness.nim"
-      cp "$name.nim"     "$out/src/$name.nim"
-      cp "laziness.nim"  "$out/src/laziness.nim"
-      nim c \
-        ${nimFlags} \
-        --nimcache:./cache \
-        -o:"$out/bin/$name" "$name.nim"
+      cp "$codePath"     "$out/nim/src/$name.nim"
+      cp "$lazinessPath" "$out/nim/src/devshell/laziness.nim"
+      cp ${devShellEnv}  "$out/nim/src/devshell/envs.nim"
+      TMP_BIN=/tmp/nim-$(basename $out)
+      echo '
+      #!${pkgs.bash}/bin/bash -e
+      if [ ! -f "'$TMP_BIN'" ];
+      then
+        nim c \
+          ${nimFlags} \
+          --out:"'$TMP_BIN'" \
+          '$out/nim/src/$name.nim'
+      fi
+
+      exec \
+        "'$TMP_BIN'" \
+        "$@"
+      ' > $out/bin/$name
+      chmod +x $out/bin/$name
     '';
   nimCfg    = config.files.nim;
   nimCmds   = map nimToCmd (builtins.attrNames nimCfg);
@@ -37,7 +49,8 @@ let
       lines   = name: lib.splitString "\n" nimCfg.${name};
     in with builtins; stripCo (head (filter isntSH (lines name)));
     package = writeNimBin name ''
-      include laziness
+      #!/usr/bin/env -S nim r ${nimFlags}
+      include devshell/laziness
       ${nimCfg.${name}}
     '';
   };
@@ -49,7 +62,7 @@ let
   hasAnyNim = builtins.length nimCmds > 0;
   packages  = 
     if hasAnyNim
-    then map lib.getLib [ pkgs.pcre pkgs.openssl ]
+    then map lib.getLib [ pkgs.pcre pkgs.openssl pkgs.nim pkgs.tinycc]
     else [];
   libEnv    = 
     if hasAnyNim 
