@@ -8,7 +8,7 @@ let
     value.executable = true;
     value.text       = ''
       ${shBang}
-      ifthenelse { sh -c "command -v ${name}" } 
+      ifthenelse { sh -c "command -v ${name} > /dev/null" } 
       {
         ${errToOut}
         ${name}
@@ -23,7 +23,7 @@ let
     value.executable = true;
     value.text       = ''
       ${shBang}
-      ifthenelse { sh -c "command -v ${name}-log" } 
+      ifthenelse { sh -c "command -v ${name}-log > /dev/null" } 
       {
         ${errToOut}
         ${name}-log
@@ -40,7 +40,7 @@ let
     value.executable = true;
     value.text       = ''
       ${shBang}
-      ifthenelse { sh -c "command -v ${name}-finish" } 
+      ifthenelse { sh -c "command -v ${name}-finish > /dev/null" } 
       {
         ${errToOut}
         ${name}-finish
