@@ -23,8 +23,7 @@ let
       cp "$lazinessPath" "$out/nim/src/devshell/laziness.nim"
       cp ${devShellEnv}  "$out/nim/src/devshell/envs.nim"
       TMP_BIN=/tmp/nim-$(basename $out)
-      echo '
-      #!${pkgs.bash}/bin/bash -e
+      echo '#!${pkgs.bash}/bin/bash -e
       if [ ! -f "'$TMP_BIN'" ];
       then
         nim c \
