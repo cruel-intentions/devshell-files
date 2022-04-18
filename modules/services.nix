@@ -2,7 +2,7 @@
 let
   # https://skarnet.org/software/execline/index.html
   shBang   = "#!${pkgs.execline}/bin/execlineb -S0";
-  errToOut = "fdmove -c 2 1 # stderr to stdout";
+  errToOut = "fdmove -c 2 1";
   mkS6Run  = name: {
     name  = "/.data/services/${name}/run";
     value.executable = true;
@@ -17,7 +17,7 @@ let
     value.executable = true;
     value.text       = ''
       ${shBang}
-      tryexec -n #try {name}-log or s6-log if name-log fails
+      tryexec -n
         { 
           importas LOG_DIR PRJ_SRCS_LOG
           s6-log -b n4 s100000 ''${LOG_DIR}/${name}/
@@ -30,7 +30,7 @@ let
     value.executable = true;
     value.text       = ''
       ${shBang}
-      tryexec #try ${name}-finish or echo finished
+      tryexec
         {
           ${errToOut}
           echo ${name} finished
