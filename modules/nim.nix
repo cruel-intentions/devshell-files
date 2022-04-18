@@ -8,7 +8,7 @@ let
       map ({ name, ...}: ''let ${name} = env "${name}"'') config.env
     );
   };
-  writeNimBin = name: code:
+  writeNimWrapper = name: code:
     pkgs.runCommandCC name
     {
       inherit name code;
@@ -48,7 +48,7 @@ let
       stripCo = line: builtins.replaceStrings ["# " "#"] ["" ""] line;
       lines   = name: lib.splitString "\n" nimCfg.${name};
     in with builtins; stripCo (head (filter isntSH (lines name)));
-    package = writeNimBin name ''
+    package = writeNimWrapper name ''
       #!/usr/bin/env -S nim r ${nimFlags}
       include devshell/laziness
       ${nimCfg.${name}}
