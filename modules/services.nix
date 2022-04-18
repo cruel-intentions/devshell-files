@@ -22,7 +22,8 @@ let
           importas LOG_DIR PRJ_SRCS_LOG
           s6-log -b n4 s100000 ''${LOG_DIR}/${name}/
         }
-        ${errToOut} ${name}-log
+        ${errToOut}
+        ${name}-log
     '';
   };
   mkS6Stop = name: {
@@ -31,12 +32,12 @@ let
     value.text       = ''
       ${shBang}
       tryexec
-        {
+        { 
           ${errToOut}
-          echo ${name} finished
+          ${name}-finish
         }
         ${errToOut}
-        ${name}-finish
+        echo ${name} finished
     '';
   };
   rmS6Svc  = name: {
