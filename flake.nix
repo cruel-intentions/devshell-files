@@ -24,6 +24,7 @@
       ./modules/mdbook.nix
       ./modules/direnv.nix
       ./modules/services.nix
+      ./modules/services/rc-devshell.nix
       ./modules/nim.nix
     ];
     output   = other: (mkShell [ ./project.nix ]) // other;

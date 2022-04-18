@@ -1,39 +1,42 @@
 {pkgs, config, lib, ...}:
 let
+  # https://skarnet.org/software/execline/index.html
+  shBang   = "#!${pkgs.execline}/bin/execlineb -S0";
+  errToOut = "fdmove -c 2 1 # stderr to stdout";
   mkS6Run  = name: {
     name  = "/.data/services/${name}/run";
     value.executable = true;
     value.text       = ''
-      #!/usr/bin/env sh
-      exec 2>&1
-      exec ${name}
+      ${shBang}
+      ${errToOut}
+      ${name}
     '';
   };
   mkS6Log  = name: {
     name  = "/.data/services/${name}/log/run";
     value.executable = true;
     value.text       = ''
-      #!/usr/bin/env sh
-      if command -v ${name}-log &> /dev/null
-      then
-        exec 2>&1
-        exec ${name}-log
-      else
-        exec 2>&1
-        exec s6-log -b n4 s100000 $PRJ_SRVS_LOG/${name}/
-      fi
+      ${shBang}
+      tryexec -n #try {name}-log or s6-log if name-log fails
+        { 
+          importas LOG_DIR PRJ_SRVS_LOG
+          s6-log -b n4 s100000 ''${LOG_DIR}/${name}/
+        }
+        ${errToOut} ${name}-log
     '';
   };
   mkS6Stop = name: {
     name  = "/.data/services/${name}/finish";
     value.executable = true;
     value.text       = ''
-      #!/usr/bin/env sh
-      if command -v ${name}-finish &> /dev/null
-      then
-        exec 2>&1
-        exec ${name}-finish
-      fi
+      ${shBang}
+      tryexec #try ${name}-finish or echo finished
+        {
+          ${errToOut}
+          echo ${name} finished
+        }
+        ${errToOut}
+        ${name}-finish
     '';
   };
   rmS6Srv  = name: {
@@ -53,18 +56,35 @@ let
   liveSrvs = builtins.attrNames (filtSrvs true  config.files.services);
   deadSrvs = builtins.attrNames (filtSrvs false config.files.services);
   initSrvs = ''
-    s6-svscan       $PRJ_SRVS_DIR &> \
-      $PRJ_SRVS_LOG/scan-errors.log &
+    ${shBang}
+    # init all services
+    background {
+      foreground { sleep 1 }
+      importas SRVS_DIR PRJ_SRVS_DIR
+      importas LOG_DIR  PRJ_SRVS_LOG
+      redirfd -w 1 ''${LOG_DIR}/scan.log
+      ${errToOut}
+      s6-svscan ''${SRVS_DIR}
+    }
   '';
   scanSrvs = ''
-    s6-svscanctl -h $PRJ_SRVS_DIR &> \
-      $PRJ_SRVS_LOG/sctl-errors.log
+    ${shBang}
+    # rescan all services
+    importas SRVS_DIR PRJ_SRVS_DIR
+    importas LOG_DIR  PRJ_SRVS_LOG
+    redirfd -w 1 ''${LOG_DIR}/sctl.log
+    ${errToOut}
+    s6-svscanctl -h ''${SRVS_DIR}
   '';
   stopSrvs = ''
-    s6-svscanctl -t $PRJ_SRVS_DIR
+    ${shBang}
+    # stop all services
+    importas SRVS_DIR PRJ_SRVS_DIR
+    ${errToOut}
+    s6-svscanctl -t ''${SRVS_DIR}
   '';
   stUpSrvs = lib.optionalAttrs haveSrvs { 
-    "zzzzzz-ssssss-start".text = ''
+    "zzzzzz-ssssss-services-start".text = ''
       # set down all services
       find $PRJ_SRVS_DIR -maxdepth 1 -mindepth 1 -type d -exec touch {}/down \; \
         &>/dev/null || true
@@ -72,7 +92,7 @@ let
       rm $PRJ_SRVS_DIR/{.s6-svscan,${builtins.concatStringsSep "," liveSrvs}}/down \
         &>/dev/null || true
       # rescan services
-      scanSrvs ${lib.optionalString autoSrvs "|| initSrvs &"}
+      scanSrvs ${lib.optionalString autoSrvs "|| initSrvs"}
     '';
   };
   haveSrvs = builtins.length liveSrvs > 0;
@@ -148,7 +168,7 @@ in
   config.files.alias.stopSrvs = lib.mkIf haveSrvs stopSrvs;
   config.files.alias.initSrvs = lib.mkIf haveSrvs initSrvs;
   config.files.alias.scanSrvs = lib.mkIf haveSrvs scanSrvs;
-  config.devshell.packages    = lib.mkIf haveSrvs [ pkgs.s6 ];
+  config.devshell.packages    = lib.mkIf haveSrvs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
   config.devshell.startup     = stUpSrvs // (rmS6Srvs deadSrvs) // (mkS6Dirs liveSrvs);
   config.file = (mkS6Runs liveSrvs) // (mkS6Logs liveSrvs) // (mkS6Ends liveSrvs);
   config.env = lib.optionals haveSrvs [
