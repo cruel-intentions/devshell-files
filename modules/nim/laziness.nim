@@ -71,6 +71,9 @@ type Arguments = distinct seq[string]
 proc args(args: seq[string]): Arguments =
   cast[Arguments](args)
 
+proc args(args: string): Arguments =
+  cast[Arguments](args.split " ")
+
 let 
   ARGS     = args commandLineParams()
   NO_ARGS  = args @[]
