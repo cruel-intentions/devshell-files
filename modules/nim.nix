@@ -1,7 +1,7 @@
 {pkgs, config, lib, ...}:
 let
   # Create a Nim binary
-  nimFlags    = "--threads:on --mm:orc -d:release --opt:speed --hints:off -w:off -d:ssl --parallelBuild:1";
+  nimFlags    = "--threads:on --mm:orc -d:release --hints:off -w:off -d:ssl --parallelBuild:4 --cc:tcc --tlsEmulation:on";
   writeNimBin = name: code:
     pkgs.runCommandCC name
     {
@@ -9,26 +9,33 @@ let
       allowSubstitutes = false;
       laziness         = builtins.readFile ./nim/laziness.nim;
       executable       = true;
-      buildInputs      = [pkgs.nim pkgs.openssl.dev];
+      buildInputs      = [pkgs.nim pkgs.openssl.dev pkgs.tinycc];
       passAsFile       = ["code" "laziness"];
       preferLocalBuild = true;
       propagatedBuildInputs = [pkgs.openssl pkgs.pcre pkgs.nim];
       # Pointless to do this on a remote machine.
     }
     ''
-      n=$out/bin/$name
-      mkdir -p "$(dirname "$n")"
-      mv "$codePath"     $name.nim
-      mv "$lazinessPath" laziness.nim
+      mkdir -p $out/src
+      mkdir -p $out/bin
+      mv "$codePath"     "$name".nim
+      mv "$lazinessPath" "laziness.nim"
+      cp "$name.nim"     "$out/src/$name.nim"
+      cp "laziness.nim"  "$out/src/laziness.nim"
       nim c \
         ${nimFlags} \
-        --nimcache:./cache -o:"$n" $name.nim
+        --nimcache:./cache \
+        -o:"$out/bin/$name" "$name.nim"
     '';
   nimCfg    = config.files.nim;
   nimCmds   = map nimToCmd (builtins.attrNames nimCfg);
   nimToCmd  = name: {
     inherit name;
-    help    = builtins.head (lib.splitString "\n" nimCfg.${name});
+    help    = let
+      isntSH  = line: builtins.match "#!/.+" line == null;
+      stripCo = line: builtins.replaceStrings ["# " "#"] ["" ""] line;
+      lines   = name: lib.splitString "\n" nimCfg.${name};
+    in with builtins; stripCo (head (filter isntSH (lines name)));
     package = writeNimBin name ''
       include laziness
       ${nimCfg.${name}}

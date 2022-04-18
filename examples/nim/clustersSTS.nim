@@ -36,7 +36,7 @@ proc fetchClusters(): Clusters =
 var 
   clustersThen = initClusters()
   clustersNow  = initClusters()
-  interval     = initDuration(minutes = parseInt arg(1, "5"))
+  interval     = initDuration(minutes = parseInt arg(1, "3"))
 
 while true:
   clustersNow  = fetchClusters()

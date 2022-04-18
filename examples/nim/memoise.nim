@@ -3,7 +3,7 @@
 let
   params  = ARGS[1 .. ^1]
   key     = $ secureHash $params
-  tmpDir  = getTempDir() / "memoize"
+  tmpDir  = getTempDir() / "memoise"
   tmpFile = tmpDir / fmt"{key}.json"
 
 if not dirExists tmpDir:

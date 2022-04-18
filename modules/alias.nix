@@ -1,9 +1,12 @@
 {pkgs, config, lib, ...}:
 let
   cfg = config.files.alias;
+  isntSH  = line: builtins.match "#!/.+" line == null;
+  stripCo = line: builtins.replaceStrings ["# " "#"] ["" ""] line;
+  lines   = name: lib.splitString "\n" cfg.${name};
   toAlias = name: {
     inherit name;
-    help    = builtins.head (lib.splitString "\n" cfg.${name});
+    help    = with builtins; stripCo (head (filter isntSH (lines name)));
     command = ''
       ${cfg.${name}}
     '';
