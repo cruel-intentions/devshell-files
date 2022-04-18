@@ -49,7 +49,6 @@ let
       lines   = name: lib.splitString "\n" nimCfg.${name};
     in with builtins; stripCo (head (filter isntSH (lines name)));
     package = writeNimWrapper name ''
-      #!/usr/bin/env -S nim r ${nimFlags}
       include devshell/laziness
       ${nimCfg.${name}}
     '';
