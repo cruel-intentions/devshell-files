@@ -19,7 +19,7 @@ let
       ${shBang}
       tryexec -n #try {name}-log or s6-log if name-log fails
         { 
-          importas LOG_DIR PRJ_SRVS_LOG
+          importas LOG_DIR PRJ_SRCS_LOG
           s6-log -b n4 s100000 ''${LOG_DIR}/${name}/
         }
         ${errToOut} ${name}-log
@@ -39,64 +39,64 @@ let
         ${name}-finish
     '';
   };
-  rmS6Srv  = name: {
+  rmS6Svc  = name: {
     name  = "00-rm-service-${name}-file";
-    value.text = "rm -rf $PRJ_SRVS_DIR/${name}";
+    value.text = "rm -rf $PRJ_SVCS_DIR/${name}";
   };
   mkLogDir = name: {
     name  = "00-add-service-${name}-log-dir";
-    value.text = "mkdir -p $PRJ_SRVS_LOG/${name}";
+    value.text = "mkdir -p $PRJ_SVCS_LOG/${name}";
   };
   mkS6Runs = names: builtins.listToAttrs (map mkS6Run  names);
   mkS6Logs = names: builtins.listToAttrs (map mkS6Log  names);
   mkS6Ends = names: builtins.listToAttrs (map mkS6Stop names);
-  rmS6Srvs = names: builtins.listToAttrs (map rmS6Srv  names);
+  rmS6Svcs = names: builtins.listToAttrs (map rmS6Svc  names);
   mkS6Dirs = names: builtins.listToAttrs (map mkLogDir names);
-  filtSrvs = boole: lib.filterAttrs (n: v: n != "initSrvs" && v == boole);
-  liveSrvs = builtins.attrNames (filtSrvs true  config.files.services);
-  deadSrvs = builtins.attrNames (filtSrvs false config.files.services);
-  initSrvs = ''
+  filtSvcs = boole: lib.filterAttrs (n: v: n != "initSvcs" && v == boole);
+  liveSvcs = builtins.attrNames (filtSvcs true  config.files.services);
+  deadSvcs = builtins.attrNames (filtSvcs false config.files.services);
+  initSvcs = ''
     ${shBang}
     # init all services
     background {
       foreground { sleep 1 }
-      importas SRVS_DIR PRJ_SRVS_DIR
-      importas LOG_DIR  PRJ_SRVS_LOG
+      importas SVCS_DIR PRJ_SVCS_DIR
+      importas LOG_DIR  PRJ_SVCS_LOG
       redirfd -w 1 ''${LOG_DIR}/scan.log
       ${errToOut}
-      s6-svscan ''${SRVS_DIR}
+      s6-svscan ''${SVCS_DIR}
     }
   '';
-  scanSrvs = ''
+  scanSvcs = ''
     ${shBang}
     # rescan all services
-    importas SRVS_DIR PRJ_SRVS_DIR
-    importas LOG_DIR  PRJ_SRVS_LOG
+    importas SVCS_DIR PRJ_SVCS_DIR
+    importas LOG_DIR  PRJ_SVCS_LOG
     redirfd -w 1 ''${LOG_DIR}/sctl.log
     ${errToOut}
-    s6-svscanctl -h ''${SRVS_DIR}
+    s6-svscanctl -h ''${SVCS_DIR}
   '';
-  stopSrvs = ''
+  stopSvcs = ''
     ${shBang}
     # stop all services
-    importas SRVS_DIR PRJ_SRVS_DIR
+    importas SVCS_DIR PRJ_SVCS_DIR
     ${errToOut}
-    s6-svscanctl -t ''${SRVS_DIR}
+    s6-svscanctl -t ''${SVCS_DIR}
   '';
-  stUpSrvs = lib.optionalAttrs haveSrvs { 
+  stUpSvcs = lib.optionalAttrs haveSvcs { 
     "zzzzzz-ssssss-services-start".text = ''
       # set down all services
-      find $PRJ_SRVS_DIR -maxdepth 1 -mindepth 1 -type d -exec touch {}/down \; \
+      find $PRJ_SVCS_DIR -maxdepth 1 -mindepth 1 -type d -exec touch {}/down \; \
         &>/dev/null || true
       # set up enabled services
-      rm $PRJ_SRVS_DIR/{.s6-svscan,${builtins.concatStringsSep "," liveSrvs}}/down \
+      rm $PRJ_SVCS_DIR/{.s6-svscan,${builtins.concatStringsSep "," liveSvcs}}/down \
         &>/dev/null || true
       # rescan services
-      scanSrvs ${lib.optionalString autoSrvs "|| initSrvs"}
+      scanSvcs ${lib.optionalString autoSvcs "|| initSvcs"}
     '';
   };
-  haveSrvs = builtins.length liveSrvs > 0;
-  autoSrvs = haveSrvs && config.files.services.initSrvs or false;
+  haveSvcs = builtins.length liveSvcs > 0;
+  autoSvcs = haveSvcs && config.files.services.initSvcs or false;
 in
 {
   options.files.services = lib.mkOption {
@@ -112,18 +112,18 @@ in
 
       Optionally could exist a {name}-log    command to log  it properly.
 
-      Default log informations goes to $PRJ_SRVS_LOG/{name}/current .
+      Default log informations goes to $PRJ_SVCS_LOG/{name}/current .
 
-      `initSrvs` is a special name to auto start the process supervisor 
+      `initSvcs` is a special name to auto start the process supervisor 
       [s6](http://skarnet.org/software/s6/), it control all other services.
 
-      If we don't set initSrvs service, we can start it running `initSrvs`.
+      If we don't set initSvcs service, we can start it running `initSvcs`.
  
-      S6 wont stop by itself, we should run `stopSrvs` when it's done.
+      S6 wont stop by itself, we should run `stopSvcs` when it's done.
 
       It defines two env vars:
-      - PRJ_SRVS_DIR: $PRJ_DATA_DIR/services
-      - PRJ_SRVS_LOG: $PRJ_DATA_DIR/log
+      - PRJ_SVCS_DIR: $PRJ_DATA_DIR/services
+      - PRJ_SVCS_LOG: $PRJ_DATA_DIR/log
 
       See [S6 documentation](http://skarnet.org/software/s6/s6-supervise.html).
 
@@ -144,7 +144,7 @@ in
       ```nix
       {
         # Make all services start when you enter in shell
-        files.services.initSrvs = true;
+        files.services.initSvcs = true;
 
         # Use hello configured below as service
         files.services.hello    = true;
@@ -160,19 +160,22 @@ in
       }
        ```
 
-
       Know bugs:
       - Integration with direnv isn't, ok when configured to auto start
     '';
   };
-  config.files.alias.stopSrvs = lib.mkIf haveSrvs stopSrvs;
-  config.files.alias.initSrvs = lib.mkIf haveSrvs initSrvs;
-  config.files.alias.scanSrvs = lib.mkIf haveSrvs scanSrvs;
-  config.devshell.packages    = lib.mkIf haveSrvs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
-  config.devshell.startup     = stUpSrvs // (rmS6Srvs deadSrvs) // (mkS6Dirs liveSrvs);
-  config.file = (mkS6Runs liveSrvs) // (mkS6Logs liveSrvs) // (mkS6Ends liveSrvs);
-  config.env = lib.optionals haveSrvs [
-    { name = "PRJ_SRVS_DIR"; eval = "$PRJ_DATA_DIR/services"; }
-    { name = "PRJ_SRVS_LOG"; eval = "$PRJ_DATA_DIR/log"; }
+  config.files.alias.stopSvcs   = lib.mkIf haveSvcs stopSvcs;
+  config.files.alias.initSvcs   = lib.mkIf haveSvcs initSvcs;
+  config.files.alias.scanSvcs   = lib.mkIf haveSvcs scanSvcs;
+  config.files.alias.svcCtl     = lib.mkIf haveSvcs "s6-svc $2 $PRJ_SVCS_DIR/$1";
+  config.files.alias.stopSvc    = lib.mkIf haveSvcs "svcCtl $1 -d";
+  config.files.alias.restartSvc = lib.mkIf haveSvcs "svcCtl $1 -r";
+  config.files.alias.initSvc    = lib.mkIf haveSvcs "svcCtl $1 -u";
+  config.devshell.packages    = lib.mkIf haveSvcs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
+  config.devshell.startup     = stUpSvcs // (rmS6Svcs deadSvcs) // (mkS6Dirs liveSvcs);
+  config.file = (mkS6Runs liveSvcs) // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs);
+  config.env = lib.optionals haveSvcs [
+    { name = "PRJ_SVCS_DIR"; eval = "$PRJ_DATA_DIR/services"; }
+    { name = "PRJ_SVCS_LOG"; eval = "$PRJ_DATA_DIR/log"; }
   ];
 }
