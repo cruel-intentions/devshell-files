@@ -8,8 +8,14 @@ let
     value.executable = true;
     value.text       = ''
       ${shBang}
-      ${errToOut}
-      ${name}
+      ifthenelse { sh -c "command -v ${name}" } 
+      {
+        ${errToOut}
+        ${name}
+      }
+      {
+        echo "command ${name} not found"
+      }
     '';
   };
   mkS6Log  = name: {
@@ -17,13 +23,16 @@ let
     value.executable = true;
     value.text       = ''
       ${shBang}
-      tryexec -n
-        { 
-          importas LOG_DIR PRJ_SRCS_LOG
-          s6-log -b n4 s100000 ''${LOG_DIR}/${name}/
-        }
+      ifthenelse { sh -c "command -v ${name}-log" } 
+      {
         ${errToOut}
         ${name}-log
+      }
+      {
+        importas LOG_DIR PRJ_SRCS_LOG
+        ${errToOut}
+        s6-log -b n4 s100000 ''${LOG_DIR}/${name}/
+      }
     '';
   };
   mkS6Stop = name: {
@@ -31,13 +40,14 @@ let
     value.executable = true;
     value.text       = ''
       ${shBang}
-      tryexec
-        { 
-          ${errToOut}
-          ${name}-finish
-        }
+      ifthenelse { sh -c "command -v ${name}-finish" } 
+      {
         ${errToOut}
+        ${name}-finish
+      }
+      {
         echo ${name} finished
+      }
     '';
   };
   rmS6Svc  = name: {
