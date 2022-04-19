@@ -19,7 +19,7 @@ let
     ''
       mkdir -p $out/nim/src/devshell
       mkdir -p $out/bin
-      NAMIM=$(echo "$name"|tr '[:alnum:]' '_')
+      NAMIM=$(echo "$name"|tr -c '[:alnum:]' '_')
       cp "$codePath"     "$out/nim/src/$NAMIM.nim"
       cp "$lazinessPath" "$out/nim/src/devshell/laziness.nim"
       cp ${devShellEnv}  "$out/nim/src/devshell/envs.nim"
