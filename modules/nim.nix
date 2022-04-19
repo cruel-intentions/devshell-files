@@ -19,7 +19,8 @@ let
     ''
       mkdir -p $out/nim/src/devshell
       mkdir -p $out/bin
-      cp "$codePath"     "$out/nim/src/$name.nim"
+      NAMIM=$(echo "$name"|tr '[:alnum:]' '_')
+      cp "$codePath"     "$out/nim/src/$NAMIM.nim"
       cp "$lazinessPath" "$out/nim/src/devshell/laziness.nim"
       cp ${devShellEnv}  "$out/nim/src/devshell/envs.nim"
       TMP_BIN=/tmp/nim-$(basename $out)
@@ -29,7 +30,7 @@ let
         nim c \
           ${nimFlags} \
           --out:"'$TMP_BIN'" \
-          '$out/nim/src/$name.nim'
+          '$out/nim/src/$NAMIM.nim'
       fi
 
       exec \
