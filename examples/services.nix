@@ -9,9 +9,9 @@
   files.alias.httpd    = ''
     cd $PRJ_ROOT/gh-pages
     mdbook build
-    exec httplz --port 8022 $PRJ_ROOT/gh-pages/book/
+    httplz --port 8022 $PRJ_ROOT/gh-pages/book/
   '';
-  # files.services.httpd = true;
+  files.services.httpd = true;
   # Make services start when you enter in shell
   # files.services.initSrvs = true;
 

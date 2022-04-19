@@ -1,53 +1,33 @@
 {pkgs, config, lib, ...}:
 let
   # https://skarnet.org/software/execline/index.html
-  shBang   = "#!${pkgs.execline}/bin/execlineb -S0";
-  errToOut = "fdmove -c 2 1";
+  exclib   = import ./services/execline.nix;
+  s6lib    = import ./services/s6.nix;
+  shBang   = exclib.execBang pkgs.execline;
   mkS6Run  = name: {
     name  = "/.data/services/${name}/run";
     value.executable = true;
-    value.text       = ''
+    value.text       = with exclib;''
       ${shBang}
-      ifthenelse { sh -c "command -v ${name} > /dev/null" } 
-      {
-        ${errToOut}
-        ${name}
-      }
-      {
-        echo "command ${name} not found"
-      }
-    '';
+      ${hasCmdRun "ifthenelse" name} {
+        echo "${name} not found"
+      }'';
   };
   mkS6Log  = name: {
     name  = "/.data/services/${name}/log/run";
     value.executable = true;
-    value.text       = ''
+    value.text       = with exclib;''
       ${shBang}
-      ifthenelse { sh -c "command -v ${name}-log > /dev/null" } 
-      {
-        ${errToOut}
-        ${name}-log
-      }
-      {
-        importas LOG_DIR PRJ_SRCS_LOG
-        ${errToOut}
-        s6-log -b n4 s100000 ''${LOG_DIR}/${name}/
-      }
-    '';
+      ${hasCmdRun "ifthenelse" "${name}-log"} {
+        ${s6lib.log {inherit name;}}
+      }'';
   };
   mkS6Stop = name: {
     name  = "/.data/services/${name}/finish";
     value.executable = true;
-    value.text       = ''
+    value.text       = with exclib;''
       ${shBang}
-      ifthenelse { sh -c "command -v ${name}-finish > /dev/null" } 
-      {
-        ${errToOut}
-        ${name}-finish
-      }
-      {
-        echo ${name} finished
-      }
+      ${hasCmdRun "if" "${name}-finish"}
     '';
   };
   rmS6Svc  = name: {
@@ -66,36 +46,25 @@ let
   filtSvcs = boole: lib.filterAttrs (n: v: n != "initSvcs" && v == boole);
   liveSvcs = builtins.attrNames (filtSvcs true  config.files.services);
   deadSvcs = builtins.attrNames (filtSvcs false config.files.services);
-  initSvcs = ''
+  initSvcs = with exclib;''
     ${shBang}
     # init all services
-    background {
-      foreground { sleep 1 }
-      importas SVCS_DIR PRJ_SVCS_DIR
-      importas LOG_DIR  PRJ_SVCS_LOG
-      redirfd -w 1 ''${LOG_DIR}/scan.log
-      ${errToOut}
-      s6-svscan ''${SVCS_DIR}
-    }
+    ${bg (s6lib.scanAndLog {})}
   '';
-  scanSvcs = ''
+  scanSvcs = with exclib;''
     ${shBang}
     # rescan all services
-    importas SVCS_DIR PRJ_SVCS_DIR
-    importas LOG_DIR  PRJ_SVCS_LOG
-    redirfd -w 1 ''${LOG_DIR}/sctl.log
-    ${errToOut}
-    s6-svscanctl -h ''${SVCS_DIR}
+    ${s6lib.scanCtlAndLog { ctlFlags = "-h"; }}
   '';
-  stopSvcs = ''
+  stopSvcs = with exclib;''
     ${shBang}
     # stop all services
-    importas SVCS_DIR PRJ_SVCS_DIR
-    ${errToOut}
-    s6-svscanctl -t ''${SVCS_DIR}
+    ${s6lib.scanCtlAndLog { ctlFlags = "-t"; }}
   '';
   stUpSvcs = lib.optionalAttrs haveSvcs { 
     "zzzzzz-ssssss-services-start".text = ''
+      mkdir -p $PRJ_SVCS_LOG/svscan
+      mkdir -p $PRJ_SVCS_LOG/svscanctl
       # set down all services
       find $PRJ_SVCS_DIR -maxdepth 1 -mindepth 1 -type d -exec touch {}/down \; \
         &>/dev/null || true
