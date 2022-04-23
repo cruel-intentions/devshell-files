@@ -4,6 +4,7 @@ let
     {
       ${cmd}
     }'';
+  unBlockIf  = type: cmd: if type == "if" then cmd else block cmd;
   case       = value: cmds: with builtins;
   ''
     ${type} ${value} {
@@ -49,7 +50,7 @@ in rec {
   glob'      = flags: var: pattern: "elglob ${flags} ${var} ${pattern}";
   glob       = glob' "";
   hasCmd     = type: cmd: do type (cmdExist cmd);
-  hasCmdRun  = type: cmd: ''${hasCmd type cmd} ${block cmd}'';
+  hasCmdRun  = type: cmd: ''${hasCmd type cmd} ${unBlockIf type cmd}'';
   hereDoc    = txt: "heredoc ${txt}";
   ifThen'    = flags: do "if ${flags}";
   ifThen     = ifThen' "";
