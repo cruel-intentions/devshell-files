@@ -116,7 +116,10 @@ proc `[]`(args; slice: HSlice): Arguments =
 
 proc exec(cmdName: string; args = NO_ARGS; dir = PWD): bool {.discardable.} =
   cd dir
-  discard execvp(cmdName.cstring, allocCStringArray args.toSeq);
+  echo $dir
+  echo cmdName
+  echo $args
+  discard execvp(cmdName.cstring, args.toSeq.allocCStringArray);
 
 proc exec(cmdName: string; dir): bool {.discardable.} =
   exec(cmdName, NO_ARGS, dir)
