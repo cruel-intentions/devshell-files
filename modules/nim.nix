@@ -23,6 +23,18 @@ let
       cp "$codePath"     "$out/nim/src/$NAMIM.nim"
       cp "$lazinessPath" "$out/nim/src/devshell/laziness.nim"
       cp ${devShellEnv}  "$out/nim/src/devshell/envs.nim"
+
+      # compile at activation time
+      if grep -qP "^#compile-at-mkshell" $codePath; then
+        nim c \
+          ${nimFlags} \
+          --nimcache:./cache \
+          --out:"$out/bin/$name" \
+          "$out/nim/src/$NAMIM.nim"
+        exit 0
+      fi
+    
+      # compile at first run
       BIN_NAME=nim-$(basename $out)
       TMP_BIN=/tmp/$BIN_NAME
       echo '#!${pkgs.bash}/bin/bash -e
@@ -78,17 +90,20 @@ let
 in {
   options.files.nim = lib.mkOption {
     default       = {};
-    example.hello = ''echo "hello"'';
-    example.start = ''quit cmd("docker compose up", ARGS)'';
+    example.hello = ''
+      #compile-at-mkshell
+      
+      # by default nim commands were compiled at first run to reduce
+      # shell activation time, add comment #compile-at-mkshell to 
+      # compile at shell activation
+      echo "hello"
+    '';
+    example.start = ''exec "docker compose up", ARGS'';
     type          = lib.types.attrsOf lib.types.string;
     description   = ''
       Nim code to create an command
 
       It includes some helpers and libraries for laziness
-
-      It compiles with:
-
-      `${nimFlags}`
 
       Vars:
       - PRJ_ROOT : devshell PRJ_ROOT env information
@@ -100,7 +115,7 @@ in {
       - arg  : get arg n, defaul="", ie. `1.arg`
       - env  : get env name, default="", ie. `"PRJ_ROOT".env`
       - cd   : set current dir
-      - exec : execute {cmd}, arguments=@[], dir="."
+      - exec : execute {cmd}, arguments=NO_ARGS, dir=".".dirPath
       - jpath: creates a JsonPath (*isn't JsonPath compliant)
         - /  : concat two paths
         - get: get JsonNode in path of object, `myPath.get(myObj)`
@@ -117,14 +132,13 @@ in {
       Imports:
       - Import almost all std libraries
 
+      Flags:
+      - `${nimFlags}`
+
       Todo:
       - Add an option to configure flags
       - Add an option to add nimble deps
       - Add an option for static compilation
-
-      Note:
-
-      Since nim cmds were compiled the shell activation time may increase
     '';
   };
   config.devshell.packages = packages;
