@@ -105,14 +105,18 @@ proc cd(dir): void =
 
 using args: Arguments
 
+proc toSeq(args): seq[string] =
+  cast[seq[string]](args)
+
 proc `$`(args): string =
-  cast[seq[string]](args).mapIt(it.quoteShell).join(" ")
+  args.toSeq.mapIt(it.quoteShell).join(" ")
 
 proc `[]`(args; slice: HSlice): Arguments =
-  cast[Arguments](cast[seq[string]](args)[slice])
+  cast[Arguments](args.toSeq()[slice])
 
-proc exec(cmdName: string; args; dir = PWD): bool {.discardable.} =
-  quit execShellCmd(fmt"cd {dir}; exec {cmdName} {args}")
+proc exec(cmdName: string; args = NO_ARGS; dir = PWD): bool {.discardable.} =
+  cd dir
+  discard execvp(cmdName.cstring, allocCStringArray args.toSeq);
 
 proc exec(cmdName: string; dir): bool {.discardable.} =
   exec(cmdName, NO_ARGS, dir)
