@@ -23,18 +23,20 @@ let
       cp "$codePath"     "$out/nim/src/$NAMIM.nim"
       cp "$lazinessPath" "$out/nim/src/devshell/laziness.nim"
       cp ${devShellEnv}  "$out/nim/src/devshell/envs.nim"
-      TMP_BIN=/tmp/nim-$(basename $out)
+      BIN_NAME=nim-$(basename $out)
+      TMP_BIN=/tmp/$BIN_NAME
       echo '#!${pkgs.bash}/bin/bash -e
-      if [ ! -f "'$TMP_BIN'" ];
+      if [ ! -f /nix/store/*'$BIN_NAME' ];
       then
         nim c \
           ${nimFlags} \
           --out:"'$TMP_BIN'" \
           '$out/nim/src/$NAMIM.nim'
+        nix store add-file '$TMP_BIN' >/dev/null
       fi
-
+      NIX_STORED_BIN=/nix/store/*'$BIN_NAME'
       exec \
-        "'$TMP_BIN'" \
+        $NIX_STORED_BIN \
         "$@"
       ' > $out/bin/$name
       chmod +x $out/bin/$name
