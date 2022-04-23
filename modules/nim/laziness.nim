@@ -114,12 +114,19 @@ proc `$`(args): string =
 proc `[]`(args; slice: HSlice): Arguments =
   cast[Arguments](args.toSeq()[slice])
 
+proc `+`(args, other: Arguments): Arguments =
+  cast[Arguments](concat(args.toSeq, other.toSeq))
+
+proc `+`(arg: string, args): Arguments =
+  args(@[arg]) + args
+
+proc `+`(args, arg: string): Arguments =
+  args + args(@[arg])
+
 proc exec(cmdName: string; args = NO_ARGS; dir = PWD): bool {.discardable.} =
   cd dir
-  echo $dir
-  echo cmdName
-  echo $args
-  discard execvp(cmdName.cstring, args.toSeq.allocCStringArray);
+  let argv = cmdName + args
+  discard execvp(cmdName.cstring, argv.toSeq.allocCStringArray)
 
 proc exec(cmdName: string; dir): bool {.discardable.} =
   exec(cmdName, NO_ARGS, dir)
