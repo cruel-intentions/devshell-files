@@ -99,12 +99,13 @@ in {
       # compile at shell activation
       echo "hello"
     '';
-    example.start = ''exec "docker compose up", ARGS'';
+    example.start = ''exec "docker", @["compose", "up"] & ARGS'';
     type          = lib.types.attrsOf lib.types.string;
     description   = ''
       Nim code to create an command
 
-      It includes some helpers and libraries for laziness
+      It includes some helpers and libraries for laziness, so it better 
+      fit prototyping and simples commands/script.
 
       Vars:
       - PRJ_ROOT : devshell PRJ_ROOT env information
@@ -125,7 +126,7 @@ in {
         - set  : set JsonNode in path of object, `myPath.set myObj, myVal`
         - []=  : set JsonNode in path of object, `myObj[myPath] = myVal`
 
-      [Using](https://blog.johnnovak.net/2020/12/21/nim-apocrypha-vol.-i/#6-nbsp-using-keyword:
+      [Using](https://blog.johnnovak.net/2020/12/21/nim-apocrypha-vol.-i/#6-nbsp-using-keyword):
       - sep : string
       - dir : string
       - path: JsonPath
@@ -141,6 +142,12 @@ in {
       - Add an option to configure flags
       - Add an option to add nimble deps
       - Add an option for static compilation
+  
+      Examples:
+      ```nix
+      # examples/nim.nix
+      ${builtins.readFile ../examples/nim.nix}
+      ```
     '';
   };
   config.devshell.packages = packages;
