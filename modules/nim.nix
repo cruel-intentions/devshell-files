@@ -76,7 +76,7 @@ let
   hasAnyNim = builtins.length nimCmds > 0;
   packages  = 
     if hasAnyNim
-    then map lib.getLib [ pkgs.pcre pkgs.openssl pkgs.nim pkgs.tinycc]
+    then map lib.getLib [ pkgs.pcre pkgs.openssl pkgs.nim pkgs.tinycc ]
     else [];
   libEnv    = 
     if hasAnyNim 

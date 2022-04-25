@@ -88,8 +88,7 @@ proc dirPath(dir: string): DirPath =
 let
   PWD = dirPath $CurDir
 
-when fileExists "./envs.nix":
-  include envs
+include envs
 
 let
   PRJ_ROOT = dirPath env "PRJ_ROOT"
