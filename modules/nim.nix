@@ -20,9 +20,13 @@ let
       mkdir -p $out/nim/src/devshell
       mkdir -p $out/bin
       NAMIM=$(printf "$name"|tr -c '[:alnum:]_\n' '_')
-      cp "$codePath"     "$out/nim/src/$NAMIM.nim"
+      cp "$codePath"     "$out/nim/src/source_$NAMIM.nim"
       cp "$lazinessPath" "$out/nim/src/devshell/laziness.nim"
       cp ${devShellEnv}  "$out/nim/src/devshell/envs.nim"
+      echo "
+      include devshell/laziness
+      include source_$NAMIM
+      " > $out/nim/src/$NAMIM.nim
 
       # compile at activation time
       if grep -qP "^#compile-at-mkshell" $codePath; then
@@ -62,10 +66,7 @@ let
       stripCo = line: builtins.replaceStrings ["# " "#"] ["" ""] line;
       lines   = name: lib.splitString "\n" nimCfg.${name};
     in with builtins; stripCo (head (filter isntSH (lines name)));
-    package = writeNimWrapper name ''
-      include devshell/laziness
-      ${nimCfg.${name}}
-    '';
+    package = writeNimWrapper name nimCfg.${name};
   };
   getLib    = pkg: {
     name    = pkg.name;
@@ -109,19 +110,20 @@ in {
       - PRJ_ROOT : devshell PRJ_ROOT env information
       - ARGS     : Arguments command arguments
       - NO_ARGS  : empty arguments
-      - PWD      : DirPath(".")
+      - PWD      : DirPath "."
+      - All devshell like: `let PRJ_DATA_DIR = env "PRJ_DATA_DIR"`
 
       Procs:
-      - arg  : get arg n, defaul="", ie. `1.arg`
-      - env  : get env name, default="", ie. `"PRJ_ROOT".env`
+      - arg  : get arg n, default="", ie. `1.arg`
+      - env  : get env name, default="", ie. `"PRJ_DATA_DIR".env`
       - cd   : set current dir
-      - exec : execute {cmd}, arguments=NO_ARGS, dir=".".dirPath
-      - jpath: creates a JsonPath (*isn't JsonPath compliant)
-        - /  : concat two paths
-        - get: get JsonNode in path of object, `myPath.get(myObj)`
-        - [] : get JsonNode in pat  of object, `myObj[myPath]`
-        - set: set JsonNode in path of object, `myPath.set(myObj, myVal)`
-        - []=: set JsonNode in path of object, `myObj[myPath] = myVal`
+      - exec : execute {cmd}, args=NO_ARGS, dir=".".dirPath
+      - jPath: creates a path to access json ie: `"foo/0/^1/0..1/0..^1/bar".jPath`
+        - /  : concat paths, ie: `myPath / "blerg" / 0 / ^1 / 0 .. 1 / 0 .. ^1/baz`
+        - get  : get JsonNode in path of object, `myPath.get myObj`
+        - []   : get JsonNode in pat  of object, `myObj[myPath]`
+        - set  : set JsonNode in path of object, `myPath.set myObj, myVal`
+        - []=  : set JsonNode in path of object, `myObj[myPath] = myVal`
 
       [Using](https://blog.johnnovak.net/2020/12/21/nim-apocrypha-vol.-i/#6-nbsp-using-keyword:
       - sep : string
