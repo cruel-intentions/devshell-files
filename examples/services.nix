@@ -15,6 +15,17 @@
   # Make services start when you enter in shell
   # files.services.initSrvs = true;
 
+  # greeting service
+  files.alias.greet         = ''
+    notify-desktop -i network-server "Services Started";
+    # if our service ends it will be restarted
+    # so we sleep forever
+    sleep infinity
+  '';
+  files.alias.greet-finish  = ''notify-desktop -i network-server "Services Stoped" '';
+  files.services.greet      = true;
+  files.cmds.notify-desktop = true;
+
   # RC is another interface it uses s6-rc
   # files.rc.hello.enable  = true;
   # files.rc.hello.oneshot.start    = ''wait 1000000 "hello world"'';
