@@ -166,7 +166,10 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/book.nix
     ./examples/services.nix
     ./examples/nim.nix
+    # ./examples/nim/pomodoro.nix
   ];
+  #pomodoro.enable = true;
+
   # install development or deployment tools
   # now we can use 'convco' command https://convco.github.io
   # look at https://search.nixos.org for more tools
