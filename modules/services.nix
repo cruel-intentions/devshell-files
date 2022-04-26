@@ -27,7 +27,9 @@ let
     value.executable = true;
     value.text       = with exclib;''
       ${shBang}
-      ${hasCmdRun "if" "${name}-finish"}
+      ${hasCmdRun "ifthenelse" "${name}-finish"} {
+        echo "${name} finished"
+      }
     '';
   };
   rmS6Svc  = name: {
