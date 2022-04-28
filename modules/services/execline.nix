@@ -25,6 +25,7 @@ in rec {
   bg         = do "background";
   bg'        = do "background -d";
   cd         = dir: "execline-cd ${dir}";
+  cdPrj      = "${loadEnv "PRJ_ROOT"} ${cd "$PRJ_ROOT"}";
   cmdExist   = cmd: 
     ''
       ${outToNul}
@@ -50,18 +51,21 @@ in rec {
   glob'      = flags: var: pattern: "elglob ${flags} ${var} ${pattern}";
   glob       = glob' "";
   hasCmd     = type: cmd: do type (cmdExist cmd);
-  hasCmdRun  = type: cmd: ''${hasCmd type cmd} ${unBlockIf type cmd}'';
+  hasCmdRun  = type: cmd: ''${hasCmd type cmd} ${unBlockIf type "${cmd}"}'';
   hereDoc    = txt: "heredoc ${txt}";
   ifThen'    = flags: do "if ${flags}";
   ifThen     = ifThen' "";
   ifTe'      = flags: Then: Else: ''${do "ifte ${flags}" Then} ${block Else}'';
   ifTe       = ifTe' "";
-  ifThenElse'= flags: cond: Then: Else: ''${do "ifthenelse ${flags}" cond} ${block Then} ${block Else}'';
+  ifThenElse'= flags: cond: Then: Else: ''
+    ${do "ifthenelse ${flags}" cond}
+    ${block Then}"}
+    ${block Else}'';
   ifThenElse = ifThenElse' "";
   ifElse'    = flags: cond: Then: ''${do "ifelse ${flags}" cond} ${block Then}'';
   ifElse     = ifElse' "";
-  getEnv'    = flags: var: importAs' flags var var;
-  getEnv     = getEnv' "";
+  loadEnv'    = flags: var: importAs' flags var var;
+  loadEnv     = loadEnv' "";
   importAs'  = flags: var: env: "importas ${flags} ${var} ${env}";
   importAs   = importAs' "";
   loopWhile' = flags: ''loopwhilex ${flags}'';
