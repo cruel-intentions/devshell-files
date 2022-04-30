@@ -31,6 +31,7 @@
   '';
   files.alias.greet-finish  = ''
     notify-desktop -i network-server "See you later"
+    echo wake up little Suzie
   '';
 
   # # RC (unstable) is another interface it uses s6-rc

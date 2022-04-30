@@ -21,7 +21,7 @@ let
       ${shBang}
       ${cdPrj}
       ${hasCmdRun "ifelse" "${name}-log"}
-        ${s6lib.log {inherit name; flags = "-b n20 s1000000 t";}}
+        ${s6lib.log {inherit name; flags = s6lib.defaultLogFlags;}}
     '';
   };
   mkS6Stop = name: {
@@ -30,6 +30,8 @@ let
     value.text       = with exclib;''
       ${shBang}
       ${cdPrj}
+      ${pipeline' "-w" (
+        s6lib.log { name = "${name}-finish"; flags = s6lib.defaultLogFlags; })}
       ${hasCmdRun "ifelse" "${name}-finish"}
         echo "${name} finished"
     '';
