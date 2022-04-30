@@ -10,9 +10,9 @@ let
     value.text       = with exclib;''
       ${shBang}
       ${cdPrj}
-      ${hasCmdRun "ifelse" name} {
+      ${hasCmdRun "ifelse" name}
         echo "${name} not found"
-      }'';
+    '';
   };
   mkS6Log  = name: {
     name  = "/.data/services/${name}/log/run";
@@ -20,9 +20,9 @@ let
     value.text       = with exclib;''
       ${shBang}
       ${cdPrj}
-      ${hasCmdRun "ifelse" "${name}-log"} {
-        ${s6lib.log {inherit name; flags = "-d  n20 s1000000 t";}}
-      }'';
+      ${hasCmdRun "ifelse" "${name}-log"}
+        ${s6lib.log {inherit name; flags = "-b n20 s1000000 t";}}
+    '';
   };
   mkS6Stop = name: {
     name  = "/.data/services/${name}/finish";
@@ -30,9 +30,8 @@ let
     value.text       = with exclib;''
       ${shBang}
       ${cdPrj}
-      ${hasCmdRun "ifelse" "${name}-finish"} {
+      ${hasCmdRun "ifelse" "${name}-finish"}
         echo "${name} finished"
-      }
     '';
   };
   rmS6Svc  = name: {
