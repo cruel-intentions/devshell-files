@@ -56,6 +56,17 @@ let
     # init all services
     ${s6lib.scanAndLog { }}
   '';
+  autoSvcsd= ''
+    background() {
+      exec 0>&-
+      exec 1>&-
+      exec 2>&-
+      exec 3>&-
+      initSvcsd &
+      disown $!
+    }
+    background
+  '';
   initSvcs = with exclib;''
     ${shBang}
     # init all services
@@ -83,8 +94,8 @@ let
         &>/dev/null || true
       # rescan services
       scanSvcs
-    '' +  lib.optionalString autoSvcs ''
-      initSvcsd
+    '' + lib.optionalString autoSvcs ''
+      autoSvcsd
     '';
   };
   haveSvcs = builtins.length liveSvcs > 0;
@@ -158,6 +169,7 @@ in
   };
   config.files.alias.initSvcs   = lib.mkIf haveSvcs initSvcs;
   config.files.alias.initSvcsd  = lib.mkIf haveSvcs initSvcsd;
+  config.files.alias.autoSvcsd  = lib.mkIf haveSvcs autoSvcsd;
   config.files.alias.scanSvcs   = lib.mkIf haveSvcs scanSvcs;
   config.files.alias.stopSvcs   = lib.mkIf haveSvcs stopSvcs;
   config.files.alias.initSvc    = lib.mkIf haveSvcs "svcCtl $1 -u";
