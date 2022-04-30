@@ -164,7 +164,10 @@ in
        ```
 
       Know bugs:
-      - Integration with direnv isn't, ok when configured to auto start
+      If we don't use `exec` in our alias, some necromancer could
+      form an army of undead process, and start a war against our 
+      system, since they both may require the most sparse resource
+      of our lands.
     '';
   };
   config.files.alias.initSvcs   = lib.mkIf haveSvcs initSvcs;
