@@ -26,11 +26,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1649641394,
-        "narHash": "sha256-YD7UXBCjkhn6ptVteP8cv9vPmssLKm/crYfuNn6bqSU=",
+        "lastModified": 1651308687,
+        "narHash": "sha256-Kng00h8mxobhk8QXCrTgVnO51wFaQv77rjdavRqI90g=",
         "owner": "cruel-intentions",
         "repo": "devshell-files",
-        "rev": "0d85e2fca88dfbbe20e6464bb17430cb21e57859",
+        "rev": "3e146eb27aa9b8232e6bb6ffb9d641036637e64a",
         "type": "github"
       },
       "original": {

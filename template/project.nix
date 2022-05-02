@@ -16,7 +16,6 @@
   files.alias.feat  = ''convco commit --feat  $@'';
   files.alias.fix   = ''convco commit --fix   $@'';
   files.alias.chore = ''convco commit --chore $@'';
-
   # files.cmds.nodejs-14_x = true; # installs node, npm and npx
   # files.cmds.yarn        = true;
   # files.cmds.python39    = true;
@@ -30,4 +29,7 @@
   # files.cmds.azure-cli   = true;
   # files.cmds.terraform   = true;
   # look at https://search.nixos.org for more tools
+
+  # configure direnv
+  # files.direnv.enable = true;
 }
