@@ -31,5 +31,5 @@
   # look at https://search.nixos.org for more tools
 
   # configure direnv
-  # files.direnv.enable = true;
+  files.direnv.enable = true;
 }

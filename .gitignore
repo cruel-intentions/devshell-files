@@ -1,7 +1,4 @@
-.data
-.direnv
-/gh-pages/src/SUMMARY.md
-gh-pages
+hello.yaml
 # It's better to unpack these files and commit the raw source because
 # git has its own built in compression methods.
 *.7z
