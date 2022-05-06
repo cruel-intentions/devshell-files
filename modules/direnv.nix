@@ -14,6 +14,7 @@ in
     direnv.text = ''
       if [[ ! -f "$PRJ_ROOT/.envrc" ]]; then
         cp --preserve=timestamps ${envRC} $PRJ_ROOT/.envrc
+        chmod u+rw $PRJ_ROOT/.envrc
       fi
     '';
   };

@@ -16,20 +16,22 @@
   files.alias.feat  = ''convco commit --feat  $@'';
   files.alias.fix   = ''convco commit --fix   $@'';
   files.alias.chore = ''convco commit --chore $@'';
-  # files.cmds.nodejs-14_x = true; # installs node, npm and npx
-  # files.cmds.yarn        = true;
-  # files.cmds.python39    = true;
-  # files.cmds.pipenv      = true;
-  # files.cmds.conda       = true;
-  # files.cmds.ruby_3_0    = true; # installs ruby and gem
-  # files.cmds.go_1_17     = true;
-  # files.cmds.rustc       = true;
-  # files.cmds.cargo       = true;
+  # files.cmds.nodejs      = true; # lts
+  # files.cmds.nodejs-18_x = true; # v18
   # files.cmds.awscli      = true;
   # files.cmds.azure-cli   = true;
+  # files.cmds.cargo       = true;
+  # files.cmds.conda       = true;
+  # files.cmds.go          = true;
+  # files.cmds.nim         = true;
+  # files.cmds.pipenv      = true;
+  # files.cmds.python39    = true;
+  # files.cmds.ruby        = true;
+  # files.cmds.rustc       = true;
   # files.cmds.terraform   = true;
+  # files.cmds.yarn        = true;
   # look at https://search.nixos.org for more tools
 
   # configure direnv
-  files.direnv.enable = true;
+  # files.direnv.enable = true;
 }
