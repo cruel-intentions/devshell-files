@@ -3,10 +3,11 @@
     devShell file generator helper
   '';
 
-  inputs.devshell.url    = "github:numtide/devshell";
   inputs.devshell.inputs.nixpkgs.follows     = "nixpkgs";
   inputs.devshell.inputs.flake-utils.follows = "flake-utils";
+  inputs.devshell.url    = "github:numtide/devshell";
   inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nixpkgs.url     = "github:nixos/nixpkgs/22.05";
 
   outputs = { self, flake-utils, devshell, nixpkgs }:
   let
