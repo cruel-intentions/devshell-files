@@ -99,7 +99,14 @@ in {
       # compile at shell activation
       echo "hello"
     '';
-    example.start = ''exec "docker", @["compose", "up"] & ARGS'';
+    example.dokr = ''
+      // create an docker compose alias
+      exec "docker", "compose" + ARGS, PRJ_ROOT / "subdir"
+    '';
+    example.manage = ''
+      // create an pipenv alias
+      exec "pipenv", "run python ./manage.py" + ARGS
+    '';
     type          = lib.types.attrsOf lib.types.string;
     description   = ''
       Nim code to create an command
