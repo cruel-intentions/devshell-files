@@ -711,7 +711,7 @@ This project uses git as version control, if your are using other version contro
 * [DevShell](https://github.com/numtide/devshell) the framework
 * [Digga](https://github.com/divnix/digga) similar project
 * [Makes](https://github.com/fluidattacks/makes) similar project
-  [Nixago](https://github.com/jmgilman/nixago) similar project
+* [Nixago](https://github.com/jmgilman/nixago) similar project
 * [Home Manager](https://github.com/nix-community/home-manager) similar project (for user home configs)
 * [NixOS](https://nixos.org/) similar project (for system configs)
 * [Nix Ecosystem](https://nixos.wiki/wiki/Nix_Ecosystem) more projects using same tool
