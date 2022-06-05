@@ -101,11 +101,13 @@ in {
     '';
     example.dokr = ''
       // create an docker compose alias
+      // cd $PRJ_ROOT/subdir; docker "compose" $@
       exec "docker", "compose" + ARGS, PRJ_ROOT / "subdir"
     '';
     example.manage = ''
       // create an pipenv alias
-      exec "pipenv", "run python ./manage.py" + ARGS
+      // pipenv run python ./manage.py
+      exec "pipenv", args("run python ./manage.py") + ARGS
     '';
     type          = lib.types.attrsOf lib.types.string;
     description   = ''
