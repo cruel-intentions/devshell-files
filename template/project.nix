@@ -1,6 +1,7 @@
 { 
   # create hello.yaml file
   files.yaml."/hello.yaml".greeting = "Hello World!!";
+
   # enable .gitignore creation
   files.gitignore.enable = true;
   # add hello.yaml to .gitignore
@@ -10,12 +11,14 @@
   files.gitignore.template."Global/Archives" = true;
   files.gitignore.template."Global/Backup"   = true;
   files.gitignore.template."Global/Diff"     = true;
+
   # now we can use 'convco' command https://convco.github.io
   files.cmds.convco = true;
+
   # now we can use 'feat' command as alias to convco
-  files.alias.feat  = ''convco commit --feat  $@'';
-  files.alias.fix   = ''convco commit --fix   $@'';
-  files.alias.chore = ''convco commit --chore $@'';
+  files.alias.feat  = ''convco commit --feat  "$@"'';
+  files.alias.fix   = ''convco commit --fix   "$@"'';
+  files.alias.chore = ''convco commit --chore "$@"'';
   # files.cmds.nodejs      = true; # lts
   # files.cmds.nodejs-18_x = true; # v18
   # files.cmds.awscli      = true;
