@@ -11,7 +11,8 @@ let
     else if file.git-add then "git add $target"
     else "";
   # Execute this script to update the project's files
-  nameToScript = name: builtins.replaceStrings ["/" "."] ["-" "-"] (lib.removePrefix "/" name);
+  nameToScript = name: 
+    "devshell-files-" + (builtins.replaceStrings ["/" "."] ["-" "-"] (lib.removePrefix "/" name));
   copy-file = name: file: pkgs.writeShellScriptBin (nameToScript name) ''
     target="$PRJ_ROOT${file.target}"
     ${pkgs.coreutils}/bin/install -m 644 -D ${file.source} $target
