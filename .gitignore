@@ -1,5 +1,6 @@
 **/.data
 **/.direnv
+**/.envrc
 **/.gitignore
 /gh-pages/src/SUMMARY.md
 gh-pages

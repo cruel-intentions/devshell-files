@@ -26,4 +26,7 @@
     #!/usr/bin/env python
     print("Alo!") # is hello in portuguese
   '';
+
+  # configure direnv
+  files.direnv.enable = true;
 }

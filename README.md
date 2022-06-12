@@ -182,6 +182,9 @@ This project is configured by module [project.nix](./project.nix)
     #!/usr/bin/env python
     print("Alo!") # is hello in portuguese
   '';
+
+  # configure direnv
+  files.direnv.enable = true;
 }
 
 ```
@@ -219,8 +222,9 @@ Our .gitignore is defined like this
   files.gitignore.template."Global/Archives" = true;
   files.gitignore.template."Global/Backup"   = true;
   files.gitignore.template."Global/Diff"     = true;
-  files.gitignore.pattern."**/.direnv"       = true;
   files.gitignore.pattern."**/.data"         = true;
+  files.gitignore.pattern."**/.direnv"       = true;
+  files.gitignore.pattern."**/.envrc"        = true;
   files.gitignore.pattern."**/.gitignore"    = true;
 }
 

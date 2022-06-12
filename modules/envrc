@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+source_up
+
+use_flake_hg() {
+  local layout_dir changed
+  layout_dir=$(direnv_layout_dir)
+  changed=$(cmp --silent -- <(echo "$DIRENV_WATCHES") "$layout_dir/mtime.old" || echo 1)
+  if [[ $changed ]] ; then
+    mkdir -p "$layout_dir"
+    nix print-dev-env \
+      --profile "$layout_dir/flake-profile" "$@"\
+      > "$layout_dir/flake-profile.sh"
+    chmod +x "$layout_dir/flake-profile.sh"
+    cp -f <(echo "$DIRENV_WATCHES") "$layout_dir/mtime.old"
+  fi
+
+  source "$layout_dir/flake-profile.sh"
+}
+
+if has nix; then
+  watch_file *.nix
+  watch_file */*.nix
+  use_flake_hg
+fi
+

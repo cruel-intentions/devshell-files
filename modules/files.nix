@@ -13,22 +13,15 @@ let
   # Execute this script to update the project's files
   nameToScript = name: builtins.replaceStrings ["/" "."] ["-" "-"] (lib.removePrefix "/" name);
   copy-file = name: file: pkgs.writeShellScriptBin (nameToScript name) ''
-    export PATH=${pkgs.coreutils}/bin:$PATH
-    out="$(git rev-parse --show-toplevel)"
-    realOut="$(realpath -m "$out")"
-    target="$(realpath -m "$realOut/${file.target}")"
-    mkdir -p "$(dirname "$target")"
-    cp --no-preserve=mode,ownership,timestamps "${file.source}" "$target"
+    target="$PRJ_ROOT${file.target}"
+    ${pkgs.coreutils}/bin/install -m 644 -D ${file.source} $target
     ${chmod file}
     ${git-add file}
   '';
   startups = lib.mapAttrsToList (n: f: 
     let name  = nameToScript n;
-    in {
-      ${name}.text = ''
-        $DEVSHELL_DIR/bin/${name}
-      '';
-    }) files;
+    in { ${name}.text = ''$DEVSHELL_DIR/bin/${name}'';}
+  ) files;
 in {
   options.file = lib.mkOption {
     description = "Attribute set of files to create into the project root.";

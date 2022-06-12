@@ -1,14 +1,12 @@
 { config, lib, ... }:
 let
   cfg   = config.files.direnv;
-  envRC = ../.envrc;
+  envRC = ./envrc;
 in
 {
   options.files.direnv.enable = lib.mkEnableOption ''
     Create .envrc file configured to use devShell
   '';
-
-  config.files.text."/.envrc" = lib.mkIf cfg.enable (builtins.readFile ../.envrc);
 
   config.devshell.startup = lib.mkIf cfg.enable {
     direnv.text = ''
