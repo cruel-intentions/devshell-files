@@ -30,4 +30,7 @@ let
       ${ifSection "example" opt}
       ${ifSection "default" opt}
     '';
-in builtins.concatStringsSep "\n" (builtins.map optionToMd moduleDocs)
+  filterOpts = { name ? "", ...}: builtins.match "^_.+" name == null;
+in builtins.concatStringsSep "\n" (
+  builtins.map optionToMd (builtins.filter filterOpts moduleDocs)
+)
