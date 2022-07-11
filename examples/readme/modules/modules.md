@@ -63,7 +63,7 @@ If your need import a plain nix file (not a module) you can use `builtins.import
 ```nix
 {
   # hello.txt: Hello World!
-  config.files.text."/foo/hello.txt" = import ./hello.txt;
+  config.files.text."/foo/hello.txt" = builtins.readFile ./hello.txt;
 }
 ```
 

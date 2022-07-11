@@ -5,5 +5,8 @@
   inputs.dsf.url      = "github:cruel-intentions/devshell-files";
   inputs.dsf.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = inputs: inputs.dsf.lib.mkShell [ ./project.nix ];
+  outputs = inputs: inputs.dsf.lib.mkShell [
+    "hello"        # import nix package
+    ./project.nix  # import nix module
+  ];
 }

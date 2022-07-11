@@ -10,15 +10,32 @@
     ./examples/book.nix
     ./examples/services.nix
     ./examples/nim.nix
-    # ./examples/nim/pomodoro.nix
   ];
-  #pomodoro.enable = true;
 
   # install development or deployment tools
-  # now we can use 'convco' command https://convco.github.io
-  # look at https://search.nixos.org for more tools
-  files.cmds.convco = true;
-  # now we can use 'feat' command (alias to convco)
+  packages = [
+    "convco"
+    # now we can use 'convco' command https://convco.github.io
+
+    # but could be:
+    # "awscli"
+    # "azure-cli"
+    # "cargo"
+    # "conda"
+    # "go"
+    # "nim"
+    # "nodejs"
+    # "nodejs-18_x"
+    # "pipenv"
+    # "python39"
+    # "ruby"
+    # "rustc"
+    # "terraform"
+    # "yarn"
+    # look at https://search.nixos.org for more packages
+  ];
+
+  # create alias
   files.alias.feat = ''convco commit --feat $@'';
   files.alias.fix  = ''convco commit --fix  $@'';
   files.alias.docs = ''convco commit --docs $@'';
@@ -26,7 +43,8 @@
     #!/usr/bin/env python
     print("Alo!") # is hello in portuguese
   '';
+  # now we can use feat, fix, docs and alou commands
 
-  # configure direnv
+  # create .envrc for direnv
   files.direnv.enable = true;
 }

@@ -33,9 +33,19 @@
     output   = other: (mkShell [ ./project.nix ]) // other;
     overlays = [ devshell.overlay ];
     pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
-    mkShell  = imports: flake-utils.lib.eachDefaultSystem (system: {
+    mkShell  = argsList: 
+    let 
+      packages  = builtins.filter (val: !isPath val) argsList;
+      imports   = builtins.filter isPath argsList;
+      isPath    = val:
+        (builtins.isPath val) ||
+        (builtins.isString val && builtins.match "/.+" val != null);
+    in flake-utils.lib.eachDefaultSystem (system: {
       devShellModules = { inherit imports; };
-      devShell        = (pkgs system).devshell.mkShell { imports = modules ++ imports; };
+      devShell        = (pkgs system).devshell.mkShell {
+        inherit packages;
+        imports = modules ++ imports;
+      };
     });
   in output {
     defaultTemplate.path        = ./template;

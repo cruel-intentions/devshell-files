@@ -2,7 +2,8 @@
   # create hello.yaml file
   files.yaml."/hello.yaml".greeting = "Hello World!!";
 
-  # enable .gitignore creation
+
+  # create .gitignore
   files.gitignore.enable = true;
   # add hello.yaml to .gitignore
   files.gitignore.pattern."hello.yaml" = true;
@@ -12,29 +13,49 @@
   files.gitignore.template."Global/Backup"   = true;
   files.gitignore.template."Global/Diff"     = true;
 
-  # now we can use 'convco' command https://convco.github.io
-  files.cmds.convco = true;
 
-  # now we can use 'feat' command as alias to convco
+  # install a packages
+  packages = [
+    "convco"
+    # now we can use 'convco' command https://convco.github.io
+    # other packages
+    # "awscli"
+    # "azure-cli"
+    # "cargo"
+    # "conda"
+    # "go"
+    # "nim"
+    # "nodejs"
+    # "nodejs-18_x"
+    # "pipenv"
+    # "python39"
+    # "ruby"
+    # "rustc"
+    # "terraform"
+    # "yarn"
+    # look at https://search.nixos.org for more packages
+  ];
+
+
+  # create some alias
   files.alias.feat  = ''convco commit --feat  "$@"'';
   files.alias.fix   = ''convco commit --fix   "$@"'';
   files.alias.chore = ''convco commit --chore "$@"'';
-  # files.cmds.nodejs      = true; # lts
-  # files.cmds.nodejs-18_x = true; # v18
-  # files.cmds.awscli      = true;
-  # files.cmds.azure-cli   = true;
-  # files.cmds.cargo       = true;
-  # files.cmds.conda       = true;
-  # files.cmds.go          = true;
-  # files.cmds.nim         = true;
-  # files.cmds.pipenv      = true;
-  # files.cmds.python39    = true;
-  # files.cmds.ruby        = true;
-  # files.cmds.rustc       = true;
-  # files.cmds.terraform   = true;
-  # files.cmds.yarn        = true;
-  # look at https://search.nixos.org for more tools
+  # now we can use 'feat' command as alias to convco
 
-  # configure direnv
+  # files.alias.helloPy = ''
+  #   #!/usr/bin/env python
+  #   print("Im python code")
+  # '';
+  # or 
+  # files.alias.helloPy = builtins.readFile helloPy.py
+
+  # configure direnv .envrc file
   # files.direnv.enable = true;
+
+  # look at https://cruel-intentions.github.io/devshell-files/builtins.html
+  # for more builtins options
+
+  # look at https://cruel-intentions.github.io/devshell-files/modules.html
+  # for how to create modules
 }
