@@ -35,11 +35,12 @@
     pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
     mkShell  = argsList: 
     let 
-      packages  = builtins.filter (val: !isPath val) argsList;
-      imports   = builtins.filter isPath argsList;
-      isPath    = val:
+      packages = builtins.filter isPkg  argsList;
+      imports  = builtins.filter isPath argsList;
+      isPath   = val:
         (builtins.isPath val) ||
         (builtins.isString val && builtins.match "/.+" val != null);
+      isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
     in flake-utils.lib.eachDefaultSystem (system: {
       devShellModules = { inherit imports; };
       devShell        = (pkgs system).devshell.mkShell {
