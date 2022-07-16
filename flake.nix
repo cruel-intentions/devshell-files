@@ -17,6 +17,7 @@
     '';
     lib.importTOML = devshell.lib.importTOML;
     lib.mkShell    = mkShell;
+    lib.shell      = shell;
     modules' = [
       ./modules/files.nix
       ./modules/cmds.nix
