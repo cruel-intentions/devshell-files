@@ -11,7 +11,13 @@
 
   outputs = { self, flake-utils, devshell, nixpkgs }:
   let
-    modules = [
+    defaultTemplate.path        = ./template;
+    defaultTemplate.description = ''
+      nix flake new -t github:cruel-intentions/devshell-files project
+    '';
+    lib.importTOML = devshell.lib.importTOML;
+    lib.mkShell    = mkShell;
+    modules' = [
       ./modules/files.nix
       ./modules/cmds.nix
       ./modules/alias.nix
@@ -30,31 +36,20 @@
       ./modules/services/rc-devshell.nix
       ./modules/nim.nix
     ];
-    output   = other: (mkShell [ ./project.nix ]) // other;
-    overlays = [ devshell.overlay ];
-    pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
-    mkShell  = argsList: 
+    isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
+    isntPkg  = val: !(isPkg val);
+    mkShell  = args: 
     let 
-      packages = builtins.filter isPkg  argsList;
-      imports  = builtins.filter isPath argsList;
-      isPath   = val:
-        (builtins.isPath val) ||
-        (builtins.isString val && builtins.match "/.+" val != null);
-      isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
+      imports  = modules' ++ modules;
+      modules  = builtins.filter isntPkg args;
+      packages = builtins.filter isPkg   args;
     in flake-utils.lib.eachDefaultSystem (system: {
-      devShellModules = { inherit imports; };
-      devShell        = (pkgs system).devshell.mkShell {
-        inherit packages;
-        imports = modules ++ imports;
+      devShellModules  = { inherit modules; };
+      devShell         = (pkgs system).devshell.mkShell {
+        inherit packages imports;
       };
     });
-  in output {
-    defaultTemplate.path        = ./template;
-    defaultTemplate.description = ''
-      nix flake new -t github:cruel-intentions/devshell-files project
-    '';
-    lib.importTOML = devshell.lib.importTOML;
-    lib.mkShell    = mkShell;
-    overlay        = devshell.overlay;
-  };
+    pkgs    = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
+    overlay = devshell.overlay;
+  in { inherit defaultTemplate lib overlay; } // (mkShell [ ./project.nix ]);
 }
