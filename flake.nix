@@ -38,16 +38,26 @@
     ];
     isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
     isntPkg  = val: !(isPkg val);
-    mkShell  = args: 
+    mkShell  = imports': shell { inherit self flake-utils devshell nixpkgs; } imports';
+    shell    = inputs: imports':
     let 
       imports  = modules' ++ modules;
-      modules  = builtins.filter isntPkg args;
-      packages = builtins.filter isPkg   args;
-    in flake-utils.lib.eachDefaultSystem (system: {
+      modules  = builtins.filter isntPkg imports';
+      packages = builtins.filter isPkg   imports';
       devShellModules  = { inherit modules; };
-      devShell         = (pkgs system).devshell.mkShell {
-        inherit packages imports;
+      devShellInputs   =
+      let
+        inputsVals   = builtins.attrValues inputs;
+        inputInputs  = input: input.devShellInputs or {};
+        inputsInputs = map inputInputs inputsVals;
+      in builtins.foldl' builtins.intersectAttrs {} inputsInputs // inputs;
+      eval = system: (pkgs system).devshell.eval {
+        configuration    = { inherit packages imports; };
+        extraSpecialArgs = { inputs = devShellInputs; };
       };
+    in flake-utils.lib.eachDefaultSystem (system: {
+      inherit devShellInputs devShellModules;
+      devShell = (eval system).shell;
     });
     pkgs    = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
     overlay = devshell.overlay;
