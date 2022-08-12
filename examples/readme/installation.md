@@ -24,7 +24,8 @@ Configuring existing projects:
 
 ```sh
 nix flake new -t github:cruel-intentions/devshell-files ./
-git add flake.nix, flake.lock project.nix
+git add *.nix
+git add flake.lock
 ```
 
 #### Generating files:

@@ -4,8 +4,9 @@ let
   nimFlags    = "-w:off -d:ssl --threads:on --mm:orc --hints:off --parallelBuild:4 --tlsEmulation:on";
   devShellEnv = pkgs.writeTextFile {
     name = "devShellEnvs.nim";
-    text = builtins.concatStringsSep "\n" (
-      map ({ name, ...}: ''let ${name} = env "${name}"'') config.env
+    text = with builtins; concatStringsSep "\n" (
+      map (name: ''let ${name} = env "${name}"'') 
+      (attrNames (listToAttrs config.env))
     );
   };
   writeNimWrapper = { name, src, deps }:
