@@ -26,6 +26,7 @@
     # "nim"
     # "nodejs"
     # "nodejs-18_x"
+    # "nushell"
     # "pipenv"
     # "python39"
     # "ruby"
@@ -43,6 +44,7 @@
     #!/usr/bin/env python
     print("Alo!") # is hello in portuguese
   '';
+
   # now we can use feat, fix, docs and alou commands
 
   # create .envrc for direnv

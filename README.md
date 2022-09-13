@@ -183,6 +183,7 @@ This project is configured by module [project.nix](./project.nix)
     # "nim"
     # "nodejs"
     # "nodejs-18_x"
+    # "nushell"
     # "pipenv"
     # "python39"
     # "ruby"
@@ -200,6 +201,7 @@ This project is configured by module [project.nix](./project.nix)
     #!/usr/bin/env python
     print("Alo!") # is hello in portuguese
   '';
+
   # now we can use feat, fix, docs and alou commands
 
   # create .envrc for direnv
