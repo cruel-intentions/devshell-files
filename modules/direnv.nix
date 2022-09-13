@@ -28,6 +28,15 @@ in
     '';
   };
 
+  config.file."/.direnv/rm_old_env_builds.sh" = lib.mkIf cfg.enable {
+    executable  = true;
+    text        = ''
+      #!/usr/bin/env bash
+      ACTIVE=$(readlink $PRJ_ROOT/.direnv/flake-profile)
+      find $PRJ_ROOT/.direnv -name 'flake-profile-*-link' -not -name "$ACTIVE" -delete
+    '';
+  };
+
   config.devshell.startup = lib.mkIf cfg.enable {
     direnv.text = ''
       if [[ ! -f "$PRJ_ROOT/.envrc" ]]; then
