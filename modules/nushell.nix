@@ -47,7 +47,7 @@ in {
     type          = with lib.types; attrsOf (oneOf [string (listOf string)]);
     example.hello = ["name" "{hello: $name}"];
     example.world = ''
-      # it could use previous commando
+      # it could use previous commands
       hello world
     '';
   };
