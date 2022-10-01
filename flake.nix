@@ -36,6 +36,7 @@
       ./modules/services.nix
       ./modules/services/rc-devshell.nix
       ./modules/nim.nix
+      ./modules/nushell.nix
     ];
     isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
     isntPkg  = val: !(isPkg val);
@@ -54,7 +55,7 @@
       in builtins.foldl' builtins.intersectAttrs {} inputsInputs // inputs;
       eval = system: (pkgs system).devshell.eval {
         configuration    = { inherit packages imports; };
-        extraSpecialArgs = { inputs = devShellInputs; };
+        extraSpecialArgs = { inputs = devShellInputs;  };
       };
     in flake-utils.lib.eachDefaultSystem (system: {
       inherit devShellInputs devShellModules;

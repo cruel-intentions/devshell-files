@@ -10,6 +10,7 @@
     ./examples/book.nix
     ./examples/services.nix
     ./examples/nim.nix
+    ./examples/nushell.nix
   ];
 
   # install development or deployment tools

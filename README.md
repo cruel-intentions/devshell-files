@@ -167,6 +167,7 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/book.nix
     ./examples/services.nix
     ./examples/nim.nix
+    ./examples/nushell.nix
   ];
 
   # install development or deployment tools
