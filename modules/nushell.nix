@@ -6,7 +6,7 @@ let
   if builtins.typeOf cfg.${name} == "string" then
     ""
   else
-    builtins.concatStringsSep "\n    " (lib.lists.init cfg.${name});
+    builtins.concatStringsSep ", " (lib.lists.init cfg.${name});
   toMain  = name:
   if builtins.typeOf cfg.${name} == "string" then
     cfg.${name}
@@ -20,17 +20,13 @@ let
     command = ''
       #!${pkgs.nushell}/bin/nu --stdin
       source ${nuLib}
-      def main [
-          ${toArgs name}
-      ] {
+      def main [ ${toArgs name} ] {
           ${toSrc  name}
       }
     '';
   };
   toProc  = name: ''
-    def ${name} [
-        ${toArgs name}
-    ] {
+    def ${name} [ ${toArgs name} ] {
         ${toSrc  name}
     }
   '';
