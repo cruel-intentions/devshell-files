@@ -32,7 +32,7 @@ let
   startups  = map (name: "source $DEVSHELL_DIR/bin/${toName name}") (builtins.attrNames files);
 in {
   options.file    = lib.mkOption opt;
-  config.commands = [ cmd ];
+  config.commands = lib.mkIf (builtins.length startups > 0)[ cmd ];
   config.devshell.packages = lib.mapAttrsToList copy-file files;
   config.devshell.startup  = startup;
 }
