@@ -1,6 +1,6 @@
 {
   # # Make services start when you enter in shell
-  # files.services.initSrvs = true;
+  # files.services.initSvcs = true;
 
   # static http service
   files.cmds.httplz    = true; # Install httplz
@@ -9,7 +9,10 @@
     # This is an alias of httplz
     cd $PRJ_ROOT/gh-pages
     mdbook build
-    httplz --port 8022 $PRJ_ROOT/gh-pages/book/
+
+    # IMPORTANT NOTE:
+    # if we don't use `exec` it may not stop with stopSvcs
+    exec httplz --port 8022 $PRJ_ROOT/gh-pages/book/
   '';
 
   # greeting service
@@ -17,15 +20,19 @@
   files.services.greet      = true; # Use cmd 'greet' as service
   files.alias.greet         = ''
     # Greet people
-    notify-desktop -i network-server "Starting services";
+    notify-desktop -i network-server "Welcome";
 
-    echo Dornröschen  # our service stdout goes to .data/log/greet
-    sleep infinity    # any service should run infinitely
+    # our stdout goes to .data/log/greet
+    echo Dornröschen
+
+    # if service ends, it will restarted
+    # we sleep emulating some actual service
+    exec sleep infinity 
   '';
   files.alias.greet-finish  = ''
-    notify-desktop -i network-server "Stoping services"
+    notify-desktop -i network-server "See you later"
+    echo wake up little Suzie
   '';
-
 
   # # RC (unstable) is another interface it uses s6-rc
   # # http://skarnet.org/software/s6-rc/why.html

@@ -2,52 +2,56 @@
 
 Modules can be defined in two formats:
 
-#### As function:
-
-These functions has at least these params: 
-
-- `config` with all evaluated configs values, 
-- `pkgs` with all [nixpkgs](https://search.nixos.org/) available.
-- `lib` [library](https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions) of useful functions.
-- And may receive other named params (use `...` to ignore them)
-
-```nix
-{ config, pkgs, lib, ... }: # function parms
-{                           # function result/module info
-  imports = [];
-  config  = {};
-  options = {};
-}  
-```
 
 #### As attrset, aka. object (JS), dict (Python):
 
 ```nix
-{  # module info
-  imports = [];
-  config  = {};
-  options = {};
-}
+{                            #  <|
+  imports = [];              #   |
+  config  = {};              #   | module result
+  options = {};              #   |
+}                            #  <|
 ```
+
+
+#### As function:
+
+Functions has following arguments:
+
+- `config` with all evaluated configs values, 
+- `pkgs` with all [nixpkgs](https://search.nixos.org/) available.
+- `lib` [library](https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions) of useful functions.
+- And may receive others (use `...` to ignore them)
+
+```nix
+{ config, pkgs, lib, ... }:  #  <| function args
+{                            #  <|
+  imports = [];              #   |
+  config  = {};              #   | module result
+  options = {};              #   |
+}                            #  <|
+```
+
 
 All those attributes are optional
 
 - imports: array  with paths to other modules
-- config:  object with project configurations
+- config:  object with actual configurations
 - options: object with our config type definition
 
-We adivise you to split your modules in two files:
+Hint, split modules in two files:
 - One mostly with options, where your definition goes
 - Other with config, where your information goes
 
-It has two advantages, you could share options definitions across projects more easily.
+It has two advantages, let share options definitions across projects more easily.
 
 And it hides complexity, [hiding complexity is what abstraction is all about](http://mourlot.free.fr/english/fmtaureau.html),
 we didn't share options definitions across projects to type less, but because we could reuse an abstraction that helps hiding complexity.
 
+
 #### Imports
 
-Points to other module files we want import in this module
+Points to other modules files to be imported in this module
 
 ```nix
 { 
@@ -58,179 +62,164 @@ Points to other module files we want import in this module
 }
 ```
 
-If your need import a plain nix file (not a module) you can use `builtins.import` function
-
-```nix
-{
-  # hello.txt: Hello World!
-  config.files.text."/foo/hello.txt" = import ./hello.txt;
-}
-```
-
-There are also a JSON and TOML helpers
-```nix
-{ lib, ...}:
-{
-  # hello.json: { "msg": "Hello World!"; }
-  config.files.text."/foo/hello.txt" = (lib.importJSON ./hello.json).msg;
-  config.files.text."/foo/hellO.txt" = 
-    let hello = lib.importTOML ./hello.toml) 
-    in hello.msg;
-}
-```
 
 #### Config
 
-Are values to your options
+Are values to our options
 
 ```nix
 {
-  config.gh-actions.ci-cd.pre-build = "npm i";
+  config.gh-actions.setup = "npm i";
 }
 ```
 
-If your file has only `imports` or `config` we could ommit `config`.
+Use builtin functions to import nix/json/toml/text files.
+
+```nix
+{ lib, ...}:
+{
+  config.files.text."/hi.txt" = (builtins.import  ./hello.nix ).msg; # { msg = "Hello World!"; }
+  config.files.text."/hI.txt" = (lib.importJSON   ./hello.json).msg; # { "msg": "Hello World!" }
+  config.files.text."/h1.txt" = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
+  config.files.text."/Hi.txt" = builtins.readFile ./hello.txt;       # Hello World!
+}
+```
+
+If file has no `options.`, `config.` can be ommited.
 
 And this file produce the same result
 
 ```nix
+{ lib, ...}:
 {
-  gh-actions.ci-cd.pre-build = "npm i";
+  files.text."/hi.txt" = (builtins.import  ./hello.nix ).msg; # { msg = "Hello World!"; }
+  files.text."/hI.txt" = (lib.importJSON   ./hello.json).msg; # { "msg": "Hello World!" }
+  files.text."/h1.txt" = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
+  files.text."/Hi.txt" = builtins.readFile ./hello.txt;       # Hello World!
+  gh-actions.setup = "npm i";
 }
 ```
 
 #### Options
 
-Them we need to learn how to create options.
+Options are schema definition for config.
 
-Lets start with simple example:
-
-We need create our github action file, it could be done as something like this:
+Example, to create a github action file, it could be done like this:
 
 ```nix
 {
-  files.yaml."./.github/workflows/ci-cd.yaml" = {
-    on = "push";
-    # ... rest of github action definition
-  };
-}
-```
-
-As we can see, we aren't hiding complexity and we may copy and past it in every project.
-
-Since most of our config are just: 'get code', 'build', 'test', 'install'
-
-What project user (maybe us) really needs to define is:
-
-```nix
-# any module file (maybe project.nix)
-{
-  # commands required to run your build steps
-  files.cmds.aws-cli     = true;
-  files.cmds.nodejs-14_x = true;
-
-  # our build steps
-  gh-actions.ci-cd.pre-build = "npm i";
-  gh-actions.ci-cd.build     = "npm run build";
-  gh-actions.ci-cd.test      = "npm run test";
-  gh-actions.ci-cd.deploy    = "aws s3 sync ./build s3://some-s3-bucket";
-}
-```
-
-Now we're hiding (some) complexity.
-
-If we add this to our project.nix we discover that there is no `gh-actions` config available, and command to generate project files fails.
-
-To create it we add `options` definition of that.
-
-```nix
-# gh-actions-options.nix
-{ lib, ...}:
-{
-  # defines um gh-actions.ci-cd option of type dict/object/attrset (submodule)
-  options.gh-actions.ci-cd = lib.mkOption {
-    type = lib.types.submodule {
-      # defines a property 'gh-actions.ci-cd.pre-build'
-      options.pre-build = lib.mkOption {
-        default     = "echo pre-building";
-        description = "Command to run before build";
-        example     = "npm i";
-        type        = lib.types.str;
-      };
-      # defines a property 'gh-actions.ci-cd.build'
-      options.build = lib.mkOption {
-        default     = "echo building";
-        description = "Command to run as build step";
-        example     = "npm run build";
-        type        = lib.types.str;
-      };
-      # defines a property 'gh-actions.ci-cd.test'
-      options.test = lib.mkOption {
-        default     = "echo testing";
-        description = "Command to run as test step";
-        example     = "npm test";
-        type        = lib.types.str;
-      };
-      # defines a property 'gh-actions.ci-cd.deploy'
-      options.deploy = lib.mkOption {
-        default     = "echo deploying";
-        description = "Command to run as deploy step";
-        example     = "aws s3 sync ./build s3://my-bucket";
-        type        = lib.types.str;
-      };
-    };
-    default     = {};
-    description = "Configure your github actions CI/CD";
-  };
-}
-```
-
-Good, that is it, now we can set config as we said before, but it does nothing, it doesn't create our yaml file.
-
-Usually people put the next part in same file of previous code, it isn't a requirement, and spliting it here make it simplier to explain.
-
-The cool point is that to create our yaml file we only need one config like we proposed first.
-
-```nix
-# gh-actions.nix
-{ lib, config, ... }:
-{ 
-  # import our options definitions
-  imports = [ ./gh-actions-options.nix ];
-
-  # define output file usiging user defined configurations
   files.yaml."/.github/workflows/ci-cd.yaml" = {
     on = "push";
     jobs.ci-cd.runs-on = "ubuntu-latest";
     jobs.ci-cd.steps   = [
       { uses = "actions/checkout@v2.4.0"; }
-      # read step scripts from `config.gh-actions.ci-cd`
-      { name = "Pre Build"; run = config.gh-actions.ci-cd.pre-build; }
-      { name = "Build";     run = config.gh-actions.ci-cd.build";    }
-      { name = "Test";      run = config.gh-actions.ci-cd.test";     }
-      { name = "Deploy";    run = config.gh-actions.ci-cd.deploy";   }
+      { run = "npm i"; }
+      { run = "npm run build"; }
+      { run = "npm run test"; }
+      { run = "aws s3 sync ./build s3://some-s3-bucket"; }
     ];
   };
 }
 ```
 
-Now we only need to import it on our project and set 'pre-build', 'build', 'test' and 'deploy' configs
+No complexity has been hidden, and requires copy and past it in every project.
+
+Since most CI/CD are just: 'Pre Build', 'Build', 'Test', 'Deploy'
+
+What project user really needs to define is:
+
+```nix
+# any module file (maybe project.nix)
+{
+  # our build steps
+  gh-actions.setup  = "npm i";
+  gh-actions.build  = "npm run build";
+  gh-actions.test   = "npm run test";
+  gh-actions.deploy = "aws s3 sync ./build s3://some-s3-bucket";
+}
+```
+
+Adding this to project.nix, throw an error `undefined config.gh-actions`, and command fails.
+
+To create it, add `options` definition of that.
+
+```nix
+# gh-actions-options.nix
+{ lib, ...}:
+{
+  # defines a property 'gh-actions.setup'
+  options.gh-actions.setup = lib.mkOption {
+    default     = "echo setuping";
+    description = "Command to run before build";
+    example     = "npm i";
+    type        = lib.types.str;
+  };
+  # defines a property 'gh-actions.build'
+  options.gh-actions.build = lib.mkOption {
+    default     = "echo building";
+    description = "Command to run as build step";
+    example     = "npm run build";
+    type        = lib.types.str;
+  };
+  # defines a property 'gh-actions.test'
+  options.gh-actions.test = lib.mkOption {
+    default     = "echo testing";
+    description = "Command to run as test step";
+    example     = "npm test";
+    type        = lib.types.str;
+  };
+  # defines a property 'gh-actions.deploy'
+  options.gh-actions.deploy = lib.mkOption {
+    default     = "echo deploying";
+    description = "Command to run as deploy step";
+    example     = "aws s3 sync ./build s3://my-bucket";
+    type        = lib.types.str;
+  };
+}
+```
+
+Now, previous config can be used, but it does nothing, it doesn't create yaml.
+
+It knowns what options can be accepted as `config`, but not what to do with it.
+
+Usually the next part is in same file of `options`, it isn't a requirement, and spliting it here make it simplier to explain.
+
+
+```nix
+# gh-actions.nix
+{ config, lib, ... }:
+{
+  # use other module that simplify file creation to create config file
+  files.yaml."/.github/workflows/ci-cd.yaml".jobs.ci-cd.steps   = [
+    { uses = "actions/checkout@v2.4.0"; }
+
+    { run  = config.gh-actions.setup;   }  # 
+    { run  = config.gh-actions.build";  }  #  Read step scripts from
+    { run  = config.gh-actions.test";   }  #  config.gh-actions
+    { run  = config.gh-actions.deploy"; }  # 
+  ];
+  files.yaml."/.github/workflows/ci-cd.yaml".on = "push";
+  files.yaml."/.github/workflows/ci-cd.yaml".jobs.ci-cd.runs-on = "ubuntu-latest";
+}
+```
+
+Now it can be imported and set 'setup', 'build', 'test' and 'deploy' configs
 
 ```nix
 # any other module file, maybe project.nix
 {
-  imports = [ ./gh-actions.nix ];
-  gh-actions.ci-cd.pre-build = "echo 'paranaue'";
-  gh-actions.ci-cd.build     = "echo 'paranaue parana'";
-  gh-actions.ci-cd.build     = "echo 'paranaue'";
-  gh-actions.ci-cd.deploy    = ''
+  imports = [ ./gh-actions-options.nix ./gh-actions.nix ];
+  gh-actions.setup  = "echo 'paranaue'";
+  gh-actions.build  = "echo 'paranaue parana'";
+  gh-actions.build  = "echo 'paranaue'";
+  gh-actions.deploy = ''
     echo "paranaue 
             parana"
   '';
 }
 ```
 
-If we try to set something that is not a string to it, an error will raise, typecheking it.
+If something that is not a string is set, an error will raise, cheking it against the options schema.
 
 There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-option-types) that can be used (some of them):
 - lib.types.bool 
@@ -252,5 +241,5 @@ There are [other types](https://nixos.org/manual/nixos/stable/index.html#sec-opt
 
 And lib has some modules [helpers functions](https://teu5us.github.io/nix-lib.html#lib.modules.mkif) like:
 - lib.mkIf          : to only set a property if some informaiton is true
-- lib.optionals     : to return an array or an empty array
-- lib.optionalString: to return an array or an empty string
+- lib.optionals     : to return an array  or an empty array
+- lib.optionalString: to return an string or an empty string

@@ -20,6 +20,7 @@
   - [json module](./modules/json.md)
   - [mdbook module](./modules/mdbook.md)
   - [nim module](./modules/nim.md)
+  - [nushell module](./modules/nushell.md)
   - [rc module (WIP)](./modules/rc.md)
   - [services module](./modules/services.md)
   - [spdx module](./modules/spdx.md)

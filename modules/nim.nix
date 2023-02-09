@@ -1,20 +1,27 @@
-{pkgs, config, lib, ...}:
+{pkgs, config, lib, extraModules,...}:
 let
   # Create a Nim binary
-  nimFlags    = "-w:off -d:ssl --threads:on --mm:orc --hints:off --parallelBuild:4 --cc:tcc --tlsEmulation:on";
+  nimFlags    = "-w:off -d:ssl --threads:on --mm:orc --hints:off --parallelBuild:4 --tlsEmulation:on";
   devShellEnv = pkgs.writeTextFile {
     name = "devShellEnvs.nim";
-    text = builtins.concatStringsSep "\n" (
-      map ({ name, ...}: ''let ${name} = env "${name}"'') config.env
+    text = with builtins; concatStringsSep "\n" (
+      map (name: ''let ${name} = env "${name}"'') 
+      (attrNames (listToAttrs config.env))
     );
   };
-  writeNimWrapper = name: code:
+  writeNimWrapper = { name, src, deps }:
+    let
+      cincludes = "--cincludes:$DEVSHELL_DIR/include";
+      clibdir   = "--clibdir:$DEVSHELL_DIR/lib";
+      code      = src;
+      pths      = builtins.concatStringsSep " "(map (d: "-p:${d}") deps);
+    in
     pkgs.runCommandCC name
     {
       inherit name code;
-      laziness         = builtins.readFile ./nim/laziness.nim;
-      passAsFile       = ["code" "laziness"];
-      propagatedBuildInputs = [pkgs.openssl pkgs.pcre pkgs.nim pkgs.tinycc];
+      laziness              = builtins.readFile ./nim/laziness.nim;
+      passAsFile            = ["code" "laziness"];
+      propagatedBuildInputs = [pkgs.openssl pkgs.pcre pkgs.nim] ++ deps;
     }
     ''
       mkdir -p $out/nim/src/devshell
@@ -31,7 +38,7 @@ let
       # compile at activation time
       if grep -qP "^#compile-at-mkshell" $codePath; then
         nim c \
-          ${nimFlags} \
+          ${nimFlags} ${pths} ${cincludes} ${clibdir}\
           --nimcache:./cache \
           --out:"$out/bin/$name" \
           "$out/nim/src/$NAMIM.nim"
@@ -45,7 +52,7 @@ let
       if [ ! -f /nix/store/*'$BIN_NAME' ];
       then
         nim c \
-          ${nimFlags} \
+          ${nimFlags} ${pths} ${cincludes} ${clibdir}\
           --out:"'$TMP_BIN'" \
           '$out/nim/src/$NAMIM.nim'
         nix store add-file '$TMP_BIN' >/dev/null
@@ -58,36 +65,50 @@ let
       chmod +x $out/bin/$name
     '';
   nimCfg    = config.files.nim;
-  nimCmds   = map nimToCmd (builtins.attrNames nimCfg);
-  nimToCmd  = name: {
+  normNimCfg= map (name: {
     inherit name;
+    src  = 
+      if builtins.typeOf nimCfg.${name} == "string"
+      then nimCfg.${name}
+      else nimCfg.${name}.src;
+    deps = 
+      if builtins.typeOf nimCfg.${name} == "string"
+      then []
+      else nimCfg.${name}.deps;
+  }) (builtins.attrNames nimCfg);
+  nimCmds   = map nimToCmd normNimCfg;
+  nimToCmd  = nimSrcADeps: {
+    name    = nimSrcADeps.name;
+    package = writeNimWrapper nimSrcADeps;
     help    = let
       isntSH  = line: builtins.match "#!/.+" line == null;
       stripCo = line: builtins.replaceStrings ["# " "#"] ["" ""] line;
-      lines   = name: lib.splitString "\n" nimCfg.${name};
-    in with builtins; stripCo (head (filter isntSH (lines name)));
-    package = writeNimWrapper name nimCfg.${name};
-  };
-  getLib    = pkg: {
-    name    = pkg.name;
-    help    = pkg.description or pkg.name;
-    package = lib.getLib pkg;
+      lines   = lib.splitString "\n" nimSrcADeps.src;
+    in with builtins; stripCo (head (filter isntSH lines));
   };
   hasAnyNim = builtins.length nimCmds > 0;
+  allDeps   = lib.flatten (map ({deps, ...}: deps) normNimCfg);
   packages  = 
     if hasAnyNim
-    then map lib.getLib [ pkgs.pcre pkgs.openssl pkgs.nim pkgs.tinycc ]
+    then map lib.getLib ([ pkgs.pcre pkgs.openssl pkgs.nim pkgs.tinycc ] ++ allDeps)
     else [];
   libEnv    = 
     if hasAnyNim 
-    then 
-    [
-      {
-        name   = "LD_LIBRARY_PATH";
-        prefix = "$DEVSHELL_DIR/lib";
-      }
+    then [
+      { name = "LD_LIBRARY_PATH"; prefix = "$DEVSHELL_DIR/lib";}
+      { name = "C_INCLUDE_PATH";  prefix = "$DEVSHELL_DIR/include";}
     ]
     else [];
+  codeAdeps = lib.types.submodule {
+    options.deps = lib.mkOption {
+      description = "Your code dependencies";
+      type        = lib.types.listOf lib.types.package;
+    };
+    options.src  = lib.mkOption {
+      description = "Your nim code";
+      type        = lib.types.str;
+    };
+  };
 in {
   options.files.nim = lib.mkOption {
     default       = {};
@@ -99,8 +120,17 @@ in {
       # compile at shell activation
       echo "hello"
     '';
-    example.start = ''exec "docker", @["compose", "up"] & ARGS'';
-    type          = lib.types.attrsOf lib.types.string;
+    example.dokr = ''
+      // create an docker compose alias
+      // cd $PRJ_ROOT/subdir; docker "compose" $@
+      exec "docker", "compose" + ARGS, PRJ_ROOT / "subdir"
+    '';
+    example.manage = ''
+      // create an pipenv alias
+      // pipenv run python ./manage.py
+      exec "pipenv", args("run python ./manage.py") + ARGS
+    '';
+    type          = lib.types.attrsOf (lib.types.oneOf [codeAdeps lib.types.string]);
     description   = ''
       Nim code to create an command
 
@@ -140,8 +170,7 @@ in {
 
       Todo:
       - Add an option to configure flags
-      - Add an option to add nimble deps
-      - Add an option for static compilation
+      - Add an option for static linking
   
       Examples:
       ```nix

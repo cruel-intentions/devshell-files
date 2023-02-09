@@ -18,9 +18,10 @@ let
     value.executable = true;
     value.text       = with exclib;''
       ${shBang}
-      ${hasCmdRun "ifthenelse" "${name}-log"} {
-        ${s6lib.log {inherit name;}}
-      }'';
+      ${cdPrj}
+      ${hasCmdRun "ifelse" "${name}-log"}
+        ${s6lib.log {inherit name; flags = s6lib.defaultLogFlags;}}
+    '';
   };
   mkS6Stop = name: {
     name  = "/.data/services/${name}/finish";
@@ -50,10 +51,26 @@ let
   filtSvcs = boole: lib.filterAttrs (n: v: n != "initSvcs" && v == boole);
   liveSvcs = builtins.attrNames (filtSvcs true  config.files.services);
   deadSvcs = builtins.attrNames (filtSvcs false config.files.services);
+  initSvcsd= with exclib;''
+    ${shBang}
+    # init all services
+    ${s6lib.scanAndLog { }}
+  '';
+  autoSvcsd= ''
+    background() {
+      exec 0>&-
+      exec 1>&-
+      exec 2>&-
+      exec 3>&-
+      initSvcsd &
+      disown $!
+    }
+    background
+  '';
   initSvcs = with exclib;''
     ${shBang}
     # init all services
-    ${bg (s6lib.scanAndLog {})}
+    ${bg "initSvcsd"}
   '';
   scanSvcs = with exclib;''
     ${shBang}
@@ -63,7 +80,7 @@ let
   stopSvcs = with exclib;''
     ${shBang}
     # stop all services
-    ${s6lib.scanCtlAndLog { ctlFlags = "-t"; }}
+    ${s6lib.scanCtlAndLog { ctlFlags = "-aq"; }}
   '';
   stUpSvcs = lib.optionalAttrs haveSvcs {
     "zzzzzz-ssssss-services-start".text = ''
@@ -76,7 +93,9 @@ let
       rm $PRJ_SVCS_DIR/{.s6-svscan,${builtins.concatStringsSep "," liveSvcs}}/down \
         &>/dev/null || true
       # rescan services
-      scanSvcs ${lib.optionalString autoSvcs "|| initSvcs"}
+      scanSvcs
+    '' + lib.optionalString autoSvcs ''
+      autoSvcsd
     '';
   };
   haveSvcs = builtins.length liveSvcs > 0;
@@ -145,16 +164,21 @@ in
        ```
 
       Know bugs:
-      - Integration with direnv isn't, ok when configured to auto start
+      If we don't use `exec` in our alias, some necromancer could
+      form an army of undead process, and start a war against our 
+      system, since they both may require the most sparse resource
+      of our lands.
     '';
   };
-  config.files.alias.stopSvcs   = lib.mkIf haveSvcs stopSvcs;
   config.files.alias.initSvcs   = lib.mkIf haveSvcs initSvcs;
+  config.files.alias.initSvcsd  = lib.mkIf haveSvcs initSvcsd;
+  config.files.alias.autoSvcsd  = lib.mkIf haveSvcs autoSvcsd;
   config.files.alias.scanSvcs   = lib.mkIf haveSvcs scanSvcs;
-  config.files.alias.svcCtl     = lib.mkIf haveSvcs "s6-svc $2 $PRJ_SVCS_DIR/$1";
-  config.files.alias.stopSvc    = lib.mkIf haveSvcs "svcCtl $1 -d";
-  config.files.alias.restartSvc = lib.mkIf haveSvcs "svcCtl $1 -r";
+  config.files.alias.stopSvcs   = lib.mkIf haveSvcs stopSvcs;
   config.files.alias.initSvc    = lib.mkIf haveSvcs "svcCtl $1 -u";
+  config.files.alias.restartSvc = lib.mkIf haveSvcs "svcCtl $1 -r";
+  config.files.alias.stopSvc    = lib.mkIf haveSvcs "svcCtl $1 -d";
+  config.files.alias.svcCtl     = lib.mkIf haveSvcs "s6-svc $2 $PRJ_SVCS_DIR/$1";
   config.devshell.packages    = lib.mkIf haveSvcs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
   config.devshell.startup     = stUpSvcs // (rmS6Svcs deadSvcs) // (mkS6Dirs liveSvcs);
   config.file = (mkS6Runs liveSvcs) // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs);
