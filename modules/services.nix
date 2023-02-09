@@ -7,11 +7,10 @@ let
   mkS6Run  = name: {
     name  = "/.data/services/${name}/run";
     value.executable = true;
-    value.text       = with exclib;''
-      ${shBang}
-      ${cdPrj}
-      ${hasCmdRun "ifelse" name}
-        echo "${name} not found"
+    value.text       = ''
+      #!${pkgs.bash}/bin/bash
+      set -e
+      exec "${name}" 2>&1
     '';
   };
   mkS6Log  = name: {
@@ -27,13 +26,13 @@ let
   mkS6Stop = name: {
     name  = "/.data/services/${name}/finish";
     value.executable = true;
-    value.text       = with exclib;''
-      ${shBang}
-      ${cdPrj}
-      ${pipeline' "-w" (
-        s6lib.log { name = "${name}-finish"; flags = s6lib.defaultLogFlags; })}
-      ${hasCmdRun "ifelse" "${name}-finish"}
-        echo "${name} finished"
+    value.text       = ''
+      #!${pkgs.bash}/bin/bash
+      if [ $1 -eq 127 ]; then
+        echo "${name} not found, aborting"
+        exit 125 # Signal a permanent failure
+      fi
+      echo ${name} finished
     '';
   };
   rmS6Svc  = name: {
@@ -83,7 +82,7 @@ let
     # stop all services
     ${s6lib.scanCtlAndLog { ctlFlags = "-aq"; }}
   '';
-  stUpSvcs = lib.optionalAttrs haveSvcs { 
+  stUpSvcs = lib.optionalAttrs haveSvcs {
     "zzzzzz-ssssss-services-start".text = ''
       mkdir -p $PRJ_SVCS_LOG/svscan
       mkdir -p $PRJ_SVCS_LOG/svscanctl
@@ -118,11 +117,11 @@ in
 
       Default log informations goes to $PRJ_SVCS_LOG/{name}/current .
 
-      `initSvcs` is a special name to auto start the process supervisor 
+      `initSvcs` is a special name to auto start the process supervisor
       [s6](http://skarnet.org/software/s6/), it control all other services.
 
       If we don't set initSvcs service, we can start it running `initSvcs`.
- 
+
       S6 wont stop by itself, we should run `stopSvcs` when it's done.
 
       It defines two env vars:
