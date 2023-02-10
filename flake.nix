@@ -3,16 +3,14 @@
     devShell file generator helper
   '';
 
-  inputs.devshell.inputs.nixpkgs.follows     = "nixpkgs";
-  inputs.devshell.inputs.flake-utils.follows = "flake-utils";
-  inputs.devshell.url    = "github:numtide/devshell";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.nixpkgs.url     = "github:nixos/nixpkgs/22.05";
+  inputs.nixpkgs.url  = "github:nixos/nixpkgs/release-22.11";
+  inputs.devshell.url = "github:numtide/devshell";
+  inputs.devshell.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { self, flake-utils, devshell, nixpkgs }:
+  outputs = { self, devshell, nixpkgs }:
   let
-    defaultTemplate.path        = ./template;
-    defaultTemplate.description = ''
+    templates.default.path        = ./template;
+    templates.default.description = ''
       nix flake new -t github:cruel-intentions/devshell-files project
     '';
     lib.importTOML = devshell.lib.importTOML;
@@ -40,7 +38,10 @@
     ];
     isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
     isntPkg  = val: !(isPkg val);
-    mkShell  = imports': shell { inherit self flake-utils devshell nixpkgs; } imports';
+    mkShell  = imports': shell { inherit self devshell nixpkgs; } imports';
+    overlay  = devshell.overlay;
+    overlays = { default = overlay; };
+    pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
     shell    = inputs: imports':
     let 
       imports  = modules' ++ modules;
@@ -57,11 +58,12 @@
         configuration    = { inherit packages imports; };
         extraSpecialArgs = { inputs = devShellInputs;  };
       };
-    in flake-utils.lib.eachDefaultSystem (system: {
+    in {
       inherit devShellInputs devShellModules;
-      devShell = (eval system).shell;
-    });
-    pkgs    = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
-    overlay = devshell.overlay;
-  in { inherit defaultTemplate lib overlay; } // (mkShell [ ./project.nix ]);
+      devShells.aarch64-darwin.default = (eval "aarch64-darwin").shell;
+      devShells.aarch64-linux.default  = (eval "aarch64-linux" ).shell;
+      devShells.x86_64-darwin.default  = (eval "x86_64-darwin" ).shell;
+      devShells.x86_64-linux.default   = (eval "x86_64-linux"  ).shell;
+    };
+  in { inherit templates lib overlays; } // (mkShell [ ./project.nix ]);
 }
