@@ -9,4 +9,5 @@
   files.gitignore.pattern."**/.direnv"       = true;
   files.gitignore.pattern."**/.envrc"        = true;
   files.gitignore.pattern."**/.gitignore"    = true;
+  files.gitignore.pattern."**/flake.lock"    = true;
 }
