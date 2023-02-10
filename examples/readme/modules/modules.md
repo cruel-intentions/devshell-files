@@ -149,28 +149,28 @@ To create it, add `options` definition of that.
 {
   # defines a property 'gh-actions.setup'
   options.gh-actions.setup = lib.mkOption {
-    default     = "echo setuping";
+    default     = "echo setup";
     description = "Command to run before build";
     example     = "npm i";
     type        = lib.types.str;
   };
   # defines a property 'gh-actions.build'
   options.gh-actions.build = lib.mkOption {
-    default     = "echo building";
+    default     = "echo build";
     description = "Command to run as build step";
     example     = "npm run build";
     type        = lib.types.str;
   };
   # defines a property 'gh-actions.test'
   options.gh-actions.test = lib.mkOption {
-    default     = "echo testing";
+    default     = "echo test";
     description = "Command to run as test step";
     example     = "npm test";
     type        = lib.types.str;
   };
   # defines a property 'gh-actions.deploy'
   options.gh-actions.deploy = lib.mkOption {
-    default     = "echo deploying";
+    default     = "echo deploy";
     description = "Command to run as deploy step";
     example     = "aws s3 sync ./build s3://my-bucket";
     type        = lib.types.str;
@@ -194,8 +194,8 @@ Usually the next part is in same file of `options`, it isn't a requirement, and 
     { uses = "actions/checkout@v2.4.0"; }
 
     { run  = config.gh-actions.setup;   }  # 
-    { run  = config.gh-actions.build";  }  #  Read step scripts from
-    { run  = config.gh-actions.test";   }  #  config.gh-actions
+    { run  = config.gh-actions.build;   }  #  Read step scripts from
+    { run  = config.gh-actions.test;    }  #  config.gh-actions
     { run  = config.gh-actions.deploy"; }  # 
   ];
   files.yaml."/.github/workflows/ci-cd.yaml".on = "push";

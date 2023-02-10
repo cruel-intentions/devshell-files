@@ -1,5 +1,5 @@
 {
-  # create my .gitignore coping ignore patterns from
+  # create my .gitignore copying ignore patterns from
   # github.com/github/gitignore
   files.gitignore.enable = true;
   files.gitignore.template."Global/Archives" = true;
