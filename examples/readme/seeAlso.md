@@ -7,6 +7,7 @@
 * [Home Manager](https://github.com/nix-community/home-manager) similar project (for user home configs)
 * [NixOS](https://nixos.org/) similar project (for system configs)
 * [Nix Ecosystem](https://nixos.wiki/wiki/Nix_Ecosystem) more projects using same tool
+* [Nix Mindmap](https://coggle.it/diagram/Y9k9VVmUw-1okyFh/t/nix) of how nix ecosystem works
 * [Nix.Dev](https://nix.dev/)
 * [Nixology](https://www.youtube.com/watch?v=NYyImy-lqaA&list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs)
 
