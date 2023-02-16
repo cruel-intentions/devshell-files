@@ -1,7 +1,7 @@
 ''
 ### Document our module
 
-To documento our modules is simple, we just need to use `config.files.docs` as follow
+To document our modules is simple, we just need to use `config.files.docs` as follow
 
 ```nix
 # examples/docs.nix
