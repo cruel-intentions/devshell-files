@@ -46,11 +46,11 @@ Nix integrates well with git and http, it could be also used to read JSON, YAML,
 
 In fact Nix isn't a configuration tool but a package manger, we are only using it as configuration tool because the language is simple and flexible.
 
-You can recreate files of a repository directly to your local machine by running `nix develop <flake-uri> -c "devshell-files"`, example:
+You can recreate files of a repository directly to your local machine by running `nix develop <flake-uri> --build`, example:
 
 ```bash
 # copy all my dogfood ot your current folder
-nix develop github:cruel-intentions/devshell-files -c "devshell-files"
+nix develop github:cruel-intentions/devshell-files --build
 ```
 
 With help of [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](https://github.com/numtide/devshell) you could install any development or deployment tool of its [80 000](https://search.nixos.org/) packages.
