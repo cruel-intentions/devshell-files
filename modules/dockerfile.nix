@@ -3,11 +3,12 @@ let
   cfg = config.files.dockerfile;
   # directives = pkgs.callPackage ./dockerfile/directives.nix { inherit lib; };
   toFile = name: value: {
-    source = pkgs.writeTextFile {
+    source   = pkgs.writeTextFile {
       name = (builtins.baseNameOf name);
       text = value;
     };
-    git-add = lib.mkIf config.files.git.auto-add true;
+    git-add  = lib.mkIf config.files.git.auto-add true;
+    on-enter = lib.mkIf config.files.on-call (lib.mkDefault false);
   };
 in {
   options.files.dockerfile = lib.mkOption {

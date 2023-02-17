@@ -13,8 +13,9 @@ let
     value             = builtins.toJSON value;
   } ''yj ${yj-arg} < $valuePath > $out'';
   toFile = name: value: {
-    source  = gen name value;
-    git-add = lib.mkIf config.files.git.auto-add true;
+    source   = gen name value;
+    git-add  = lib.mkIf config.files.git.auto-add (lib.mkDefault true);
+    on-enter = lib.mkIf config.files.on-call (lib.mkDefault false);
   };
 in {
   options.files.${format} = lib.mkOption {
