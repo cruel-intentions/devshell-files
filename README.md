@@ -46,6 +46,13 @@ Nix integrates well with git and http, it could be also used to read JSON, YAML,
 
 In fact Nix isn't a configuration tool but a package manger, we are only using it as configuration tool because the language is simple and flexible.
 
+You can recreate files of a repository directly to your local machine by running `nix develop <flake-uri> -c "devshell-files"`, example:
+
+```bash
+# copy all my dogfood ot your current folder
+nix develop github:cruel-intentions/devshell-files -c "devshell-files"
+```
+
 With help of [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](https://github.com/numtide/devshell) you could install any development or deployment tool of its [80 000](https://search.nixos.org/) packages.
 
 ## Instructions
@@ -728,6 +735,7 @@ This project uses git as version control, if your are using other version contro
 * [Home Manager](https://github.com/nix-community/home-manager) similar project (for user home configs)
 * [NixOS](https://nixos.org/) similar project (for system configs)
 * [Nix Ecosystem](https://nixos.wiki/wiki/Nix_Ecosystem) more projects using same tool
+* [Nix Mindmap](https://coggle.it/diagram/Y9k9VVmUw-1okyFh/t/nix) of how nix ecosystem works
 * [Nix.Dev](https://nix.dev/)
 * [Nixology](https://www.youtube.com/watch?v=NYyImy-lqaA&list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs)
 
