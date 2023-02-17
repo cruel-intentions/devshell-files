@@ -8,6 +8,7 @@ They are already included when we use this package.
 - `files.cmds`, install packages from [nix repository](https://search.nixos.org/)
 - `files.docs`, convert our modules file into markdown using [nmd](https://gitlab.com/rycee/nmd)
 - `files.git`, configure git with file creation
+- `files.on-call`, connfigure file to created only when devshell-files command is called, not on shell start
 - `files.gitignore`, copy .gitignore from [templates](https://github.com/github/gitignore/)
 - `files.hcl`, create HCL files with nix syntax
 - `files.json`, create JSON files with nix syntax

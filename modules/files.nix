@@ -16,23 +16,23 @@ let
         else "";
   toName    = name: ".dsf${lib.strings.sanitizeDerivationName name}";
   # Execute this script to update the project's files
-  copy-file = name: file: pkgs.writeShellScriptBin "${toName name}" ''
-    target="$PRJ_ROOT${file.target}"
-    ${pkgs.coreutils}/bin/install -m 644 -D ${file.source} $target
+  copy-files = map (name: "source $DEVSHELL_DIR/bin/${toName name}") (builtins.attrNames files);
+  copy-files'= lib.mapAttrsToList (name: file: if file.on-enter then "source $DEVSHELL_DIR/bin/${toName name}" else "")  files;
+  copy-file  = name: file: pkgs.writeShellScriptBin "${toName name}" ''
+    ${pkgs.coreutils}/bin/install -m 644 -D ${file.source} "$PRJ_ROOT${file.target}"
     ${chmod file}
     ${git-add file}
   '';
-  cmd.command     = builtins.concatStringsSep "\n" startups;
+  cmd.command     = builtins.concatStringsSep "\n" copy-files;
   cmd.help        = "Recreate files";
   cmd.name        = "devshell-files";
   opt.default     = {};
   opt.description = "Attribute set of files to create into the project root.";
   opt.type        = fileType "<envar>PRJ_ROOT</envar>";
-  startup.devshell-files.text = "$DEVSHELL_DIR/bin/devshell-files";
-  startups  = map (name: "source $DEVSHELL_DIR/bin/${toName name}") (builtins.attrNames files);
+  startup.devshell-files.text = builtins.concatStringsSep "\n" copy-files';
 in {
   options.file    = lib.mkOption opt;
-  config.commands = lib.mkIf (builtins.length startups > 0) [ cmd ];
+  config.commands = lib.mkIf (builtins.length copy-files > 0) [ cmd ];
   config.devshell.packages = lib.mapAttrsToList copy-file files;
-  config.devshell.startup  = lib.mkIf (builtins.length startups > 0) startup;
+  config.devshell.startup  = lib.mkIf (builtins.length copy-files > 0) startup;
 }

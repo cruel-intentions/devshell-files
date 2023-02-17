@@ -50,4 +50,8 @@
 
   # create .envrc for direnv
   files.direnv.enable = true;
+
+  # disabe file creation when entering in the shell
+  # call devshell-files instead
+  # files.on-call = true;
 }
