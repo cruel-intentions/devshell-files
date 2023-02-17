@@ -4,6 +4,7 @@
   files.docs."/gh-pages/src/modules/cmds.md".modules      = [ ../modules/cmds.nix        ];
   files.docs."/gh-pages/src/modules/files.md".modules     = [ ../modules/files.nix       ];
   files.docs."/gh-pages/src/modules/git.md".modules       = [ ../modules/git.nix         ];
+  files.docs."/gh-pages/src/modules/on-call.md".modules   = [ ../modules/startup.nix     ];
   files.docs."/gh-pages/src/modules/gitignore.md".modules = [ ../modules/gitignore.nix   ];
   files.docs."/gh-pages/src/modules/hcl.md".modules       = [ ../modules/hcl.nix         ];
   files.docs."/gh-pages/src/modules/json.md".modules      = [ ../modules/json.nix        ];

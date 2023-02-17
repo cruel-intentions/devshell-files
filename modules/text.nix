@@ -3,8 +3,9 @@ let
   format = "text";
   cfg = config.files.${format};
   toFile = name: value: {
-    git-add = lib.mkIf config.files.git.auto-add true;
-    source = pkgs.writeTextFile {
+    git-add  = lib.mkIf config.files.git.auto-add true;
+    on-enter = lib.mkIf config.files.on-call (lib.mkDefault false);
+    source   = pkgs.writeTextFile {
       name = (builtins.baseNameOf name);
       text = value;
     };

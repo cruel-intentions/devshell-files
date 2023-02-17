@@ -59,6 +59,14 @@ in
             To add this file to git repository after creation
           '';
         };
+
+        on-enter = mkOption {
+          type = types.nullOr types.bool;
+          default = true;
+          description = ''
+            This file will be created on enter in development shell
+          '';
+        };
       };
 
       config = {
