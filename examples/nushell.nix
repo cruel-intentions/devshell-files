@@ -20,9 +20,9 @@
     # nushhello en Joe
     echo Hello $who
   ''];
-  files.nush.nushhello.pt = ["quem" ''
+  files.nush.nushhello.pt = [''
     # call it like 
-    # nushhello pt Doe
-    echo Ola $quem
+    # echo Doe|nushhello pt
+    echo Ola $in
   ''];
 }

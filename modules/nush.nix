@@ -19,18 +19,8 @@ let
     inherit name;
     help    = "${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})";
     command = ''
-      #!${pkgs.nushell}/bin/nu --stdin
-      def main [
-        subcommand: string = ""
-        ...commandArgs: string
-      ] {
-        if ($subcommand == "") {
-          echo "${help}"
-        } else {
-          let args = ($commandArgs|str join " ")
-          nu -c $"source ${nuLib}; ${name} ($subcommand) ($args)"
-        }
-      }
+      ${pkgs.nushell}/bin/nu --stdin -c \
+      "$(printf "let IN = \$in\nsource ${nuLib}\n\$IN|${name} $*")"
     '';
   };
   toProc  = name: def: ''
