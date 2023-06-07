@@ -3,36 +3,28 @@
   "--outputFormat (-o): string = json"
   ''
     # convert formats --inputFormat|-i format --outputFormat|-o format
-    $in |  if $inputFormat in [csv]      {
-        from csv
-    } else if $inputFormat in [eml]      {
-        from eml
-    } else if $inputFormat in [ics]      {
-        from ics
-    } else if $inputFormat in [ini]      {
-        from ini
+    if $inputFormat in [csv]             {
+        $in | from csv
     } else if $inputFormat in [json]     {
-        from json
+        $in | from json
     } else if $inputFormat in [nu nuon]  {
-        from nuon
+        $in | from nuon
     } else if $inputFormat in [ods]      {
-        from ods
+        $in | from ods
     } else if $inputFormat in [ssv]      {
-        from ssv
+        $in | from ssv
     } else if $inputFormat in [tml toml] {
-        from toml
+        $in | from toml
     } else if $inputFormat in [tsv]      {
-        from tsv
+        $in | from tsv
     } else if $inputFormat in [url]      {
-        from url
-    } else if $inputFormat in [vcf]      {
-        from vcf
+        $in | from url
     } else if $inputFormat in [xls xlsx] {
-        from xlsx
+        $in | from xlsx
     } else if $inputFormat in [xml xml]  {
-        from xml
+        $in | from xml
     } else if $inputFormat in [yml yaml] {
-        from yaml
+        $in | from yaml
     } else {
         echo "Unknown inputFormat, options:"
         [[index];
@@ -49,12 +41,12 @@
         to md
     } else if $outputFormat in [nuon nu]  {
         to nuon
+    } else if $outputFormat in [text] {
+        to text
     } else if $outputFormat in [toml tml] {
         to toml
     } else if $outputFormat in [tsv]      {
         to tsv
-    } else if $outputFormat in [url]      {
-        to url
     } else if $outputFormat in [xml]      {
         to xml
     } else if $outputFormat in [yaml yml] {

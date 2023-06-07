@@ -15,4 +15,10 @@
     echo 'and content is:'
     # open $pseudoFile|collect { |x| echo $x }
   ''];
+  files.nush.nushhello.en = ["who" ''
+    echo Hello $who
+  ''];
+  files.nush.nushhello.pt = ["quem" ''
+    echo Ola $quem
+  ''];
 }

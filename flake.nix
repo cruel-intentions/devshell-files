@@ -34,6 +34,7 @@
       ./modules/services/rc-devshell.nix
       ./modules/nim.nix
       ./modules/nushell.nix
+      ./modules/nush.nix
     ];
     isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
     isntPkg  = val: !(isPkg val);

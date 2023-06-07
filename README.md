@@ -613,6 +613,7 @@ To document our modules is simple, we just need to use `config.files.docs` as fo
   files.docs."/gh-pages/src/modules/mdbook.md".modules    = [ ../modules/mdbook.nix      ];
   files.docs."/gh-pages/src/modules/nim.md".modules       = [ ../modules/nim.nix         ];
   files.docs."/gh-pages/src/modules/nushell.md".modules   = [ ../modules/nushell.nix     ];
+  files.docs."/gh-pages/src/modules/nush.md".modules      = [ ../modules/nush.nix        ];
   files.docs."/gh-pages/src/modules/rc.md".modules        = [ ../modules/services/rc-devshell.nix ];
   files.docs."/gh-pages/src/modules/services.md".modules  = [ ../modules/services.nix    ];
   files.docs."/gh-pages/src/modules/spdx.md".modules      = [ ../modules/spdx.nix        ];
@@ -709,6 +710,7 @@ They are already included when we use this package.
 - `files.mdbook`, convert your markdown files to HTML using [mdbook](https://rust-lang.github.io/mdBook/)
 - `files.nim`, similar to `files.alias`, but compiles [Nim](https://github.com/nim-lang/Nim/wiki#getting-started) code
 - `files.nus`, similar to `files.alias`, but runs in [Nushell](https://www.nushell.sh/)
+- `files.nush`, similar to `files.nus`, but for subcommands
 - `files.services`, process supervisor for development services using [s6](http://skarnet.org/software/s6)
 - `files.rc` , WIP, process supervisor for development services using [s6-rc](http://skarnet.org/software/s6-rc)
 - `files.spdx`, copy LICENSE from [templates](https://github.com/spdx/license-list-data/tree/master/text)
