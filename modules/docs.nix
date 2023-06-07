@@ -1,8 +1,8 @@
 { pkgs, lib, config,...}:
 let
-  nmd-src = builtins.fetchTarball {
-    url    = "https://gitlab.com/hugosenari/nmd/-/archive/evalModulesArgs/nmd-evalModulesArgs.tar.bz2";
-    sha256 = "1qkzkx1nxpfvpcvxsfy2fzsalh6gcrrpnnijwpmfbpwg2v2s98ww";
+  nmd-src = builtins.fetchGit {
+    url = "https://git.sr.ht/~rycee/nmd";
+    rev = "07a6db31ae19d728ef1e4dc02b9687a6c359c216";
   };
   nmd = pkgs.callPackage nmd-src {};
   module-docs = name: cfg:
@@ -13,9 +13,7 @@ let
           _module.args.pkgs = lib.mkForce (nmd.scrubDerivations "pkgs" pkgs);
         }];
       };
-      buildModulesDocs = pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" {
-        evalModulesArgs = builtins.head (lib.dischargeProperties cfg.evalModulesArgs);
-      };
+      buildModulesDocs = pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" { };
       docs = buildModulesDocs {
         channelName     = "";
         docBook         = {};
