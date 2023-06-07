@@ -10,7 +10,6 @@ let
     command = ''
       ${cfg.${name}}
     '';
-
   };
   aliasses = map toAlias (builtins.attrNames cfg);
 in {

@@ -6,13 +6,13 @@ let
     if file.executable == null
       then ""
       else if file.executable
-        then "chmod +x $target"
-        else "chmod -x $target";
+        then ''chmod +x "$PRJ_ROOT${file.target}"''
+        else ''chmod -x "$PRJ_ROOT${file.target}"'';
   git-add   = file:
     if file.git-add == null
       then ""
       else if file.git-add
-        then "git add $target"
+        then ''git add "$PRJ_ROOT${file.target}"''
         else "";
   toName    = name: ".dsf${lib.strings.sanitizeDerivationName name}";
   # Execute this script to update the project's files

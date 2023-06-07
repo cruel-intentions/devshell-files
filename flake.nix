@@ -3,16 +3,14 @@
     devShell file generator helper
   '';
 
-  inputs.nixpkgs.url  = "github:nixos/nixpkgs/release-22.11";
+  inputs.nixpkgs.url  = "github:nixos/nixpkgs/release-23.05";
   inputs.devshell.url = "github:numtide/devshell";
   inputs.devshell.inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = { self, devshell, nixpkgs }:
   let
-    templates.default.path        = ./template;
-    templates.default.description = ''
-      nix flake new -t github:cruel-intentions/devshell-files project
-    '';
+    templates.default.path        = ./templates/default;
+    templates.default.description = ''nix flake new -t github:cruel-intentions/devshell-files .'';
     lib.importTOML = devshell.lib.importTOML;
     lib.mkShell    = mkShell;
     lib.shell      = shell;
