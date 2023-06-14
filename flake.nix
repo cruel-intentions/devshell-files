@@ -1,13 +1,13 @@
 {
-  description = ''
-    devShell file generator helper
-  '';
+  description = ''devShell file generator helper'';
 
-  inputs.nixpkgs.url  = "github:nixos/nixpkgs/release-23.05";
   inputs.devshell.url = "github:numtide/devshell";
+  inputs.flu.url      = "github:cruel-intentions/flu-type-a";
+  inputs.nixpkgs.url  = "github:nixos/nixpkgs/release-23.05";
   inputs.devshell.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.flu.inputs.nixpkgs.follows      = "nixpkgs";
 
-  outputs = { self, devshell, nixpkgs }:
+  outputs = { self, devshell, flu, nixpkgs }:
   let
     templates.default.path        = ./templates/default;
     templates.default.description = ''nix flake new -t github:cruel-intentions/devshell-files .'';
@@ -41,7 +41,7 @@
     mkShell  = imports': shell { inherit self devshell nixpkgs; } imports';
     overlay  = devshell.overlay;
     overlays = { default = overlay; };
-    pkgs     = system: nixpkgs.legacyPackages.${system}.extend devshell.overlay;
+    pkgs     = system: (nixpkgs.legacyPackages.${system}.extend flu.overlays.default).extend devshell.overlays.default;
     shell    = inputs: imports':
     let 
       imports  = modules' ++ modules;
