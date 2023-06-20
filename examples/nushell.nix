@@ -23,7 +23,6 @@
   files.nush.nushhello.pt = ''
     # call it like 
     # echo Doe|nushhello pt
-    # this wont work, because a nushell bug
     echo Ola $in
   '';
 }

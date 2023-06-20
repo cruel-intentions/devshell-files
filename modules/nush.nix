@@ -2,7 +2,9 @@
 let
   cfg      = config.files.nus;
   cfg'     = config.files.nush;
-  stripCo  = line: builtins.replaceStrings ["# " "#"] ["" ""] line;
+  onlyCo   = line: let r = builtins.match "^\s*([#].+)" line; in if r == null then "" else builtins.head r;
+  nonEmpty = line: line != "";
+  toDoc    = def: builtins.concatStringsSep "\n" (builtins.filter nonEmpty (map onlyCo (lines def)));
   toArgs   = def:
   if builtins.typeOf def == "string" then
     ""
@@ -19,11 +21,18 @@ let
     inherit name;
     help    = "${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})";
     command = ''
-      ${pkgs.nushell}/bin/nu --stdin -n -c \
-      "$(printf "source ${nuLib}\n${name} $*")"
+      if [ -t 0 ]
+      then
+        ${pkgs.nushell}/bin/nu --stdin -c \
+          "$(printf "source ${nuLib}\n${name} $*")"
+      else
+        ${pkgs.nushell}/bin/nu --stdin -c \
+          "$(printf "let IN = \$in\nsource ${nuLib}\n\$IN|${name} $*")"
+      fi
     '';
   };
   toProc   = name: def: ''
+    ${toDoc def}
     def "${name}" [
       ${toArgs def}
     ] {
@@ -33,10 +42,18 @@ let
   toProc'  = name: sub: 
     builtins.concatStringsSep "\n\n" (builtins.attrValues (builtins.mapAttrs (n: d: toProc "${name} ${n}" d) sub));
   toProc'' = name: sub: ''
+    # ${name} [${builtins.concatStringsSep "|" (builtins.attrNames sub)}]
     def "${name}" [
-      ...args
+      ...subcommand
     ] {
-      echo "Unknown subcommand, expected one of: ${builtins.concatStringsSep ", " (builtins.attrNames sub)}"
+      let span = (metadata $"${name} ($subcommand)").span
+      error make { 
+        msg:   "Unknown subcommand"
+        label: {
+          text: "expected: ${name} [${builtins.concatStringsSep "|" (builtins.attrNames sub)}]",
+          start: $span.start, end: $span.end
+        }
+      }
     }
   '';
   nuLibSrc = ''
