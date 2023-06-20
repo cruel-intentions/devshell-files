@@ -16,12 +16,12 @@
     # open $pseudoFile|collect { |x| echo $x }
   ''];
   files.nush.nushhello.en = ["who" ''
-    # call it like 
+    # call it like
     # nushhello en Joe
     echo Hello $who
   ''];
   files.nush.nushhello.pt = ''
-    # call it like 
+    # call it like
     # echo Doe|nushhello pt
     echo Ola $in
   '';
