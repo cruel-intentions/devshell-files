@@ -35,6 +35,7 @@
       ./modules/nim.nix
       ./modules/nushell.nix
       ./modules/nush.nix
+      ./modules/nuon.nix
     ];
     isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
     isntPkg  = val: !(isPkg val);
@@ -60,10 +61,7 @@
       };
     in {
       inherit devShellInputs devShellModules;
-      devShells.aarch64-darwin.default = (eval "aarch64-darwin").shell;
-      devShells.aarch64-linux.default  = (eval "aarch64-linux" ).shell;
-      devShells.x86_64-darwin.default  = (eval "x86_64-darwin" ).shell;
-      devShells.x86_64-linux.default   = (eval "x86_64-linux"  ).shell;
+      devShells = builtins.mapAttrs (system: v: { default = (eval system).shell; } ) devshell.devShells;
     };
   in { inherit templates lib overlays; } // (mkShell [ ./project.nix ]);
 }

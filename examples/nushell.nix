@@ -25,4 +25,5 @@
     # echo Doe|nushhello pt
     echo Ola $in
   '';
+  files.nuon.enable = true;
 }

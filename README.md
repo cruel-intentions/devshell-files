@@ -613,8 +613,8 @@ To document our modules is simple, we just need to use `config.files.docs` as fo
   files.docs."/gh-pages/src/modules/mdbook.md".modules    = [ ../modules/mdbook.nix      ];
   files.docs."/gh-pages/src/modules/nim.md".modules       = [ ../modules/nim.nix         ];
   files.docs."/gh-pages/src/modules/nushell.md".modules   = [ ../modules/nushell.nix     ];
-  files.docs."/gh-pages/src/modules/nush.md".modules      = [ ../modules/nush.nix        ];
-  files.docs."/gh-pages/src/modules/rc.md".modules        = [ ../modules/services/rc-devshell.nix ];
+  files.docs."/gh-pages/src/modules/nush.md".modules      = [ ../modules/nush.nix ../modules/nush.nix ];
+  files.docs."/gh-pages/src/modules/rc.md".modules        = [ ../modules/services/rc-devshell.nix     ];
   files.docs."/gh-pages/src/modules/services.md".modules  = [ ../modules/services.nix    ];
   files.docs."/gh-pages/src/modules/spdx.md".modules      = [ ../modules/spdx.nix        ];
   files.docs."/gh-pages/src/modules/text.md".modules      = [ ../modules/text.nix        ];

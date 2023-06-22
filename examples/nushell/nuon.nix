@@ -2,7 +2,7 @@
   "--inputFormat  (-i): string = nuon"
   "--outputFormat (-o): string = json"
   ''
-    # convert formats --inputFormat|-i format --outputFormat|-o format
+    # convert formats --inputFormat|-i format to --outputFormat|-o format
     if $inputFormat in [csv]             {
         $in | from csv
     } else if $inputFormat in [json]     {
