@@ -61,16 +61,16 @@ let
   rc.default       = {};
   rc.type          = lib.types.attrsOf (optsLib.submoduleOf rc-opts);
   rc.description   = ''
-      Service name/command and its configuration
+    Service name/command and its configuration
 
-      - {name}.bundle  for bundles
-      - {name}.oneshot for one shot activations scripts
-      - {name}.longrun for deamons services
+    - {name}.bundle  for bundles
+    - {name}.oneshot for one shot activations scripts
+    - {name}.longrun for deamons services
 
-      All services are disabled by default.
+    All services are disabled by default.
 
-      It will fail at activation time if:
-      - More then onde type (bundle, oneshot, longrun) were defined for the same {name}
-      - One dependency service ins't defined but required
-    '';
+    It will fail at activation time if:
+    - More then onde type (bundle, oneshot, longrun) were defined for the same {name}
+    - One dependency service ins't defined but required
+  '';
 in { options.files.rc = lib.mkOption rc; }
