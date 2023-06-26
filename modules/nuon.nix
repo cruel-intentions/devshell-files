@@ -6,5 +6,5 @@
     type        = lib.types.bool;
     example     = true;
   };
-  config.files = lib.mkIf config.files.nuon.enable (import ../examples/nushell/nush.nuon.nix).files;
+  config.files.alias.nuon = lib.mkIf config.files.nuon.enable (builtins.readFile ../examples/nushell/nuon.nu);
 }
