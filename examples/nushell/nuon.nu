@@ -3,18 +3,18 @@
 use std [assert]
 
 # Helper to call nushell nuon/json/yaml commands from bash/fish/zsh
-# Example: printf '[1, 2, 3]'|nuon all '"{|e| $e == "foo" }"'
+# Example: printf '[1, 2, 3]'|nuon all '{|e| $e == "foo" }'
 # Example: printf '[1, 2, 3]'|nuon all --ARGS <(printf '{|e| $e == "foo" }')
-# Example: printf '[1, 2, 3]'|nuon any '"{|e| $e == "foo" }"'
+# Example: printf '[1, 2, 3]'|nuon any '{|e| $e == "foo" }'
 # Example: printf '[1, 2, 3]'|nuon any --ARGS <(printf '{|e| $e == "foo" }')
 # Example: cat records.csv|nuon columns --from csv
 # Example: printf '[["foo" "bar"]; [null baz]]'|nuon compact foo
 # Example: printf '[1, 2, 3]'|nuon drop yaml 2
 # Example: printf '[["foo" "bar"]; [span baz]]'|nuon drop column 2
 # Example: printf '[1, 2, 3]'|nuon drop nth 2
-# Example: printf '[1, 2, 3]'|nuon each '"{|e| $e|str upcase }"'
+# Example: printf '[1, 2, 3]'|nuon each '{|e| $e|str upcase }'
 # Example: printf '[1, 2, 3]'|nuon each --ARGS <(printf '{|e| $e|str upcase }')
-# Example: printf '[1, 2, 3]'|nuon filter '"{|e| $e == "foo"}"'
+# Example: printf '[1, 2, 3]'|nuon filter '{|e| $e == "foo"}'
 # Example: printf '[1, 2, 3]'|nuon filter --ARGS <(printf '{|e| $e|str upcase }')
 # Example: printf '[1, 2, 3]'|nuon find foo
 # Example: printf '[1, 2, 3]'|nuon first 1
@@ -26,13 +26,13 @@ use std [assert]
 # Example: printf '[1, 2, 3]'|nuon pretty 
 # Example: cat object.yaml|nuon insert --from yaml  bar 'baz'
 # Example: cat object.yaml|nuon insert --from yaml --ARGS <(printf 'bar {|e| $e.item.foo + $e.index }')
-# Example: cat object.yaml|nuon items --from yaml '"{|k, v| [$k, $v] }"'
+# Example: cat object.yaml|nuon items --from yaml '{|k, v| [$k, $v] }'
 # Example: cat object.yaml|nuon items --from yaml --ARGS <(printf '{|k, v| [$k, $v] }')
 # Example: printf '[1, 2, 3]'|nuon last 1
 # Example: cat data.csv|nuon lines
 # Example: cat object.yaml|nuon merge --from yaml { foo: bar }
 # Example: printf '[1, 2, 3]'|nuon range --from yaml 2..4
-# Example: printf "[1 2 3 4 5]"|nuon reduce '"{|it, acc| $it + $acc }"'
+# Example: printf "[1 2 3 4 5]"|nuon reduce '{|it, acc| $it + $acc }'
 # Example: printf "[1 2 3 4 5]"|nuon reduce --ARGS <(printf '{|it, acc| $it + $acc }')
 # Example: printf "[[a b]; [1, 2]]"|nuon rename foo bar
 # Example: printf "[1, 2]"|nuon reverse
@@ -42,7 +42,7 @@ use std [assert]
 # Example: printf "4,3,5,1,2"|nuon split column ,
 # Example: printf "4,3,5,1,2"|nuon split rows ,
 # Example: printf '[1, 2, 3]'|nuon take 1
-# Example: printf '[1, 2, 3]'|nuon where '"{|e| $e != "foo" }"'
+# Example: printf '[1, 2, 3]'|nuon where '{|e| $e != "foo" }'
 # Example: printf '[1, 2, 3]'|nuon where --ARGS <(printf '{|e| $e != "foo" }')
 def main [
   subcmd:      string = ''       # subcommand [all,any,columns,compact,drop,each,filter,find,first,from,get,group,group-by,headers,insert,items,last,lines,merge,pretty,range,reduce,rename,reverse,shuffle,sort, sort-by,split,take,to,where]
