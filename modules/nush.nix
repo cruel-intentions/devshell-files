@@ -21,18 +21,12 @@ let
     inherit name;
     help    = "${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})";
     command = ''
-      #!${pkgs.nushell}/bin/nu
-      def main [
-        subcmd:  string
-        ...args: string
-      ] {
-        # ${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})
-        let pipeStdin = (bash -c '[ ! -t 0 ] && echo "cat /proc/self/fd/0 |" || echo "" ')
-        nu --stdin -c $"
-          source ${nuLib}
-          ($pipeStdin) ${name} ($subcmd) ($args|str join ' ')
-        "
-      }
+      [ "$#" == "0" ] && nu -c "source ${nuLib}; ${name} --help" && exit 1
+      SUBCMD=$1
+      shift
+      [ ! -t 0 ] && \
+        nu --stdin -c "source ${nuLib}; cat /proc/self/fd/0 | ${name} $SUBCMD $*" || \
+        nu --stdin -c "source ${nuLib};                       ${name} $SUBCMD $*"
     '';
   };
   toProc   = name: def: ''

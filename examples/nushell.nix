@@ -15,12 +15,17 @@
   ''];
   files.nush.nushhello.en = ["who" ''
     # call it like
-    # nushhello en Joe
+    # nushhello en John
     echo Hello $who
+  ''];
+  files.nush.nushhello.es = ["--quien: string" ''
+    # call it like
+    # nushhello es --quien Juan
+    echo Holla $quien
   ''];
   files.nush.nushhello.pt = ''
     # call it like
-    # echo Doe|nushhello pt
+    # echo 'João' | nushhello pt
     echo Ola $in
   '';
   files.nuon.enable = true;
