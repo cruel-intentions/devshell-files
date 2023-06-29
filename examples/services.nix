@@ -34,6 +34,16 @@
     echo wake up little Suzie
   '';
 
+  # This is a service to speedup direnv
+  files.direnv.auto-build.enable = true;
+
+  # special service to auto start
+  files.services.initSvcs = true;
+
+  # special service to auto stopSvcs
+  files.services.stopSvcsd = true;
+
+
   # # RC (unstable) is another interface it uses s6-rc
   # # http://skarnet.org/software/s6-rc/why.html
   #

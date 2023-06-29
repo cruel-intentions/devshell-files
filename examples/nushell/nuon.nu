@@ -41,11 +41,12 @@ use std [assert]
 # Example: printf "[[num,alpha];[4,d],[3,c],[5,e], [1,a], [2,b]]"|nuon sort by alpha
 # Example: printf "4,3,5,1,2"|nuon split column ,
 # Example: printf "4,3,5,1,2"|nuon split rows ,
+# Example: printf '[[num];[1], [2], [3]]'|nuon table
 # Example: printf '[1, 2, 3]'|nuon take 1
 # Example: printf '[1, 2, 3]'|nuon where '{|e| $e != "foo" }'
 # Example: printf '[1, 2, 3]'|nuon where --ARGS <(printf '{|e| $e != "foo" }')
 def main [
-  subcmd:      string = ''       # subcommand [all,any,columns,compact,drop,each,filter,find,first,from,get,group,group-by,headers,insert,items,last,lines,merge,pretty,range,reduce,rename,reverse,shuffle,sort, sort-by,split,take,to,where]
+  subcmd:      string = ''       # subcommand [all,any,columns,compact,drop,each,filter,find,first,from,get,group,group-by,headers,insert,items,last,lines,merge,par-each,range,reduce,rename,reverse,shuffle,sort, sort-by,split,table,take,to,where]
   --from (-f): string = "nuon",  # stdin format [csv,eml,ics,ini,json,nuon,ods,ssv,toml,tsv,url,vcf,xlsx,xml,yaml,yml] 
   --to   (-t): string = "nuon",  # stdout format [csv,html,json,md,nuon,text,toml,tsv,xml,yaml,table]
   --ARGS:      string = '',      # read args from file
@@ -61,8 +62,8 @@ def main [
     "all","any","columns","compact","drop","each",
     "filter","find","first","from","get","group", "group-by"
     "headers","insert","items","last","lines","merge",
-    "pretty","range","reduce","rename","reverse",
-    "shuffle","sort", "sort-by","split","take","to","where"
+    "par-each","range","reduce","rename","reverse",
+    "shuffle","sort", "sort-by","split","table","take","to","where"
   ]
   assert ($subcmd in $knownCmds) $"Unknown subcommand ($subcmd)." --error-label {
     text: $"expected subcommand: [($knownCmds | str join '|' )]"
@@ -92,12 +93,12 @@ def main [
     text: "Example: nuon take 1 --IN <(printf '[1, 2, 3]') or Example: printf '[1, 2, 3]'|nuon take 1"
     start: (metadata $IN).span.start, end: (metadata $IN).span.end
   }
-
-  let stdIn   = if $IN   == ''                  { "$in"     } else { $"open ($IN)" }
-  let fArgs   = if $ARGS == ''                  { ""        } else { open $ARGS }
-  let cmd     = if $subcmd in ["from", "to"]    { ""        } else { $"($subcmd) ($args|str join ' ') ($fArgs)|"}
-  let fromCMD = if $subcmd in ["split" "lines"] { ""        } else { $"from ($from)|" } 
-  let toCMD   = if $to     in ["table"]         { "table"   } else { $"to ($to)" }
+  let stdIn   = if $IN   == ''                      { "$in"       } else { $"open ($IN)" }
+  let fArgs   = if $ARGS == ''                      { ""          } else { open $ARGS }
+  let cmd     = if $subcmd in ["from" "to" "table"] { ""          } else { $"($subcmd) ($args|str join ' ') ($fArgs)|" }
+  let to      = if $subcmd in ["table"]             { "table"     } else { $to }
+  let fromCMD = if $subcmd in ["split" "lines"]     { ""          } else { $"from ($from)|" } 
+  let toCMD   = if $to != "table"                   { $"to ($to)" } else { "table --expand" }
 
   nu --stdin -c $"($stdIn)|($fromCMD)($cmd)($toCMD)"
 }

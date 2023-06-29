@@ -28,7 +28,8 @@ let
     value.executable = true;
     value.text       = ''
       #!${pkgs.bash}/bin/bash
-      if [ $1 -eq 127 ]; then
+      ${name}-finish $1 &>/dev/null || true
+      if [ "$1" == "127" ]; then
         echo "${name} not found, aborting"
         exit 125 # Signal a permanent failure
       fi
@@ -67,6 +68,23 @@ let
     }
     background
   '';
+  stopSvcsd = ''
+    # Stop services when all registered procs died
+    RUNNING="true"
+    while true
+    do
+      for P in $PRJ_DATA_DIR/services/stopSvcsd/procs/*
+      do
+        [[ ! -e $P ]] && rm $P
+      done
+      if [[ "$RUNNING" == "true" ]] && rmdir $PRJ_DATA_DIR/services/stopSvcsd/procs/ &>/dev/null >/dev/null
+      then
+        stopSvcs
+        RUNNING=false
+      fi
+      sleep 1
+    done
+  '';
   initSvcs = with exclib;''
     ${shBang}
     # init all services
@@ -94,12 +112,20 @@ let
         &>/dev/null || true
       # rescan services
       scanSvcs
+    '' + lib.optionalString autoStop ''
+      AUTO_STOP_SERIVCES () {
+        mkdir -p $PRJ_DATA_DIR/services/stopSvcsd/procs
+        local procid=$(ps -o ppid= $(ps -o ppid= $$)|tr -d '[:space:]')
+        [[ "$procid" == "" ]] || ln -s /proc/$procid/comm $PRJ_DATA_DIR/services/stopSvcsd/procs/$procid &>/dev/null
+      }
+      AUTO_STOP_SERIVCES
     '' + lib.optionalString autoSvcs ''
       autoSvcsd
     '';
   };
   haveSvcs = builtins.length liveSvcs > 0;
-  autoSvcs = haveSvcs && config.files.services.initSvcs or false;
+  autoSvcs = haveSvcs && config.files.services.initSvcs  or false;
+  autoStop = haveSvcs && config.files.services.stopSvcsd or false;
 in
 {
   options.files.services = lib.mkOption {
@@ -122,7 +148,8 @@ in
 
       If we don't set initSvcs service, we can start it running `initSvcs`.
 
-      S6 wont stop by itself, we should run `stopSvcs` when it's done.
+      `stopSvcsd` is a special name to auto stop the process supervisor
+      If S6 wont stop by itself, we could run `stopSvcs` when it's done.
 
       It defines two env vars:
       - PRJ_SVCS_DIR: $PRJ_DATA_DIR/services
@@ -166,7 +193,7 @@ in
       Know bugs:
       If we don't use `exec` in our alias, some necromancer could
       form an army of undead process, and start a war against our 
-      system, since they both may require the most sparse resource
+      system, since they both may require the most scarse resource
       of our lands.
     '';
   };
@@ -175,6 +202,7 @@ in
   config.files.alias.autoSvcsd  = lib.mkIf haveSvcs autoSvcsd;
   config.files.alias.scanSvcs   = lib.mkIf haveSvcs scanSvcs;
   config.files.alias.stopSvcs   = lib.mkIf haveSvcs stopSvcs;
+  config.files.alias.stopSvcsd  = lib.mkIf haveSvcs stopSvcsd;
   config.files.alias.initSvc    = lib.mkIf haveSvcs "svcCtl $1 -u";
   config.files.alias.restartSvc = lib.mkIf haveSvcs "svcCtl $1 -r";
   config.files.alias.stopSvc    = lib.mkIf haveSvcs "svcCtl $1 -d";
