@@ -18,13 +18,15 @@ in
     while true
     do
       direnvdir=$PRJ_ROOT/.direnv
-      LAST_CHANGE=$(direnv status|awk '/ [0-9T:-]+$/ {print $NF}'|sort -u|tail -n 1)
-      if ! $(cmp --silent -- <(echo "$LAST_CHANGE") "$direnvdir/session"); then
+      DIRENV_WATCHING_FILES=$(direnv status|awk '/watch:/ {gsub(/"/,"",$3);print $3}')
+      DIRENV_LAST_CHANGE=$(stat -c '%y' $DIRENV_WATCHING_FILES|sort -u|tail -n 1)
+      if ! $(cmp --silent -- <(echo "$DIRENV_LAST_CHANGE") "$direnvdir/session"); then
+        notify-desktop -i network-server "Building env";
         mkdir -p "$direnvdir"
         nix print-dev-env --profile "$direnvdir/flake-profile" "$@" \
           > "$direnvdir/flake-profile.sh"
         chmod +x "$direnvdir/flake-profile.sh"
-        cp -f <(echo "$LAST_CHANGE") "$direnvdir/session"
+        cp -f <(echo "$DIRENV_LAST_CHANGE") "$direnvdir/session"
       fi
       sleep 1
     done
@@ -36,14 +38,14 @@ in
       use_devshell_files() {
         local direnvdir
         direnvdir=$(direnv_layout_dir)
-      
-        LAST_CHANGE=$(direnv status|awk '/ [0-9T:-]+$/ {print $NF}'|sort -u|tail -n 1)
-        if ! $(cmp --silent -- <(echo "$LAST_CHANGE") "$direnvdir/session"); then
+        DIRENV_WATCHING_FILES=$(direnv status|awk '/watch:/ {gsub(/"/,"",$3);print $3}')
+        DIRENV_LAST_CHANGE=$(stat -c '%y' $DIRENV_WATCHING_FILES|sort -u|tail -n 1)
+        if ! $(cmp --silent -- <(echo "$DIRENV_LAST_CHANGE") "$direnvdir/session"); then
           mkdir -p "$direnvdir"
           nix print-dev-env --profile "$direnvdir/flake-profile" "$@" \
             > "$direnvdir/flake-profile.sh"
           chmod +x "$direnvdir/flake-profile.sh"
-          cp -f <(echo "$LAST_CHANGE") "$direnvdir/session"
+          cp -f <(echo "$DIRENV_LAST_CHANGE") "$direnvdir/session"
         fi
       
         source "$direnvdir/flake-profile.sh"

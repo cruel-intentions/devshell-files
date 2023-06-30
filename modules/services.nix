@@ -54,10 +54,11 @@ let
   deadSvcs = builtins.attrNames (filtSvcs false config.files.services);
   initSvcsd= with exclib;''
     ${shBang}
-    # init all services
+    # init all services in foreground
     ${s6lib.scanAndLog { }}
   '';
   autoSvcsd= ''
+    # Start services in background
     background() {
       exec 0>&-
       exec 1>&-
@@ -70,19 +71,13 @@ let
   '';
   stopSvcsd = ''
     # Stop services when all registered procs died
-    RUNNING="true"
     while true
     do
-      for P in $PRJ_DATA_DIR/services/stopSvcsd/procs/*
-      do
-        [[ ! -e $P ]] && rm $P
-      done
-      if [[ "$RUNNING" == "true" ]] && rmdir $PRJ_DATA_DIR/services/stopSvcsd/procs/ &>/dev/null >/dev/null
-      then
-        stopSvcs
-        RUNNING=false
-      fi
       sleep 1
+      # delete dead procs link
+      find $PRJ_SVCS_DIR/stopSvcsd/procs/ -xtype l -delete
+      # stop services if folder is empty
+      find $PRJ_SVCS_DIR/stopSvcsd/procs/ -type  d -empty -exec stopSvcs \;
     done
   '';
   initSvcs = with exclib;''
@@ -114,9 +109,15 @@ let
       scanSvcs
     '' + lib.optionalString autoStop ''
       AUTO_STOP_SERIVCES () {
-        mkdir -p $PRJ_DATA_DIR/services/stopSvcsd/procs
-        local procid=$(ps -o ppid= $(ps -o ppid= $$)|tr -d '[:space:]')
-        [[ "$procid" == "" ]] || ln -s /proc/$procid/comm $PRJ_DATA_DIR/services/stopSvcsd/procs/$procid &>/dev/null
+        mkdir -p $PRJ_SVCS_DIR/stopSvcsd/procs
+        local SESSION_PID=$$
+        local PARENT_PID=$PPID
+        while grep -q direnv /proc/$PARENT_PID/comm
+        do
+          SESSION_PID=$(ps -o ppid= $PARENT_PID|tr -d \[:space:\])
+          PARENT_PID=$SESSION_PID
+        done
+        ln -s /proc/$SESSION_PID/comm $PRJ_SVCS_DIR/stopSvcsd/procs/$SESSION_PID &>/dev/null
       }
       AUTO_STOP_SERIVCES
     '' + lib.optionalString autoSvcs ''
@@ -197,18 +198,20 @@ in
       of our lands.
     '';
   };
-  config.files.alias.initSvcs   = lib.mkIf haveSvcs initSvcs;
-  config.files.alias.initSvcsd  = lib.mkIf haveSvcs initSvcsd;
-  config.files.alias.autoSvcsd  = lib.mkIf haveSvcs autoSvcsd;
-  config.files.alias.scanSvcs   = lib.mkIf haveSvcs scanSvcs;
-  config.files.alias.stopSvcs   = lib.mkIf haveSvcs stopSvcs;
-  config.files.alias.stopSvcsd  = lib.mkIf haveSvcs stopSvcsd;
-  config.files.alias.initSvc    = lib.mkIf haveSvcs "svcCtl $1 -u";
-  config.files.alias.restartSvc = lib.mkIf haveSvcs "svcCtl $1 -r";
-  config.files.alias.stopSvc    = lib.mkIf haveSvcs "svcCtl $1 -d";
-  config.files.alias.svcCtl     = lib.mkIf haveSvcs "s6-svc $2 $PRJ_SVCS_DIR/$1";
-  config.devshell.packages    = lib.mkIf haveSvcs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
-  config.devshell.startup     = stUpSvcs // (rmS6Svcs deadSvcs) // (mkS6Dirs liveSvcs);
+  config.files.alias = lib.mkIf haveSvcs {
+    initSvcs   = initSvcs;
+    initSvcsd  = initSvcsd;
+    autoSvcsd  = autoSvcsd;
+    scanSvcs   = scanSvcs;
+    stopSvcs   = stopSvcs;
+    stopSvcsd  = stopSvcsd;
+    initSvc    = "# Start service $1\nsvcCtl $1 -u";
+    restartSvc = "# Restart service $1\nsvcCtl $1 -r";
+    stopSvc    = "# Stop service $1\nsvcCtl $1 -d";
+    svcCtl     = "# Send command $2 to service $1\ns6-svc $2 $PRJ_SVCS_DIR/$1";
+  };
+  config.devshell.packages = lib.mkIf haveSvcs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
+  config.devshell.startup  = stUpSvcs // (rmS6Svcs deadSvcs) // (mkS6Dirs liveSvcs);
   config.file = (mkS6Runs liveSvcs) // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs);
   config.env = lib.optionals haveSvcs [
     { name = "PRJ_SVCS_DIR"; eval = "$PRJ_DATA_DIR/services"; }
