@@ -18,15 +18,15 @@ in
     while true
     do
       direnvdir=$PRJ_ROOT/.direnv
-      DIRENV_WATCHING_FILES=$(direnv status|awk '/watch:/ {gsub(/"/,"",$3);print $3}')
-      DIRENV_LAST_CHANGE=$(stat -c '%y' $DIRENV_WATCHING_FILES|sort -u|tail -n 1)
-      if ! $(cmp --silent -- <(echo "$DIRENV_LAST_CHANGE") "$direnvdir/session"); then
+      DEVSHELL_FILES_WATCHING=$(find . -name '*.nix')
+      DEVSHELL_FILES_CHANGED=$(stat -c '%y' flake.lock $DEVSHELL_FILES_WATCHING|sort -u|tail -n 1)
+      if ! $(cmp --silent -- <(echo "$DEVSHELL_FILES_CHANGED") "$direnvdir/session"); then
         notify-desktop -i network-server "Building env";
         mkdir -p "$direnvdir"
         nix print-dev-env --profile "$direnvdir/flake-profile" "$@" \
           > "$direnvdir/flake-profile.sh"
         chmod +x "$direnvdir/flake-profile.sh"
-        cp -f <(echo "$DIRENV_LAST_CHANGE") "$direnvdir/session"
+        cp -f <(echo "$DEVSHELL_FILES_CHANGED") "$direnvdir/session"
       fi
       sleep 1
     done
@@ -36,18 +36,20 @@ in
     executable  = true;
     text        = ''
       use_devshell_files() {
+        watch_file *.nix
+        watch_file */*.nix
+        watch_file flake.lock
         local direnvdir
         direnvdir=$(direnv_layout_dir)
-        DIRENV_WATCHING_FILES=$(direnv status|awk '/watch:/ {gsub(/"/,"",$3);print $3}')
-        DIRENV_LAST_CHANGE=$(stat -c '%y' $DIRENV_WATCHING_FILES|sort -u|tail -n 1)
-        if ! $(cmp --silent -- <(echo "$DIRENV_LAST_CHANGE") "$direnvdir/session"); then
+        export DEVSHELL_FILES_WATCHING=$(find . -name '*.nix')
+        export DEVSHELL_FILES_CHANGED=$(stat -c '%y' flake.lock $DEVSHELL_FILES_WATCHING|sort -u|tail -n 1)
+        if ! $(cmp --silent -- <(echo "$DEVSHELL_FILES_CHANGED") "$direnvdir/session"); then
           mkdir -p "$direnvdir"
           nix print-dev-env --profile "$direnvdir/flake-profile" "$@" \
             > "$direnvdir/flake-profile.sh"
           chmod +x "$direnvdir/flake-profile.sh"
-          cp -f <(echo "$DIRENV_LAST_CHANGE") "$direnvdir/session"
+          cp -f <(echo "$DEVSHELL_FILES_CHANGED") "$direnvdir/session"
         fi
-      
         source "$direnvdir/flake-profile.sh"
       }
     '';
