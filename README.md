@@ -639,7 +639,7 @@ let
   project   = "devshell-files";
   author    = "cruel-intentions";
   org-url   = "https://github.com/${author}";
-  edit-path = "${org-url}/${project}/edit/master/guide/{path}";
+  edit-path = "${org-url}/${project}/edit/master/examples/{path}";
 in
 {
   files.mdbook.authors      = ["Cruel Intentions <${org-url}>"];
@@ -652,8 +652,7 @@ in
   files.mdbook.title        = "Nix DevShell Files Maker";
   files.mdbook.output.html.edit-url-template   = edit-path;
   files.mdbook.output.html.fold.enable         = true;
-  files.mdbook.output.html.git-repository-icon = "fa-github";
-  files.mdbook.output.html.git-repository-url  = "${org-url}/${project}";
+  files.mdbook.output.html.git-repository-url  = "${org-url}/${project}/tree/master";
   files.mdbook.output.html.no-section-label    = true;
   files.mdbook.output.html.site-url            = "/${project}/";
   files.gitignore.pattern.gh-pages             = true;
