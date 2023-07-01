@@ -620,6 +620,7 @@ To document our modules is simple, we just need to use `config.files.docs` as fo
   files.docs."/gh-pages/src/modules/spdx.md".modules      = [ ../modules/spdx.nix        ];
   files.docs."/gh-pages/src/modules/text.md".modules      = [ ../modules/text.nix        ];
   files.docs."/gh-pages/src/modules/toml.md".modules      = [ ../modules/toml.nix        ];
+  files.docs."/gh-pages/src/modules/watch.md".modules     = [ ../modules/watch           ];
   files.docs."/gh-pages/src/modules/yaml.md".modules      = [ ../modules/yaml.nix        ];
 }
 
@@ -717,6 +718,7 @@ They are already included when we use this package.
 - `files.spdx`, copy LICENSE from [templates](https://github.com/spdx/license-list-data/tree/master/text)
 - `files.text`, create free text files with nix syntax
 - `files.toml`, create TOML files with nix syntax
+- `files.watch`, create an alias and service to run command when file changes using [inotify-tools](https://github.com/inotify-tools/inotify-tools/wiki)
 - `files.yaml`, create YAML files with nix syntax
 
 

@@ -4,7 +4,8 @@
       Alias that run commands when files changes using inotify
       
       Note: 
-      It uses files.services so you should to start services with `initSvcs`
+      It uses files.services so you should to start services with `initSvcs`.
+
       Or you could auto start/stop by adding
 
       ```nix
@@ -15,10 +16,10 @@
     options.watch.default = {};
     options.watch.example.FOO.cmd       = "echo $file $dir $time $events";
     options.watch.example.FOO.exclude   = ".+\\.png$";
-    options.watch.example.FOO.files     = ''src'';
+    options.watch.example.FOO.files     = ''$PRJ_ROOT/src'';
     options.watch.example.FOO.include   = ".+\\.js$";
     options.watch.example.FOO.recursive = true;
-    options.watch.example.FOO.event.access = true;
+    options.watch.example.FOO.event.modify = true;
     options.watch.attrsOf.options = {
       cmd.mdDoc         = "Command that will run with args $file $dir $time $events";
       cmd.type          = lib.types.str;
@@ -27,7 +28,7 @@
       exclude.default   = "(.*/\\.|.+~$)";
       exclude.mdDoc     = "Regexp to exclude matching files";
       excludei.default  = "";
-      excludei.mdDoc    = "Regexp to exclude matching files";
+      excludei.mdDoc    = "Case insesitive regexp to exclude matching files";
       files.default     = "$PRJ_ROOT";
       files.mdDoc       = "Files to be watched";
       files.type        = lib.types.lines;
@@ -36,7 +37,7 @@
       include.default   = "";
       include.mdDoc     = "Regexp to include only matching files";
       includei.default  = "";
-      includei.mdDoc    = "Regexp to include only matching files";
+      includei.mdDoc    = "Case insesitive regexp to include only matching files";
       recursive.default = true;
       recursive.mdDoc   = "Recursivelly watch directories";
       timefmt.default   = "%FT%T.000%zZ";
