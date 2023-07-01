@@ -49,7 +49,7 @@ In fact Nix isn't a configuration tool but a package manger, we are only using i
 You can recreate files of a repository directly to your local machine by running `nix develop <flake-uri> --build`, example:
 
 ```bash
-# copy all my dogfood ot your current folder
+# copy all my dogfood to your current folder
 nix develop github:cruel-intentions/devshell-files --build
 ```
 
@@ -60,12 +60,7 @@ With help of [Nix](https://nixos.org/guides/how-nix-works.html) and [devshell](h
 Installing [Nix](https://nixos.wiki/wiki/Flakes)
 
 ```sh
-curl -L https://nixos.org/nix/install | sh
-
-nix-env -f '<nixpkgs>' -iA nixUnstable
-
-mkdir -p ~/.config/nix
-echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
+curl -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
 Configuring new projects:
@@ -74,7 +69,7 @@ Configuring new projects:
 nix flake new -t github:cruel-intentions/devshell-files my-project
 cd my-project
 git init
-git add .
+git add *.nix flake.lock
 ```
 
 Configuring existing projects:
@@ -236,8 +231,8 @@ This README.md is also a module defined as above
     (builtins.readFile ./readme/toc.md)
     (builtins.readFile ./readme/about.md)
     (builtins.readFile ./readme/installation.md)
-    (builtins.import ./readme/examples.nix)
-    ((builtins.import ./readme/modules.nix) lib)
+    (builtins.import   ./readme/examples.nix)
+    ((builtins.import  ./readme/modules.nix) lib)
     (builtins.readFile ./readme/todo.md)
     (builtins.readFile ./readme/issues.md)
     (builtins.readFile ./readme/seeAlso.md)
@@ -485,8 +480,34 @@ To create it, add `options` definition of that.
     default     = "echo deploy";
     description = "Command to run as deploy step";
     example     = "aws s3 sync ./build s3://my-bucket";
-    type        = lib.types.str;
+    type        = lib.types.lines;
   };
+}
+```
+
+Or using `lib.types.fluent`
+
+```nix
+# gh-actions-options.nix
+{ lib, ...}:
+lib.types.fluent {
+  # defines a property 'gh-actions.setup'
+  options.gh-actions.options.setup.default  = "echo setup";  #default is string
+  options.gh-actions.options.setup.mdDoc    = "Command to run before build";
+  options.gh-actions.options.setup.example  = "npm i";
+  # defines a property 'gh-actions.build'
+  options.gh-actions.options.build.default  = "echo build";
+  options.gh-actions.options.build.mdDoc    = "Command to run as build step";
+  options.gh-actions.options.build.example  = "npm run build";
+  # defines a property 'gh-actions.test'
+  options.gh-actions.options.test.default   = "echo test";
+  options.gh-actions.options.test.mdDoc     = "Command to run as test step";
+  options.gh-actions.options.test.example   = "npm test";
+  # defines a property 'gh-actions.deploy'
+  options.gh-actions.options.deploy.default = "echo deploy";
+  options.gh-actions.options.deploy.mdDoc   = "Command to run as deploy step";
+  options.gh-actions.options.deploy.example = "aws s3 sync ./build s3://my-bucket";
+  options.gh-actions.options.deploy.type    = lib.types.lines;
 }
 ```
 
@@ -501,6 +522,7 @@ Usually the next part is in same file of `options`, it isn't a requirement, and 
 # gh-actions.nix
 { config, lib, ... }:
 {
+  imports = [ ./gh-actions-options.nix ];
   # use other module that simplify file creation to create config file
   files.yaml."/.github/workflows/ci-cd.yaml".jobs.ci-cd.steps   = [
     { uses = "actions/checkout@v2.4.0"; }
@@ -520,7 +542,7 @@ Now it can be imported and set 'setup', 'build', 'test' and 'deploy' configs
 ```nix
 # any other module file, maybe project.nix
 {
-  imports = [ ./gh-actions-options.nix ./gh-actions.nix ];
+  imports = [ ./gh-actions.nix ];
   gh-actions.setup  = "echo 'paranaue'";
   gh-actions.build  = "echo 'paranaue parana'";
   gh-actions.build  = "echo 'paranaue'";

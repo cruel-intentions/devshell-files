@@ -26,7 +26,7 @@ In fact Nix isn't a configuration tool but a package manger, we are only using i
 You can recreate files of a repository directly to your local machine by running `nix develop <flake-uri> --build`, example:
 
 ```bash
-# copy all my dogfood ot your current folder
+# copy all my dogfood to your current folder
 nix develop github:cruel-intentions/devshell-files --build
 ```
 
