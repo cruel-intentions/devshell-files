@@ -17,5 +17,6 @@
   files.docs."/gh-pages/src/modules/spdx.md".modules      = [ ../modules/spdx.nix        ];
   files.docs."/gh-pages/src/modules/text.md".modules      = [ ../modules/text.nix        ];
   files.docs."/gh-pages/src/modules/toml.md".modules      = [ ../modules/toml.nix        ];
+  files.docs."/gh-pages/src/modules/watch.md".modules     = [ ../modules/watch.nix       ];
   files.docs."/gh-pages/src/modules/yaml.md".modules      = [ ../modules/yaml.nix        ];
 }

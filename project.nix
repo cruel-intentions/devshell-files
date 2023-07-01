@@ -11,6 +11,7 @@
     ./examples/services.nix
     ./examples/nim.nix
     ./examples/nushell.nix
+    ./examples/watch.nix
   ];
 
   # install development or deployment tools

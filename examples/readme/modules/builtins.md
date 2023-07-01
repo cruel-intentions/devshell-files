@@ -21,6 +21,7 @@ They are already included when we use this package.
 - `files.spdx`, copy LICENSE from [templates](https://github.com/spdx/license-list-data/tree/master/text)
 - `files.text`, create free text files with nix syntax
 - `files.toml`, create TOML files with nix syntax
+- `files.watch`, create an alias and service to run command when file changes using [inotify-tools](https://github.com/inotify-tools/inotify-tools/wiki)
 - `files.yaml`, create YAML files with nix syntax
 
 

@@ -38,7 +38,7 @@
   files.direnv.auto-build.enable = true;
 
   # special service to auto start
-  files.services.initSvcs = true;
+  files.services.initSvcs  = true;
 
   # special service to auto stopSvcs
   files.services.stopSvcsd = true;

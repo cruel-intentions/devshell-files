@@ -36,6 +36,7 @@
       ./modules/nushell.nix
       ./modules/nush.nix
       ./modules/nuon.nix
+      ./modules/watch
     ];
     isPkg    = val: builtins.isString val && builtins.match "/.+" val == null;
     isntPkg  = val: !(isPkg val);

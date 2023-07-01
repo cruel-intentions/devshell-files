@@ -27,6 +27,7 @@
   - [spdx module](./modules/spdx.md)
   - [text module](./modules/text.md)
   - [toml module](./modules/toml.md)
+  - [watch module](./modules/watch.md)
   - [yaml module](./modules/yaml.md)
 ---
 - [TODO](./todo.md)

@@ -175,6 +175,7 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/services.nix
     ./examples/nim.nix
     ./examples/nushell.nix
+    ./examples/watch.nix
   ];
 
   # install development or deployment tools
