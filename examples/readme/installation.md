@@ -3,12 +3,7 @@
 Installing [Nix](https://nixos.wiki/wiki/Flakes)
 
 ```sh
-curl -L https://nixos.org/nix/install | sh
-
-nix-env -f '<nixpkgs>' -iA nixUnstable
-
-mkdir -p ~/.config/nix
-echo 'experimental-features = nix-command flakes' >> ~/.config/nix/nix.conf
+curl -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
 Configuring new projects:
@@ -17,7 +12,7 @@ Configuring new projects:
 nix flake new -t github:cruel-intentions/devshell-files my-project
 cd my-project
 git init
-git add .
+git add *.nix flake.lock
 ```
 
 Configuring existing projects:
