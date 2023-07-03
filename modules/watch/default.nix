@@ -5,13 +5,12 @@ let
     # Run `${builtins.replaceStrings ["\n"] [";"]  v.cmd}` 
     # When ${builtins.replaceStrings ["\n"] [", "] v.files} changes
 
-    DFS_WATCHFILES=$(mktemp --suffix dfs.watch)
-    trap "rm $DFS_WATCHFILES" EXIT
-    cat - << EOWFI > $DFS_WATCHFILES
+
+
+    cat - << EOWFI |
     ${v.files}
     EOWFI
-    inotifywait                   \
-      --monitor                  ${
+    inotifywait                  ${
         lib.optionalString (v.exclude  != "")      " \\\n  --exclude   '${v.exclude }'"}${
         lib.optionalString (v.excludei != "")      " \\\n  --excludei  '${v.excludei}'"}${
         lib.optionalString (v.include  != "")      " \\\n  --include   '${v.include }'"}${
@@ -30,14 +29,20 @@ let
         lib.optionalString  v.event.move_to        " \\\n  --event      move_to       "}${
         lib.optionalString  v.event.close_nonwrite " \\\n  --event      close_nonwrite"}${
         lib.optionalString  v.event.close_write    " \\\n  --event      close_nwrite  "} \
+      --monitor                   \
       --timefmt   '${v.timefmt}'  \
       --format    '%f %w %T %e'   \
-      --fromfile $DFS_WATCHFILES |\
+      --fromfile  -              |\
     while read -r file dir time events; do
       ${v.cmd}
-    done
-    ${v.files}
-    EOWFI
+    done &
+
+    # kill inotifywait
+    MY_CPID=$!
+    MY_PID=$$
+    MY_CPPS=$(ps --ppid $MY_PID -o pid=|tr "\n" " ")
+    trap "kill -15 $MY_CPPS" exit
+    wait $MY_CPID
   '';
   toSvc   = n: v: v.enable;
 in
