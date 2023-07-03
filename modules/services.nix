@@ -73,11 +73,12 @@ let
     # Stop services when all registered procs died
     while true
     do
-      sleep 1
-      # delete dead procs link
-      find $PRJ_SVCS_DIR/stopSvcsd/procs/ -xtype l -delete
       # stop services if folder is empty
       find $PRJ_SVCS_DIR/stopSvcsd/procs/ -type  d -empty -exec stopSvcs \;
+      # delete dead procs links
+      find $PRJ_SVCS_DIR/stopSvcsd/procs/ -xtype l -delete
+      # give a change to a new process before we stop
+      sleep 1
     done
   '';
   initSvcs = with exclib;''
@@ -193,7 +194,7 @@ in
 
       Know bugs:
       If we don't use `exec` in our alias, some necromancer could
-      form an army of undead process, and start a war against our 
+      form an army of undead process, and start a war against our
       system, since they both may require the most scarse resource
       of our lands.
     '';
