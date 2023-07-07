@@ -55,7 +55,11 @@ let
   initSvcsd= with exclib;''
     ${shBang}
     # init all services in foreground
-    ${s6lib.scanAndLog { }}
+    ${s6lib.scanAndLog { 
+      supervisor = 
+        (lib.optionalString config.files.services-opts.namespace.enable "unshare ${config.files.services-opts.namespace.options}") +
+        (lib.optionalString config.files.services-opts.tini.enable "${pkgs.tini}/bin/tini ${config.files.services-opts.tini.options} --");
+    }}
   '';
   autoSvcsd= ''
     # Start services in background
@@ -130,6 +134,10 @@ let
   autoStop = haveSvcs && config.files.services.stopSvcsd or false;
 in
 {
+  options.files.services-opts.namespace.enable  = lib.mkEnableOption "[Linux Namespaces](https://docs.kernel.org/userspace-api/unshare.html)";
+  options.files.services-opts.namespace.options = lib.mkOption  { type = lib.types.str; default = "--pid --fork --map-root-user";};
+  options.files.services-opts.tini.enable       = lib.mkEnableOption "[Tini](https://github.com/krallin/tini) Supervisor";
+  options.files.services-opts.tini.options      = lib.mkOption  { type = lib.types.str; default = "-sp SIGTERM"; };
   options.files.services = lib.mkOption {
     default       = {};
     example.hello = true;
@@ -190,13 +198,21 @@ in
           done
         ${"''"};
       }
-       ```
+      ```
+
+      See also:
+
+       - `files.services-opts.tini.enable` to use [Tini](https://github.com/krallin/tini) as supervisor supervisor
+       - `files.services-opts.namespace.enable` to use [namespace](https://docs.kernel.org/userspace-api/unshare.html)
 
       Know bugs:
+
       If we don't use `exec` in our alias, some necromancer could
       form an army of undead process, and start a war against our
       system, since they both may require the most scarse resource
       of our lands.
+
+      You can enable namespace if it is an problem
     '';
   };
   config.files.alias = lib.mkIf haveSvcs {
@@ -213,8 +229,8 @@ in
   };
   config.devshell.packages = lib.mkIf haveSvcs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
   config.devshell.startup  = stUpSvcs // (rmS6Svcs deadSvcs) // (mkS6Dirs liveSvcs);
-  config.file = (mkS6Runs liveSvcs) // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs);
-  config.env = lib.optionals haveSvcs [
+  config.file = (mkS6Runs liveSvcs)   // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs);
+  config.env  = lib.optionals haveSvcs [
     { name = "PRJ_SVCS_DIR"; eval = "$PRJ_DATA_DIR/services"; }
     { name = "PRJ_SVCS_LOG"; eval = "$PRJ_DATA_DIR/log"; }
   ];

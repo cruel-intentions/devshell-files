@@ -20,7 +20,8 @@
   files.services.greet      = true; # Use cmd 'greet' as service
   files.alias.greet         = ''
     # Greet people
-    notify-desktop -i network-server "Welcome";
+    set +e # ignore errors bacause this service isn't critical
+    notify-desktop -i network-server "Welcome"
 
     # our stdout goes to .data/log/greet
     echo Dornröschen
@@ -31,7 +32,6 @@
   '';
   files.alias.greet-finish  = ''
     notify-desktop -i network-server "See you later"
-    echo wake up little Suzie
   '';
 
   # This is a service to speedup direnv
@@ -43,6 +43,8 @@
   # special service to auto stopSvcs
   files.services.stopSvcsd = true;
 
+  # files.services-opts.tini.enable = true;
+  # files.services-opts.namespace.enable = true;
 
   # # RC (unstable) is another interface it uses s6-rc
   # # http://skarnet.org/software/s6-rc/why.html

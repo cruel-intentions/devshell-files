@@ -5,7 +5,7 @@ let
     # Run `${builtins.replaceStrings ["\n"] [";"]  v.cmd}` 
     # When ${builtins.replaceStrings ["\n"] [", "] v.files} changes
 
-
+    trap 'kill -15 $(ps --ppid '$$' -o pid=|tr "\\n" " ")' exit
 
     cat - << EOWFI |
     ${v.files}
@@ -35,14 +35,7 @@ let
       --fromfile  -              |\
     while read -r file dir time events; do
       ${v.cmd}
-    done &
-
-    # kill inotifywait
-    MY_CPID=$!
-    MY_PID=$$
-    MY_CPPS=$(ps --ppid $MY_PID -o pid=|tr "\n" " ")
-    trap "kill -15 $MY_CPPS" exit
-    wait $MY_CPID
+    done
   '';
   toSvc   = n: v: v.enable;
 in
