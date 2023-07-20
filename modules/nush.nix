@@ -21,12 +21,12 @@ let
     inherit name;
     help    = "${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})";
     command = ''
-      [ "$#" == "0" ] && nu -c "source ${nuLib}; ${name} --help" && exit 1
+      [ "$#" == "0" ] && ${pkgs.nushell}/bin/nu -c "source ${nuLib}; ${name} --help" && exit 1
       SUBCMD=$1
       shift
       [ ! -t 0 ] && \
-        nu --stdin -c "source ${nuLib}; cat /proc/self/fd/0 | ${name} $SUBCMD $*" || \
-        nu --stdin -c "source ${nuLib};                       ${name} $SUBCMD $*"
+        ${pkgs.nushell}/bin/nu --stdin -c "source ${nuLib}; cat /proc/self/fd/0 | ${name} $SUBCMD $*" || \
+        ${pkgs.nushell}/bin/nu --stdin -c "source ${nuLib};                       ${name} $SUBCMD $*"
     '';
   };
   toProc   = name: def: ''
@@ -61,7 +61,7 @@ let
   '';
   nuLibNam = builtins.hashString "sha256" nuLibSrc;
   nuLib    = builtins.toFile     nuLibNam nuLibSrc;
-  nus      = builtins.attrValues (builtins.mapAttrs toAlias' cfg');
+  nus      = builtins.attrValues (builtins.mapAttrs toAlias' cfg') ;
 in {
   options.files.nush = lib.mkOption {
     default       = {};
@@ -75,5 +75,12 @@ in {
       hello pt "Mundo"
     '';
   };
-  config.commands = nus;
+  config.commands = nus ++ (lib.optional (builtins.length nus > 0) {
+    name    = "nush";
+    help    = "Run nushell with your functions loaded";
+    command = ''
+      #!${pkgs.nushell}/bin/nu
+      exec nu -e "source ${nuLib}"
+    '';
+  });
 }
