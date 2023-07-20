@@ -3,15 +3,13 @@ let
   cfg = config.files.alias;
   isntSH  = line: builtins.match "#!/.+" line == null;
   stripCo = line: builtins.replaceStrings ["# " "#"] ["" ""] line;
-  lines   = name: lib.splitString "\n" cfg.${name};
-  toAlias = name: {
-    inherit name;
-    help    = with builtins; stripCo (head (filter isntSH (lines name)));
-    command = ''
-      ${cfg.${name}}
-    '';
+  lines   = value: lib.splitString "\n" value;
+  toAlias = name: value: {
+    name    = name;
+    command = value;
+    help    = with builtins; stripCo (head (filter isntSH (lines value)));
   };
-  aliasses = map toAlias (builtins.attrNames cfg);
+  aliasses = builtins.attrValues (builtins.mapAttrs toAlias cfg);
 in {
   options.files.alias = lib.mkOption {
     default       = {};
