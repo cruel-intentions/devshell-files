@@ -14,6 +14,9 @@
     ./examples/watch.nix
   ];
 
+  # My shell name
+  devshell.name = "devshell-files";
+
   # install development or deployment tools
   packages = [
     "convco"

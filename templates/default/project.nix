@@ -1,7 +1,9 @@
-{ 
+{
+  # Name your shell environment
+  devshell.name = "my-projectson";
+
   # create hello.yaml file
   files.yaml."/hello.yaml".greeting = "Hello World!!";
-
 
   # create .gitignore
   files.gitignore.enable = true;

@@ -173,6 +173,9 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/watch.nix
   ];
 
+  # My shell name
+  devshell.name = "devshell-files";
+
   # install development or deployment tools
   packages = [
     "convco"
