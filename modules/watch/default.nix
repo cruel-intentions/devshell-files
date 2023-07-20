@@ -5,7 +5,7 @@ let
     # Run `${builtins.replaceStrings ["\n"] [";"]  v.cmd}` 
     # When ${builtins.replaceStrings ["\n"] [", "] v.files} changes
 
-    trap 'kill -15 $(ps --ppid '$$' -o pid=|tr "\\n" " ")' exit
+    trap 'kill -15 $(ps --ppid '$$' -o pid=|tr "\\n" " ")' EXIT
 
     cat - << EOWFI |
     ${v.files}
