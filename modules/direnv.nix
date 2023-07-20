@@ -59,8 +59,7 @@ in
     executable  = true;
     text        = ''
       #!/usr/bin/env bash
-      ACTIVE=$(readlink $PRJ_ROOT/.direnv/flake-profile)
-      find $PRJ_ROOT/.direnv -name 'flake-profile-*-link' -not -name "$ACTIVE" -delete
+      nix profile wipe-history --profile $PRJ_ROOT/.direnv/flake-profile
     '';
   };
 
