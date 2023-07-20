@@ -15,8 +15,8 @@ let
     def
   else
     lib.lists.last def;
-  lines    = def: lib.splitString           "\n"     (toMain def);
-  toSrc    = def: builtins.concatStringsSep "\n    " (lines  def);
+  lines    = def: lib.splitString           "\n" (toMain def);
+  toSrc    = def: builtins.concatStringsSep "\n" (lines  def);
   toAlias' = name: sub: rec {
     inherit name;
     help    = "${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})";
