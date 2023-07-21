@@ -21,13 +21,13 @@ let
     inherit name;
     help    = "${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})";
     command = ''
-      READIN=$([ ! -t 0 ] && printf "\ncat /proc/self/fd/0 | " || printf "\n")
+      READIN=$([ ! -t 0 ] && printf "cat /proc/self/fd/0 | " || printf "")
       export NUSH_LIB=${nuLib}
       NL=$'\n'
       exec ${pkgs.nushell}/bin/nu  -c "\
       source ${nuLib}\
       ''${NL}let-env NUSH_LIB = "${nuLib}"\
-      ''${READIN}${name} $*"
+      ''${NL}$READIN ${name} $*"
     '';
   };
   toProc   = name: def: ''
