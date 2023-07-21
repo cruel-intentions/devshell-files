@@ -21,12 +21,13 @@ let
     inherit name;
     help    = "${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})";
     command = ''
-      [ "$#" == "0" ] && ${pkgs.nushell}/bin/nu -c "source ${nuLib}; ${name} --help" && exit 1
-      SUBCMD=$1
-      shift
-      [ ! -t 0 ] && \
-        ${pkgs.nushell}/bin/nu --stdin -c "source ${nuLib}; cat /proc/self/fd/0 | ${name} $SUBCMD $*" || \
-        ${pkgs.nushell}/bin/nu --stdin -c "source ${nuLib};                       ${name} $SUBCMD $*"
+      READIN=$([ ! -t 0 ] && printf "\ncat /proc/self/fd/0 | " || printf "\n")
+      export NUSH_LIB=${nuLib}
+      NL=$'\n'
+      exec ${pkgs.nushell}/bin/nu  -c "\
+      source ${nuLib}\
+      ''${NL}let-env NUSH_LIB = "${nuLib}"\
+      ''${READIN}${name} $*"
     '';
   };
   toProc   = name: def: ''
@@ -80,7 +81,7 @@ in {
     help    = "Run nushell with your functions loaded";
     command = ''
       #!${pkgs.nushell}/bin/nu
-      exec nu -e "source ${nuLib}"
+      exec nu -e "source ${nuLib};let-env NUSH_LIB = '${nuLib}'"
     '';
   });
 }
