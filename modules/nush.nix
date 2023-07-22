@@ -89,7 +89,11 @@ let
 in {
   options.files.nush = lib.mkOption {
     default       = {};
-    description   = ''[Nushell](https://www.nushell.sh/book/command_reference.html) script to create an alias.'';
+    description   = ''
+      [Nushell](https://www.nushell.sh/book/command_reference.html) script to create an alias.
+
+      You can load autocomplete from $PRJ_DATA_DIR/bash_complete/nush.sh
+    '';
     type          = with lib.types; attrsOf (attrsOf (oneOf [string (listOf string)]));
     example.hello.en = ["arg" "{hello: $arg}"];
     example.hello.pt = ["arg" "{ola: $arg}"];
