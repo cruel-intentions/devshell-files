@@ -4,22 +4,23 @@ let
   cfg'     = config.files.nush;
   onlyCo   = line: let r = builtins.match "^\s*([#].+)" line; in if r == null then "" else builtins.head r;
   nonEmpty = line: line != "";
-  toDoc    = def: builtins.concatStringsSep "\n" (builtins.filter nonEmpty (map onlyCo (lines def)));
+  concat   = builtins.concatStringsSep;
+  toDoc    = def: concat "\n" (builtins.filter nonEmpty (map onlyCo (lines def)));
   toArgs   = def:
   if builtins.typeOf def == "string" then
     ""
   else
-    builtins.concatStringsSep "\n\n" (lib.lists.init def);
+    concat "\n\n" (lib.lists.init def);
   toMain   = def:
   if builtins.typeOf def == "string" then
     def
   else
     lib.lists.last def;
-  lines    = def: lib.splitString           "\n" (toMain def);
-  toSrc    = def: builtins.concatStringsSep "\n" (lines  def);
+  lines    = def: lib.splitString "\n" (toMain def);
+  toSrc    = def: concat          "\n" (lines  def);
   toAlias' = name: sub: rec {
     inherit name;
-    help    = "${name} (${builtins.concatStringsSep "|" (builtins.attrNames sub)})";
+    help    = "${name} (${concat "|" (builtins.attrNames sub)})";
     command = ''
       READIN=$([ ! -t 0 ] && printf "cat /proc/self/fd/0 | " || printf "")
       export NUSH_LIB=${nuLib}
@@ -39,9 +40,9 @@ let
     }
   '';
   toProc'  = name: sub: 
-    builtins.concatStringsSep "\n\n" (builtins.attrValues (builtins.mapAttrs (n: d: toProc "${name} ${n}" d) sub));
+    concat "\n\n" (builtins.attrValues (builtins.mapAttrs (n: d: toProc "${name} ${n}" d) sub));
   toProc'' = name: sub: ''
-    # ${name} [${builtins.concatStringsSep "|" (builtins.attrNames sub)}]
+    # ${name} [${concat "|" (builtins.attrNames sub)}]
     def "${name}" [
       ...subcommand
     ] {
@@ -49,20 +50,42 @@ let
       error make { 
         msg:   "Unknown subcommand"
         label: {
-          text: "expected: ${name} [${builtins.concatStringsSep "|" (builtins.attrNames sub)}]",
+          text: "expected: ${name} [${concat "|" (builtins.attrNames sub)}]",
           start: $span.start, end: $span.end
         }
       }
     }
   '';
   nuLibSrc = ''
-    ${builtins.concatStringsSep "\n\n" (builtins.attrValues (builtins.mapAttrs toProc   cfg ))}
-    ${builtins.concatStringsSep "\n\n" (builtins.attrValues (builtins.mapAttrs toProc'  cfg'))}
-    ${builtins.concatStringsSep "\n\n" (builtins.attrValues (builtins.mapAttrs toProc'' cfg'))}
+    ${concat "\n\n" (builtins.attrValues (builtins.mapAttrs toProc   cfg ))}
+    ${concat "\n\n" (builtins.attrValues (builtins.mapAttrs toProc'  cfg'))}
+    ${concat "\n\n" (builtins.attrValues (builtins.mapAttrs toProc'' cfg'))}
   '';
   nuLibNam = builtins.hashString "sha256" nuLibSrc;
   nuLib    = builtins.toFile     nuLibNam nuLibSrc;
-  nus      = builtins.attrValues (builtins.mapAttrs toAlias' cfg') ;
+  cmds     = builtins.mapAttrs toAlias' cfg';
+  nus      = builtins.attrValues cmds;
+  toFish'  = name: sub: ''
+    complete -c ${name}        \
+      -d "${cmds.${name}.help}" \
+      -s h -l help             \
+      -a "${concat " " (map (builtins.replaceStrings [" "] ["\\ "]) (builtins.attrNames sub))}"
+  '';
+  nuFish   = ''
+    #!/usr/bin/env fish
+    # fish autocomplete
+    ${concat "\n\n" (builtins.attrValues (builtins.mapAttrs toFish'  cfg'))}
+  '';
+  toBash'  = name: sub: ''
+    complete \
+      -W "${concat " " (map (builtins.replaceStrings [" "] ["\\ "]) (builtins.attrNames sub))}" \
+      ${name}
+  '';
+  nuBash   = ''
+    #!/usr/bin/env bash
+    # bash autocomplete
+    ${concat "\n\n" (builtins.attrValues (builtins.mapAttrs toBash'  cfg'))}
+  '';
 in {
   options.files.nush = lib.mkOption {
     default       = {};
@@ -75,6 +98,10 @@ in {
       hello en "World"
       hello pt "Mundo"
     '';
+  };
+  config.files.text = lib.optionalString (builtins.length nus > 0) {
+    "/.data/fish_complete/nush.fish" =  nuFish;
+    "/.data/bash_complete/nush.sh"   =  nuBash;
   };
   config.commands = nus ++ (lib.optional (builtins.length nus > 0) {
     name    = "nush";

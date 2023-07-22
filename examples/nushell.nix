@@ -28,5 +28,10 @@
     # echo 'João' | nushhello pt
     echo Ola $in
   '';
+  files.nush.nushhello."pt br"= ''
+    # call it like
+    # echo 'João' | nushhello pt br
+    echo Oi $in
+  '';
   files.nuon.enable = true;
 }
