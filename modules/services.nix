@@ -132,6 +132,25 @@ let
   haveSvcs = builtins.length liveSvcs > 0;
   autoSvcs = haveSvcs && config.files.services.initSvcs  or false;
   autoStop = haveSvcs && config.files.services.stopSvcsd or false;
+  completes."/.data/fish_complete/s6.fish" = lib.mkIf haveSvcs {
+    executable = true;
+    text       = builtins.readFile ./services/complete.fish;
+  };
+  completes."/.data/bash_complete/s6.sh"   = lib.mkIf haveSvcs {
+    executable = true;
+    text       = ''
+      PRJ_SVCS=$(ls $PRJ_SVCS_DIR)
+      complete -W "$PRJ_SVCS" stopSvc
+      
+      complete -W "$PRJ_SVCS" restartSvc
+      
+      complete -W "$PRJ_SVCS" restartSvc
+      
+      complete -W "$PRJ_SVCS" logSvc
+
+      complete -W "$PRJ_SVCS" svcCtl
+    '';
+  };
 in
 {
   options.files.services-opts.namespace.enable  = lib.mkEnableOption "[Linux Namespaces](https://docs.kernel.org/userspace-api/unshare.html)";
@@ -222,14 +241,14 @@ in
     scanSvcs   = scanSvcs;
     stopSvcs   = stopSvcs;
     stopSvcsd  = stopSvcsd;
-    initSvc    = "# Start service $1\nsvcCtl $1 -u";
+    initSvc    = "# Start   service $1\nsvcCtl $1 -u";
     restartSvc = "# Restart service $1\nsvcCtl $1 -r";
-    stopSvc    = "# Stop service $1\nsvcCtl $1 -d";
-    svcCtl     = "# Send command $2 to service $1\ns6-svc $2 $PRJ_SVCS_DIR/$1";
+    stopSvc    = "# Stop    service $1\nsvcCtl $1 -d";
+    svcCtl     = "# Send command $2 to service $1\nIT=$1\nshift\ns6-svc $@ $PRJ_SVCS_DIR/$IT";
   };
   config.devshell.packages = lib.mkIf haveSvcs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
   config.devshell.startup  = stUpSvcs // (rmS6Svcs deadSvcs) // (mkS6Dirs liveSvcs);
-  config.file = (mkS6Runs liveSvcs)   // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs);
+  config.file = (mkS6Runs liveSvcs)   // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs) // completes;
   config.env  = lib.optionals haveSvcs [
     { name = "PRJ_SVCS_DIR"; eval = "$PRJ_DATA_DIR/services"; }
     { name = "PRJ_SVCS_LOG"; eval = "$PRJ_DATA_DIR/log"; }
