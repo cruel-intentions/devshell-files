@@ -67,7 +67,7 @@ let
   nus      = builtins.attrValues cmds;
   sub2Fish'= name: subName: sub: ''
     complete -c ${name}         \
-      -d "${builtins.replaceStrings ["# " "\n"] ["" ", "] (toDoc sub)}" \
+      -d "${builtins.replaceStrings ["# " "\n" "\""] ["" ", " "\\\""] (toDoc sub)}" \
       -a '"${subName}"'
   '';
   toFish'  = name: sub: ''
