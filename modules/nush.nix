@@ -66,33 +66,26 @@ let
   cmds     = builtins.mapAttrs toAlias' cfg';
   nus      = builtins.attrValues cmds;
   toFish'  = name: sub: ''
-    complete -c ${name}        \
+    complete -c ${name} -s h -l help 
+    complete -c ${name}         \
       -d "${cmds.${name}.help}" \
-      -s h -l help             \
-      -a "${concat " " (map (builtins.replaceStrings [" "] ["\\ "]) (builtins.attrNames sub))}"
-  '';
-  nuFish   = ''
-    #!/usr/bin/env fish
-    # fish autocomplete
-    ${concat "\n\n" (builtins.attrValues (builtins.mapAttrs toFish'  cfg'))}
+      -a '"${concat "\" \"" (builtins.attrNames sub)}"'
   '';
   toBash'  = name: sub: ''
     complete \
       -W "${concat " " (map (builtins.replaceStrings [" "] ["\\ "]) (builtins.attrNames sub))}" \
       ${name}
   '';
-  nuBash   = ''
-    #!/usr/bin/env bash
-    # bash autocomplete
-    ${concat "\n\n" (builtins.attrValues (builtins.mapAttrs toBash'  cfg'))}
-  '';
+  toComplete = name: sub: {
+    bash = toBash' name sub;
+    fish = toFish' name sub;
+  };
+  completes = builtins.mapAttrs toComplete cfg';
 in {
   options.files.nush = lib.mkOption {
     default       = {};
     description   = ''
       [Nushell](https://www.nushell.sh/book/command_reference.html) script to create an alias.
-
-      You can load autocomplete from $PRJ_DATA_DIR/bash_complete/nush.sh
     '';
     type          = with lib.types; attrsOf (attrsOf (oneOf [string (listOf string)]));
     example.hello.en = ["arg" "{hello: $arg}"];
@@ -103,10 +96,7 @@ in {
       hello pt "Mundo"
     '';
   };
-  config.files.text = lib.optionalString (builtins.length nus > 0) {
-    "/.data/fish_complete/nush.fish" =  nuFish;
-    "/.data/bash_complete/nush.sh"   =  nuBash;
-  };
+  config.files.complete = lib.mkIf (builtins.length nus > 0) completes;
   config.commands = nus ++ (lib.optional (builtins.length nus > 0) {
     name    = "nush";
     help    = "Run nushell with your functions loaded";

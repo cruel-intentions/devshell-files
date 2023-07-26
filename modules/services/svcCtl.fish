@@ -2,17 +2,6 @@
 #
 set -l PRJ_SVCS (ls $PRJ_SVCS_DIR)
 
-complete -c stopSvc    -a "$PRJ_SVCS"
-
-complete -c initSvc    -f
-complete -c restartSvc -a "$PRJ_SVCS"
-
-complete -c restartSvc -f
-complete -c restartSvc -a "$PRJ_SVCS"
-
-complete -c logSvc     -f
-complete -c logSvc     -a "$PRJ_SVCS"
-
 complete -c svcCtl     -f
 complete -c svcCtl     -n "not __fish_seen_subcommand_from $PRJ_SVCS" \
   -a "$PRJ_SVCS"

@@ -18,6 +18,7 @@
       ./modules/files.nix
       ./modules/cmds.nix
       ./modules/alias.nix
+      ./modules/alias-complete.nix
       ./modules/json.nix
       ./modules/text.nix
       ./modules/toml.nix

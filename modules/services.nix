@@ -132,24 +132,17 @@ let
   haveSvcs = builtins.length liveSvcs > 0;
   autoSvcs = haveSvcs && config.files.services.initSvcs  or false;
   autoStop = haveSvcs && config.files.services.stopSvcsd or false;
-  completes."/.data/fish_complete/s6.fish" = lib.mkIf haveSvcs {
-    executable = true;
-    text       = builtins.readFile ./services/complete.fish;
-  };
-  completes."/.data/bash_complete/s6.sh"   = lib.mkIf haveSvcs {
-    executable = true;
-    text       = ''
-      PRJ_SVCS=$(ls $PRJ_SVCS_DIR)
-      complete -W "$PRJ_SVCS" stopSvc
-      
-      complete -W "$PRJ_SVCS" restartSvc
-      
-      complete -W "$PRJ_SVCS" restartSvc
-      
-      complete -W "$PRJ_SVCS" logSvc
-
-      complete -W "$PRJ_SVCS" svcCtl
-    '';
+  complete = {
+    initSvc.bash    = ''complete -W "$(ls $PRJ_SVCS_DIR)" initSvc'';
+    initSvc.fish    = ''complete -f -c initSvc    -a "$(ls $PRJ_SVCS_DIR)"'';
+    stopSvc.bash    = ''complete -W "$(ls $PRJ_SVCS_DIR)" stopSvc'';
+    stopSvc.fish    = ''complete -f -c stopSvc    -a "$(ls $PRJ_SVCS_DIR)"'';
+    restartSvc.bash = ''complete -W "$(ls $PRJ_SVCS_DIR)" restartSvc'';
+    restartSvc.fish = ''complete -f -c restartSvc -a "$(ls $PRJ_SVCS_DIR)"'';
+    logSvc.bash     = ''complete -W "$(ls $PRJ_SVCS_DIR)" logSvc'';
+    logSvc.fish     = ''complete -f -c logSvc     -a "$(ls $PRJ_SVCS_DIR)"'';
+    svcCtl.bash     = ''complete -W "$(ls $PRJ_SVCS_DIR)" svcCtl'';
+    svcCtl.fish     = builtins.readFile ./services/svcCtl.fish;
   };
 in
 {
@@ -246,9 +239,12 @@ in
     stopSvc    = "# Stop    service $1\nsvcCtl $1 -d";
     svcCtl     = "# Send command $2 to service $1\nIT=$1\nshift\ns6-svc $@ $PRJ_SVCS_DIR/$IT";
   };
-  config.devshell.packages = lib.mkIf haveSvcs [ pkgs.s6 pkgs.s6-rc pkgs.execline];
+  config.devshell.packages = lib.mkIf haveSvcs [ 
+    pkgs.s6 pkgs.s6-rc pkgs.execline
+  ];
+  config.files.complete = lib.mkIf haveSvcs complete;
   config.devshell.startup  = stUpSvcs // (rmS6Svcs deadSvcs) // (mkS6Dirs liveSvcs);
-  config.file = (mkS6Runs liveSvcs)   // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs) // completes;
+  config.file = (mkS6Runs liveSvcs)   // (mkS6Logs liveSvcs) // (mkS6Ends liveSvcs);
   config.env  = lib.optionals haveSvcs [
     { name = "PRJ_SVCS_DIR"; eval = "$PRJ_DATA_DIR/services"; }
     { name = "PRJ_SVCS_LOG"; eval = "$PRJ_DATA_DIR/log"; }
