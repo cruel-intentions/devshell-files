@@ -65,11 +65,14 @@ let
   nuLib    = builtins.toFile     nuLibNam nuLibSrc;
   cmds     = builtins.mapAttrs toAlias' cfg';
   nus      = builtins.attrValues cmds;
-  toFish'  = name: sub: ''
-    complete -c ${name} -s h -l help 
+  sub2Fish'= name: subName: sub: ''
     complete -c ${name}         \
-      -d "${cmds.${name}.help}" \
-      -a '"${concat "\" \"" (builtins.attrNames sub)}"'
+      -d "${builtins.replaceStrings ["# " "\n"] ["" ", "] (toDoc sub)}" \
+      -a '"${subName}"'
+  '';
+  toFish'  = name: sub: ''
+    complete -c ${name} -s h -l help -d "${cmds.${name}.help}"
+    ${concat "\n" (builtins.attrValues (builtins.mapAttrs (sub2Fish' name) sub))}
   '';
   toBash'  = name: sub: ''
     complete \
