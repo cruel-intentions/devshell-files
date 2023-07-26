@@ -30,7 +30,7 @@
   '';
   files.nush.nushhello."pt br"= ''
     # call it like
-    # echo 'João' | nushhello pt br
+    # echo "João" | nushhello pt br
     echo Oi $in
   '';
   files.nuon.enable = true;
