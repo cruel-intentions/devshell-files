@@ -628,7 +628,7 @@ To document our modules is simple, we just need to use `config.files.docs` as fo
 
 {lib, pkgs, ...}:
 {
-  files.docs."/gh-pages/src/modules/alias.md".modules     = [ ../modules/alias.nix       ];
+  files.docs."/gh-pages/src/modules/alias.md".modules     = [ ../modules/alias.nix ../modules/alias-complete.nix ];
   files.docs."/gh-pages/src/modules/cmds.md".modules      = [ ../modules/cmds.nix        ];
   files.docs."/gh-pages/src/modules/files.md".modules     = [ ../modules/files.nix       ];
   files.docs."/gh-pages/src/modules/git.md".modules       = [ ../modules/git.nix         ];
