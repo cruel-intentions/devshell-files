@@ -165,6 +165,7 @@ This project is configured by module [project.nix](./project.nix)
     ./examples/readme.nix
     ./examples/gitignore.nix
     ./examples/license.nix
+    ./examples/interpolation.nix
     ./examples/docs.nix
     ./examples/book.nix
     ./examples/services.nix

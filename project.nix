@@ -6,6 +6,7 @@
     ./examples/readme.nix
     ./examples/gitignore.nix
     ./examples/license.nix
+    ./examples/interpolation.nix
     ./examples/docs.nix
     ./examples/book.nix
     ./examples/services.nix

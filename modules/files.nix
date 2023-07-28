@@ -18,11 +18,17 @@ let
   # Execute this script to update the project's files
   copy-files = map (name: "source $DEVSHELL_DIR/bin/${toName name}") (builtins.attrNames files);
   copy-files'= lib.mapAttrsToList (name: file: if file.on-enter then "source $DEVSHELL_DIR/bin/${toName name}" else "")  files;
-  copy-file  = name: file: pkgs.writeShellScriptBin "${toName name}" ''
+  copy-file  = name: file: pkgs.writeShellScriptBin "${toName name}" (if file.interpolate then ''
+    CONTENT=$(< "${file.source}")
+    INTERPOLATE="cat <<ENDOFANIQUITO > $PRJ_ROOT${file.target}"$'\n'"$CONTENT"$'\n'"ENDOFANIQUITO"
+    eval "$INTERPOLATE"
+    ${chmod file}
+    ${git-add file}
+  '' else ''
     ${pkgs.coreutils}/bin/install -m 644 -D ${file.source} "$PRJ_ROOT${file.target}"
     ${chmod file}
     ${git-add file}
-  '';
+  '');
   cmd.command     = builtins.concatStringsSep "\n" copy-files;
   cmd.help        = "Recreate files";
   cmd.name        = "devshell-files";

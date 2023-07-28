@@ -52,6 +52,14 @@ in
           '';
         };
 
+        interpolate = mkOption {
+          type = types.bool;
+          default = false;
+          description = ''
+            Substitute $VAR with environment var before create file
+          '';
+        };
+
         git-add = mkOption {
           type = types.nullOr types.bool;
           default = null;
