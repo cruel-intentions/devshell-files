@@ -1,0 +1,430 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>watch module</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../modules.html"><strong aria-hidden="true">4.</strong> Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix-lang.html"><strong aria-hidden="true">4.1.</strong> Nix Lang</a></li><li class="chapter-item expanded "><a href="../json-nix.html"><strong aria-hidden="true">4.2.</strong> JSON as Nix</a></li><li class="chapter-item expanded "><a href="../module-spec.html"><strong aria-hidden="true">4.3.</strong> Module Attributes</a></li><li class="chapter-item expanded "><a href="../share.html"><strong aria-hidden="true">4.4.</strong> Share Our Module</a></li><li class="chapter-item expanded "><a href="../document.html"><strong aria-hidden="true">4.5.</strong> Document It</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../builtins.html"><strong aria-hidden="true">5.</strong> Builtin Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../modules/alias.html"><strong aria-hidden="true">5.1.</strong> alias module</a></li><li class="chapter-item expanded "><a href="../modules/cmds.html"><strong aria-hidden="true">5.2.</strong> cmds module</a></li><li class="chapter-item expanded "><a href="../modules/files.html"><strong aria-hidden="true">5.3.</strong> files module</a></li><li class="chapter-item expanded "><a href="../modules/git.html"><strong aria-hidden="true">5.4.</strong> git module</a></li><li class="chapter-item expanded "><a href="../modules/gitignore.html"><strong aria-hidden="true">5.5.</strong> gitignore module</a></li><li class="chapter-item expanded "><a href="../modules/hcl.html"><strong aria-hidden="true">5.6.</strong> hcl module</a></li><li class="chapter-item expanded "><a href="../modules/json.html"><strong aria-hidden="true">5.7.</strong> json module</a></li><li class="chapter-item expanded "><a href="../modules/mdbook.html"><strong aria-hidden="true">5.8.</strong> mdbook module</a></li><li class="chapter-item expanded "><a href="../modules/nim.html"><strong aria-hidden="true">5.9.</strong> nim module</a></li><li class="chapter-item expanded "><a href="../modules/nushell.html"><strong aria-hidden="true">5.10.</strong> nushell module</a></li><li class="chapter-item expanded "><a href="../modules/nush.html"><strong aria-hidden="true">5.11.</strong> nush module</a></li><li class="chapter-item expanded "><a href="../modules/rc.html"><strong aria-hidden="true">5.12.</strong> rc module (WIP)</a></li><li class="chapter-item expanded "><a href="../modules/services.html"><strong aria-hidden="true">5.13.</strong> services module</a></li><li class="chapter-item expanded "><a href="../modules/spdx.html"><strong aria-hidden="true">5.14.</strong> spdx module</a></li><li class="chapter-item expanded "><a href="../modules/text.html"><strong aria-hidden="true">5.15.</strong> text module</a></li><li class="chapter-item expanded "><a href="../modules/toml.html"><strong aria-hidden="true">5.16.</strong> toml module</a></li><li class="chapter-item expanded "><a href="../modules/watch.html" class="active"><strong aria-hidden="true">5.17.</strong> watch module</a></li><li class="chapter-item expanded "><a href="../modules/yaml.html"><strong aria-hidden="true">5.18.</strong> yaml module</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../todo.html"><strong aria-hidden="true">6.</strong> TODO</a></li><li class="chapter-item expanded "><a href="../issues.html"><strong aria-hidden="true">7.</strong> Issues</a></li><li class="chapter-item expanded "><a href="../seeAlso.html"><strong aria-hidden="true">8.</strong> See Also</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="files"><a class="header" href="#files">files</a></h2>
+<h4 id="type"><a class="header" href="#type">type</a></h4>
+<p>submodule</p>
+<h2 id="fileswatch"><a class="header" href="#fileswatch">files.watch</a></h2>
+<p><simpara>Alias that run commands when files changes using inotify</simpara>
+<simpara>Note: 
+It uses files.services so you should to start services with <literal>initSvcs</literal>.</simpara>
+<simpara>Or you could auto start/stop by adding</simpara>
+<programlisting language="nix">
+files.services.initSvcs  = true;
+files.services.stopSvcsd = true;
+</programlisting></p>
+<h4 id="type-1"><a class="header" href="#type-1">type</a></h4>
+<p>lazy attribute set of (submodule)</p>
+<h4 id="example"><a class="header" href="#example">example</a></h4>
+<pre><code class="language-nix">{
+  files.watch = {
+    FOO = {
+      cmd = &quot;echo $file $dir $time $events&quot;;
+      event = {
+        modify = true;
+      };
+      exclude = &quot;.+\\.png$&quot;;
+      files = &quot;$PRJ_ROOT/src&quot;;
+      include = &quot;.+\\.js$&quot;;
+      recursive = true;
+    };
+  };
+}
+</code></pre>
+<h4 id="default"><a class="header" href="#default">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch = { };
+}
+</code></pre>
+<h2 id="fileswatchnameenable"><a class="header" href="#fileswatchnameenable">files.watch.&lt;name&gt;.enable</a></h2>
+<p><simpara>Run it when all other services start</simpara></p>
+<h4 id="type-2"><a class="header" href="#type-2">type</a></h4>
+<p>boolean</p>
+<h4 id="default-1"><a class="header" href="#default-1">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.enable = true;
+}
+</code></pre>
+<h2 id="fileswatchnamecmd"><a class="header" href="#fileswatchnamecmd">files.watch.&lt;name&gt;.cmd</a></h2>
+<p><simpara>Command that will run with args $file $dir $time $events</simpara></p>
+<h4 id="type-3"><a class="header" href="#type-3">type</a></h4>
+<p>string</p>
+<h2 id="fileswatchnameevent"><a class="header" href="#fileswatchnameevent">files.watch.&lt;name&gt;.event</a></h2>
+<p><simpara>What kinds of events must be watched</simpara></p>
+<h4 id="type-4"><a class="header" href="#type-4">type</a></h4>
+<p>submodule</p>
+<h4 id="default-2"><a class="header" href="#default-2">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event = { };
+}
+</code></pre>
+<h2 id="fileswatchnameeventaccess"><a class="header" href="#fileswatchnameeventaccess">files.watch.&lt;name&gt;.event.access</a></h2>
+<h4 id="type-5"><a class="header" href="#type-5">type</a></h4>
+<p>boolean</p>
+<h4 id="default-3"><a class="header" href="#default-3">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.access = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventattrib"><a class="header" href="#fileswatchnameeventattrib">files.watch.&lt;name&gt;.event.attrib</a></h2>
+<h4 id="type-6"><a class="header" href="#type-6">type</a></h4>
+<p>boolean</p>
+<h4 id="default-4"><a class="header" href="#default-4">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.attrib = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventclose"><a class="header" href="#fileswatchnameeventclose">files.watch.&lt;name&gt;.event.close</a></h2>
+<h4 id="type-7"><a class="header" href="#type-7">type</a></h4>
+<p>boolean</p>
+<h4 id="default-5"><a class="header" href="#default-5">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.close = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventclose_nonwrite"><a class="header" href="#fileswatchnameeventclose_nonwrite">files.watch.&lt;name&gt;.event.close_nonwrite</a></h2>
+<h4 id="type-8"><a class="header" href="#type-8">type</a></h4>
+<p>boolean</p>
+<h4 id="default-6"><a class="header" href="#default-6">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.close_nonwrite = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventclose_write"><a class="header" href="#fileswatchnameeventclose_write">files.watch.&lt;name&gt;.event.close_write</a></h2>
+<h4 id="type-9"><a class="header" href="#type-9">type</a></h4>
+<p>boolean</p>
+<h4 id="default-7"><a class="header" href="#default-7">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.close_write = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventcreate"><a class="header" href="#fileswatchnameeventcreate">files.watch.&lt;name&gt;.event.create</a></h2>
+<h4 id="type-10"><a class="header" href="#type-10">type</a></h4>
+<p>boolean</p>
+<h4 id="default-8"><a class="header" href="#default-8">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.create = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventdelete"><a class="header" href="#fileswatchnameeventdelete">files.watch.&lt;name&gt;.event.delete</a></h2>
+<h4 id="type-11"><a class="header" href="#type-11">type</a></h4>
+<p>boolean</p>
+<h4 id="default-9"><a class="header" href="#default-9">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.delete = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventmodify"><a class="header" href="#fileswatchnameeventmodify">files.watch.&lt;name&gt;.event.modify</a></h2>
+<h4 id="type-12"><a class="header" href="#type-12">type</a></h4>
+<p>boolean</p>
+<h4 id="default-10"><a class="header" href="#default-10">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.modify = true;
+}
+</code></pre>
+<h2 id="fileswatchnameeventmove"><a class="header" href="#fileswatchnameeventmove">files.watch.&lt;name&gt;.event.move</a></h2>
+<h4 id="type-13"><a class="header" href="#type-13">type</a></h4>
+<p>boolean</p>
+<h4 id="default-11"><a class="header" href="#default-11">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.move = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventmove_from"><a class="header" href="#fileswatchnameeventmove_from">files.watch.&lt;name&gt;.event.move_from</a></h2>
+<h4 id="type-14"><a class="header" href="#type-14">type</a></h4>
+<p>boolean</p>
+<h4 id="default-12"><a class="header" href="#default-12">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.move_from = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventmove_to"><a class="header" href="#fileswatchnameeventmove_to">files.watch.&lt;name&gt;.event.move_to</a></h2>
+<h4 id="type-15"><a class="header" href="#type-15">type</a></h4>
+<p>boolean</p>
+<h4 id="default-13"><a class="header" href="#default-13">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.move_to = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventopen"><a class="header" href="#fileswatchnameeventopen">files.watch.&lt;name&gt;.event.open</a></h2>
+<h4 id="type-16"><a class="header" href="#type-16">type</a></h4>
+<p>boolean</p>
+<h4 id="default-14"><a class="header" href="#default-14">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.open = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventunmount"><a class="header" href="#fileswatchnameeventunmount">files.watch.&lt;name&gt;.event.unmount</a></h2>
+<h4 id="type-17"><a class="header" href="#type-17">type</a></h4>
+<p>boolean</p>
+<h4 id="default-15"><a class="header" href="#default-15">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.unmount = false;
+}
+</code></pre>
+<h2 id="fileswatchnameexclude"><a class="header" href="#fileswatchnameexclude">files.watch.&lt;name&gt;.exclude</a></h2>
+<p><simpara>Regexp to exclude matching files</simpara></p>
+<h4 id="type-18"><a class="header" href="#type-18">type</a></h4>
+<p>string</p>
+<h4 id="default-16"><a class="header" href="#default-16">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.exclude = &quot;(.*/\\.|.+~$)&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnameexcludei"><a class="header" href="#fileswatchnameexcludei">files.watch.&lt;name&gt;.excludei</a></h2>
+<p><simpara>Case insesitive regexp to exclude matching files</simpara></p>
+<h4 id="type-19"><a class="header" href="#type-19">type</a></h4>
+<p>string</p>
+<h4 id="default-17"><a class="header" href="#default-17">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.excludei = &quot;&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnamefiles"><a class="header" href="#fileswatchnamefiles">files.watch.&lt;name&gt;.files</a></h2>
+<p><simpara>Files to be watched</simpara></p>
+<h4 id="type-20"><a class="header" href="#type-20">type</a></h4>
+<p>strings concatenated with &quot;\n&quot;</p>
+<h4 id="default-18"><a class="header" href="#default-18">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.files = &quot;$PRJ_ROOT&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnamefollow"><a class="header" href="#fileswatchnamefollow">files.watch.&lt;name&gt;.follow</a></h2>
+<p><simpara>Follow symbolic links</simpara></p>
+<h4 id="type-21"><a class="header" href="#type-21">type</a></h4>
+<p>boolean</p>
+<h4 id="default-19"><a class="header" href="#default-19">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.follow = false;
+}
+</code></pre>
+<h2 id="fileswatchnameinclude"><a class="header" href="#fileswatchnameinclude">files.watch.&lt;name&gt;.include</a></h2>
+<p><simpara>Regexp to include only matching files</simpara></p>
+<h4 id="type-22"><a class="header" href="#type-22">type</a></h4>
+<p>string</p>
+<h4 id="default-20"><a class="header" href="#default-20">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.include = &quot;&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnameincludei"><a class="header" href="#fileswatchnameincludei">files.watch.&lt;name&gt;.includei</a></h2>
+<p><simpara>Case insesitive regexp to include only matching files</simpara></p>
+<h4 id="type-23"><a class="header" href="#type-23">type</a></h4>
+<p>string</p>
+<h4 id="default-21"><a class="header" href="#default-21">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.includei = &quot;&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnamerecursive"><a class="header" href="#fileswatchnamerecursive">files.watch.&lt;name&gt;.recursive</a></h2>
+<p><simpara>Recursivelly watch directories</simpara></p>
+<h4 id="type-24"><a class="header" href="#type-24">type</a></h4>
+<p>boolean</p>
+<h4 id="default-22"><a class="header" href="#default-22">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.recursive = true;
+}
+</code></pre>
+<h2 id="fileswatchnametimefmt"><a class="header" href="#fileswatchnametimefmt">files.watch.&lt;name&gt;.timefmt</a></h2>
+<h4 id="type-25"><a class="header" href="#type-25">type</a></h4>
+<p>string</p>
+<h4 id="default-23"><a class="header" href="#default-23">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.timefmt = &quot;%FT%T.000%zZ&quot;;
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../modules/toml.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../modules/yaml.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../modules/toml.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../modules/yaml.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

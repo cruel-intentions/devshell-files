@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>services module</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../modules.html"><strong aria-hidden="true">4.</strong> Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix-lang.html"><strong aria-hidden="true">4.1.</strong> Nix Lang</a></li><li class="chapter-item expanded "><a href="../json-nix.html"><strong aria-hidden="true">4.2.</strong> JSON as Nix</a></li><li class="chapter-item expanded "><a href="../module-spec.html"><strong aria-hidden="true">4.3.</strong> Module Attributes</a></li><li class="chapter-item expanded "><a href="../share.html"><strong aria-hidden="true">4.4.</strong> Share Our Module</a></li><li class="chapter-item expanded "><a href="../document.html"><strong aria-hidden="true">4.5.</strong> Document It</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../builtins.html"><strong aria-hidden="true">5.</strong> Builtin Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../modules/alias.html"><strong aria-hidden="true">5.1.</strong> alias module</a></li><li class="chapter-item expanded "><a href="../modules/cmds.html"><strong aria-hidden="true">5.2.</strong> cmds module</a></li><li class="chapter-item expanded "><a href="../modules/files.html"><strong aria-hidden="true">5.3.</strong> files module</a></li><li class="chapter-item expanded "><a href="../modules/git.html"><strong aria-hidden="true">5.4.</strong> git module</a></li><li class="chapter-item expanded "><a href="../modules/gitignore.html"><strong aria-hidden="true">5.5.</strong> gitignore module</a></li><li class="chapter-item expanded "><a href="../modules/hcl.html"><strong aria-hidden="true">5.6.</strong> hcl module</a></li><li class="chapter-item expanded "><a href="../modules/json.html"><strong aria-hidden="true">5.7.</strong> json module</a></li><li class="chapter-item expanded "><a href="../modules/mdbook.html"><strong aria-hidden="true">5.8.</strong> mdbook module</a></li><li class="chapter-item expanded "><a href="../modules/nim.html"><strong aria-hidden="true">5.9.</strong> nim module</a></li><li class="chapter-item expanded "><a href="../modules/nushell.html"><strong aria-hidden="true">5.10.</strong> nushell module</a></li><li class="chapter-item expanded "><a href="../modules/nush.html"><strong aria-hidden="true">5.11.</strong> nush module</a></li><li class="chapter-item expanded "><a href="../modules/rc.html"><strong aria-hidden="true">5.12.</strong> rc module (WIP)</a></li><li class="chapter-item expanded "><a href="../modules/services.html" class="active"><strong aria-hidden="true">5.13.</strong> services module</a></li><li class="chapter-item expanded "><a href="../modules/spdx.html"><strong aria-hidden="true">5.14.</strong> spdx module</a></li><li class="chapter-item expanded "><a href="../modules/text.html"><strong aria-hidden="true">5.15.</strong> text module</a></li><li class="chapter-item expanded "><a href="../modules/toml.html"><strong aria-hidden="true">5.16.</strong> toml module</a></li><li class="chapter-item expanded "><a href="../modules/watch.html"><strong aria-hidden="true">5.17.</strong> watch module</a></li><li class="chapter-item expanded "><a href="../modules/yaml.html"><strong aria-hidden="true">5.18.</strong> yaml module</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../todo.html"><strong aria-hidden="true">6.</strong> TODO</a></li><li class="chapter-item expanded "><a href="../issues.html"><strong aria-hidden="true">7.</strong> Issues</a></li><li class="chapter-item expanded "><a href="../seeAlso.html"><strong aria-hidden="true">8.</strong> See Also</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="filesservices"><a class="header" href="#filesservices">files.services</a></h2>
+<p><para>Service name/command to enable</p>
+<p>{name} must be a executable command that runs forever.</p>
+<p>Optionally could exist a {name}-finish command to stop it properly.</p>
+<p>Optionally could exist a {name}-log    command to log  it properly.</p>
+<p>Default log informations goes to $PRJ_SVCS_LOG/{name}/current .</p>
+<p><code>initSvcs</code> is a special name to auto start the process supervisor
+<a href="http://skarnet.org/software/s6/">s6</a>, it control all other services.</p>
+<p>If we don't set initSvcs service, we can start it running <code>initSvcs</code>.</p>
+<p><code>stopSvcsd</code> is a special name to auto stop the process supervisor
+If S6 wont stop by itself, we could run <code>stopSvcs</code> when it's done.</p>
+<p>It defines two env vars:</p>
+<ul>
+<li>PRJ_SVCS_DIR: $PRJ_DATA_DIR/services</li>
+<li>PRJ_SVCS_LOG: $PRJ_DATA_DIR/log</li>
+</ul>
+<p>See <a href="http://skarnet.org/software/s6/s6-supervise.html">S6 documentation</a>.</p>
+<p>We can use config.files.alias to help create your services scripts.</p>
+<p>examples:</p>
+<p>Use some program as service</p>
+<p>Configure httplz (http static server) as service</p>
+<pre><code class="language-nix">{
+  # # Make services start when you enter in shell
+  # files.services.initSvcs = true;
+
+  # static http service
+  files.cmds.httplz    = true; # Install httplz
+  files.services.httpd = true; # Use cmd 'httpd' as service
+  files.alias.httpd    = ''
+    # This is an alias of httplz
+    cd $PRJ_ROOT/gh-pages
+    mdbook build
+
+    # IMPORTANT NOTE:
+    # if we don't use `exec` it may not stop with stopSvcs
+    exec httplz --port 8022 $PRJ_ROOT/gh-pages/book/
+  '';
+
+  # greeting service
+  files.cmds.notify-desktop = true; # Install notify-desktop
+  files.services.greet      = true; # Use cmd 'greet' as service
+  files.alias.greet         = ''
+    # Greet people
+    set +e # ignore errors bacause this service isn't critical
+    notify-desktop -i network-server &quot;Welcome&quot;
+
+    # our stdout goes to .data/log/greet
+    echo Dornröschen
+
+    # if service ends, it will restarted
+    # we sleep emulating some actual service
+    exec sleep infinity 
+  '';
+  files.alias.greet-finish  = ''
+    notify-desktop -i network-server &quot;See you later&quot;
+  '';
+
+  # This is a service to speedup direnv
+  files.direnv.auto-build.enable = true;
+
+  # special service to auto start
+  files.services.initSvcs  = true;
+
+  # special service to auto stopSvcs
+  files.services.stopSvcsd = true;
+
+  # files.services-opts.tini.enable = true;
+  # files.services-opts.namespace.enable = true;
+
+  # # RC (unstable) is another interface it uses s6-rc
+  # # http://skarnet.org/software/s6-rc/why.html
+  #
+  # files.rc.hello.enable  = true;
+  # files.rc.hello.oneshot.start    = ''wait 1000000 &quot;hello world&quot;'';
+  # files.rc.hello.oneshot.stop     = ''echo &quot;bye bye world&quot;'';
+  # files.rc.hello.oneshot.timeout  = 1200;
+  #
+  # files.rc.olla.enable   = true;
+  # files.rc.olla.longrun.start     = ''echo &quot;hello world&quot;'';
+  # files.rc.olla.longrun.stop      = ''echo &quot;bye bye world&quot;'';
+  # files.rc.olla.longrun.deps      = [&quot;hello&quot;];
+  #
+  # files.rc.hellos.enable = true;
+  # files.rc.hellos.bundle.deps     = [&quot;hello&quot; &quot;olla&quot;];
+}
+
+</code></pre>
+<p>Create your own service with bash</p>
+<pre><code class="language-nix">{
+  # Make all services start when you enter in shell
+  files.services.initSvcs = true;
+
+  # Use hello configured below as service
+  files.services.hello    = true;
+
+  # Creates an hello command in terminal
+  files.alias.hello       = ''
+    while :
+    do
+      echo &quot;Hello World!&quot;
+    	sleep 60
+    done
+  '';
+}
+</code></pre>
+<p>See also:</p>
+<ul>
+<li><code>files.services-opts.tini.enable</code> to use <a href="https://github.com/krallin/tini">Tini</a> as supervisor supervisor</li>
+<li><code>files.services-opts.namespace.enable</code> to use <a href="https://docs.kernel.org/userspace-api/unshare.html">namespace</a></li>
+</ul>
+<p>Know bugs:</p>
+<p>If we don't use <code>exec</code> in our alias, some necromancer could
+form an army of undead process, and start a war against our
+system, since they both may require the most scarse resource
+of our lands.</p>
+<p>You can enable namespace if it is an problem</para></p>
+<h4 id="type"><a class="header" href="#type">type</a></h4>
+<p>attribute set of boolean</p>
+<h4 id="example"><a class="header" href="#example">example</a></h4>
+<pre><code class="language-nix">{
+  files.services = {
+    hello = true;
+  };
+}
+</code></pre>
+<h4 id="default"><a class="header" href="#default">default</a></h4>
+<pre><code class="language-nix">{
+  files.services = { };
+}
+</code></pre>
+<h2 id="filesservices-optsnamespaceenable"><a class="header" href="#filesservices-optsnamespaceenable">files.services-opts.namespace.enable</a></h2>
+<p><para>Whether to enable <a href="https://docs.kernel.org/userspace-api/unshare.html">Linux Namespaces</a>.</para></p>
+<h4 id="type-1"><a class="header" href="#type-1">type</a></h4>
+<p>boolean</p>
+<h4 id="example-1"><a class="header" href="#example-1">example</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.namespace.enable = true;
+}
+</code></pre>
+<h4 id="default-1"><a class="header" href="#default-1">default</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.namespace.enable = false;
+}
+</code></pre>
+<h2 id="filesservices-optsnamespaceoptions"><a class="header" href="#filesservices-optsnamespaceoptions">files.services-opts.namespace.options</a></h2>
+<h4 id="type-2"><a class="header" href="#type-2">type</a></h4>
+<p>string</p>
+<h4 id="default-2"><a class="header" href="#default-2">default</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.namespace.options = &quot;--pid --fork --map-root-user&quot;;
+}
+</code></pre>
+<h2 id="filesservices-optstinienable"><a class="header" href="#filesservices-optstinienable">files.services-opts.tini.enable</a></h2>
+<p><para>Whether to enable <a href="https://github.com/krallin/tini">Tini</a> Supervisor.</para></p>
+<h4 id="type-3"><a class="header" href="#type-3">type</a></h4>
+<p>boolean</p>
+<h4 id="example-2"><a class="header" href="#example-2">example</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.tini.enable = true;
+}
+</code></pre>
+<h4 id="default-3"><a class="header" href="#default-3">default</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.tini.enable = false;
+}
+</code></pre>
+<h2 id="filesservices-optstinioptions"><a class="header" href="#filesservices-optstinioptions">files.services-opts.tini.options</a></h2>
+<h4 id="type-4"><a class="header" href="#type-4">type</a></h4>
+<p>string</p>
+<h4 id="default-4"><a class="header" href="#default-4">default</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.tini.options = &quot;-sp SIGTERM&quot;;
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../modules/rc.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../modules/spdx.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../modules/rc.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../modules/spdx.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

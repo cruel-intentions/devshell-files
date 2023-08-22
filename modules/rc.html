@@ -1,0 +1,923 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>rc module (WIP)</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="../installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="../examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../modules.html"><strong aria-hidden="true">4.</strong> Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix-lang.html"><strong aria-hidden="true">4.1.</strong> Nix Lang</a></li><li class="chapter-item expanded "><a href="../json-nix.html"><strong aria-hidden="true">4.2.</strong> JSON as Nix</a></li><li class="chapter-item expanded "><a href="../module-spec.html"><strong aria-hidden="true">4.3.</strong> Module Attributes</a></li><li class="chapter-item expanded "><a href="../share.html"><strong aria-hidden="true">4.4.</strong> Share Our Module</a></li><li class="chapter-item expanded "><a href="../document.html"><strong aria-hidden="true">4.5.</strong> Document It</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../builtins.html"><strong aria-hidden="true">5.</strong> Builtin Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../modules/alias.html"><strong aria-hidden="true">5.1.</strong> alias module</a></li><li class="chapter-item expanded "><a href="../modules/cmds.html"><strong aria-hidden="true">5.2.</strong> cmds module</a></li><li class="chapter-item expanded "><a href="../modules/files.html"><strong aria-hidden="true">5.3.</strong> files module</a></li><li class="chapter-item expanded "><a href="../modules/git.html"><strong aria-hidden="true">5.4.</strong> git module</a></li><li class="chapter-item expanded "><a href="../modules/gitignore.html"><strong aria-hidden="true">5.5.</strong> gitignore module</a></li><li class="chapter-item expanded "><a href="../modules/hcl.html"><strong aria-hidden="true">5.6.</strong> hcl module</a></li><li class="chapter-item expanded "><a href="../modules/json.html"><strong aria-hidden="true">5.7.</strong> json module</a></li><li class="chapter-item expanded "><a href="../modules/mdbook.html"><strong aria-hidden="true">5.8.</strong> mdbook module</a></li><li class="chapter-item expanded "><a href="../modules/nim.html"><strong aria-hidden="true">5.9.</strong> nim module</a></li><li class="chapter-item expanded "><a href="../modules/nushell.html"><strong aria-hidden="true">5.10.</strong> nushell module</a></li><li class="chapter-item expanded "><a href="../modules/nush.html"><strong aria-hidden="true">5.11.</strong> nush module</a></li><li class="chapter-item expanded "><a href="../modules/rc.html" class="active"><strong aria-hidden="true">5.12.</strong> rc module (WIP)</a></li><li class="chapter-item expanded "><a href="../modules/services.html"><strong aria-hidden="true">5.13.</strong> services module</a></li><li class="chapter-item expanded "><a href="../modules/spdx.html"><strong aria-hidden="true">5.14.</strong> spdx module</a></li><li class="chapter-item expanded "><a href="../modules/text.html"><strong aria-hidden="true">5.15.</strong> text module</a></li><li class="chapter-item expanded "><a href="../modules/toml.html"><strong aria-hidden="true">5.16.</strong> toml module</a></li><li class="chapter-item expanded "><a href="../modules/watch.html"><strong aria-hidden="true">5.17.</strong> watch module</a></li><li class="chapter-item expanded "><a href="../modules/yaml.html"><strong aria-hidden="true">5.18.</strong> yaml module</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="../todo.html"><strong aria-hidden="true">6.</strong> TODO</a></li><li class="chapter-item expanded "><a href="../issues.html"><strong aria-hidden="true">7.</strong> Issues</a></li><li class="chapter-item expanded "><a href="../seeAlso.html"><strong aria-hidden="true">8.</strong> See Also</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="filesrc"><a class="header" href="#filesrc">files.rc</a></h2>
+<p><para>Service name/command and its configuration</p>
+<ul>
+<li>{name}.bundle  for bundles</li>
+<li>{name}.oneshot for one shot activations scripts</li>
+<li>{name}.longrun for deamons services</li>
+</ul>
+<p>All services are disabled by default.</p>
+<p>It will fail at activation time if:</p>
+<ul>
+<li>More then onde type (bundle, oneshot, longrun) were defined for the same {name}</li>
+<li>One dependency service ins't defined but required</para></li>
+</ul>
+<h4 id="type"><a class="header" href="#type">type</a></h4>
+<p>attribute set of (submodule)</p>
+<h4 id="example"><a class="header" href="#example">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc = {
+    hello = {
+      enable = true;
+      longrun = {
+        run = &quot;mySquirelD&quot;;
+      };
+    };
+    hola = {
+      bundle = {
+        contents = [
+          &quot;hello&quot;
+          &quot;world&quot;
+        ];
+      };
+      enable = true;
+    };
+    world = {
+      enable = true;
+      oneshot = {
+        setup = &quot;echo Hello World &gt; $PRJ_DATA_DIR/hello.txt&quot;;
+      };
+    };
+  };
+}
+</code></pre>
+<h4 id="default"><a class="header" href="#default">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc = { };
+}
+</code></pre>
+<h2 id="filesrcnameenable"><a class="header" href="#filesrcnameenable">files.rc.&lt;name&gt;.enable</a></h2>
+<p><para>Enable this service</para></p>
+<h4 id="type-1"><a class="header" href="#type-1">type</a></h4>
+<p>boolean</p>
+<h4 id="example-1"><a class="header" href="#example-1">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.enable = true;
+}
+</code></pre>
+<h4 id="default-1"><a class="header" href="#default-1">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.enable = false;
+}
+</code></pre>
+<h2 id="filesrcnamebundle"><a class="header" href="#filesrcnamebundle">files.rc.&lt;name&gt;.bundle</a></h2>
+<p><para><code>bundle</code> is a service aggregator</p>
+<p>For example we can bundle every system (db, http, config) by microservice.</p>
+<p>Like:</p>
+<ul>
+<li>Commerce Bundle:
+<ul>
+<li>commerce database service</li>
+<li>commerce api service</li>
+<li>commerce cache service</li>
+</ul>
+</li>
+<li>BPMN Bundle
+<ul>
+<li>BPMN database service</li>
+<li>BPMN api service</li>
+<li>BPMN cache service</para></li>
+</ul>
+</li>
+</ul>
+<h4 id="type-2"><a class="header" href="#type-2">type</a></h4>
+<p>null or (submodule)</p>
+<h4 id="example-2"><a class="header" href="#example-2">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle = {
+    contents = [
+      &quot;myFancyServiceName&quot;
+    ];
+    essential = true;
+  };
+}
+</code></pre>
+<h4 id="default-2"><a class="header" href="#default-2">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle = null;
+}
+</code></pre>
+<h2 id="filesrcnamebundledeps"><a class="header" href="#filesrcnamebundledeps">files.rc.&lt;name&gt;.bundle.deps</a></h2>
+<p><para>Defines what makes part of this bundle</para></p>
+<h4 id="type-3"><a class="header" href="#type-3">type</a></h4>
+<p>non-empty (list of non-empty string)</p>
+<h4 id="example-3"><a class="header" href="#example-3">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle.deps = [
+    &quot;myDep&quot;
+    &quot;myOtherDep&quot;
+  ];
+}
+</code></pre>
+<h2 id="filesrcnamebundleessential"><a class="header" href="#filesrcnamebundleessential">files.rc.&lt;name&gt;.bundle.essential</a></h2>
+<p><para>Mark this bundle and all its dependencies as essential</p>
+<p>It means some commands may work to stop these services</para></p>
+<h4 id="type-4"><a class="header" href="#type-4">type</a></h4>
+<p>boolean</p>
+<h4 id="example-4"><a class="header" href="#example-4">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle.essential = true;
+}
+</code></pre>
+<h4 id="default-3"><a class="header" href="#default-3">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle.essential = false;
+}
+</code></pre>
+<h2 id="filesrcnamelongrun"><a class="header" href="#filesrcnamelongrun">files.rc.&lt;name&gt;.longrun</a></h2>
+<p><para><code>longrun</code> are commands that run as deamon (in a infinity loop).</p>
+<p>Applications:</p>
+<ul>
+<li>static site service</li>
+<li>test watcher</li>
+<li>some script to warn that your coffe bottle is empty</para></li>
+</ul>
+<h4 id="type-5"><a class="header" href="#type-5">type</a></h4>
+<p>null or (submodule)</p>
+<h4 id="example-5"><a class="header" href="#example-5">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun = {
+    agreement = {
+      description = &quot;Check to confirm&quot;;
+      label = &quot;Are you sure?&quot;;
+    };
+  };
+}
+</code></pre>
+<h4 id="default-4"><a class="header" href="#default-4">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunconsumer-for"><a class="header" href="#filesrcnamelongrunconsumer-for">files.rc.&lt;name&gt;.longrun.consumer-for</a></h2>
+<p><para>Defines names of other services this services expects
+receive data at stdin from theirs stdout</p>
+<p>Dependency hierarchy are calculated at activation time.</p>
+<p>See <a href="http://skarnet.org/software/s6-rc/s6-rc-compile.html">S6 documentation</a>
+for more info</para></p>
+<h4 id="type-6"><a class="header" href="#type-6">type</a></h4>
+<p>list of non-empty string</p>
+<h4 id="example-6"><a class="header" href="#example-6">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.consumer-for = [
+    &quot;myService&quot;
+  ];
+}
+</code></pre>
+<h4 id="default-5"><a class="header" href="#default-5">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.consumer-for = [ ];
+}
+</code></pre>
+<h2 id="filesrcnamelongrundata"><a class="header" href="#filesrcnamelongrundata">files.rc.&lt;name&gt;.longrun.data</a></h2>
+<p><para>Path that contains data for your service</para></p>
+<h4 id="type-7"><a class="header" href="#type-7">type</a></h4>
+<p>null or path</p>
+<h4 id="example-7"><a class="header" href="#example-7">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.data = &quot;./.data&quot;;
+}
+</code></pre>
+<h4 id="default-6"><a class="header" href="#default-6">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.data = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrundeps"><a class="header" href="#filesrcnamelongrundeps">files.rc.&lt;name&gt;.longrun.deps</a></h2>
+<p><para>Defines names of other services required to be <code>ready</code> to this
+service work.</p>
+<p>Dependency hierarchy are calculated at activation time.</p>
+<p>See <a href="http://skarnet.org/software/s6-rc/s6-rc-compile.html">S6 documentation</a>
+for more info</para></p>
+<h4 id="type-8"><a class="header" href="#type-8">type</a></h4>
+<p>list of non-empty string</p>
+<h4 id="example-8"><a class="header" href="#example-8">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.deps = [
+    &quot;myDependency&quot;
+  ];
+}
+</code></pre>
+<h4 id="default-7"><a class="header" href="#default-7">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.deps = [ ];
+}
+</code></pre>
+<h2 id="filesrcnamelongrunenv"><a class="header" href="#filesrcnamelongrunenv">files.rc.&lt;name&gt;.longrun.env</a></h2>
+<p><para>Path that contains env data for your service</para></p>
+<h4 id="type-9"><a class="header" href="#type-9">type</a></h4>
+<p>null or path</p>
+<h4 id="example-9"><a class="header" href="#example-9">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.env = &quot;./.direnv&quot;;
+}
+</code></pre>
+<h4 id="default-8"><a class="header" href="#default-8">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.env = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunessential"><a class="header" href="#filesrcnamelongrunessential">files.rc.&lt;name&gt;.longrun.essential</a></h2>
+<p><para>Mark this service and all its dependencies as essential</p>
+<p>It means some commands may work to stop this service</para></p>
+<h4 id="type-10"><a class="header" href="#type-10">type</a></h4>
+<p>boolean</p>
+<h4 id="example-10"><a class="header" href="#example-10">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.essential = true;
+}
+</code></pre>
+<h4 id="default-9"><a class="header" href="#default-9">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.essential = false;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunkill-after"><a class="header" href="#filesrcnamelongrunkill-after">files.rc.&lt;name&gt;.longrun.kill-after</a></h2>
+<p><para>Time in ms to give up from this service shutdown process
+and kill it anyway.</p>
+<ul>
+<li>0 means never</para></li>
+</ul>
+<h4 id="type-11"><a class="header" href="#type-11">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-11"><a class="header" href="#example-11">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.kill-after = 2005;
+}
+</code></pre>
+<h4 id="default-10"><a class="header" href="#default-10">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.kill-after = 0;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunkill-finish-after"><a class="header" href="#filesrcnamelongrunkill-finish-after">files.rc.&lt;name&gt;.longrun.kill-finish-after</a></h2>
+<p><para>Time in ms to give up from this service finish script
+and kill it.</p>
+<ul>
+<li>0 means never</para></li>
+</ul>
+<h4 id="type-12"><a class="header" href="#type-12">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-12"><a class="header" href="#example-12">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.kill-finish-after = 2005;
+}
+</code></pre>
+<h4 id="default-11"><a class="header" href="#default-11">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.kill-finish-after = 0;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunlock-descriptor"><a class="header" href="#filesrcnamelongrunlock-descriptor">files.rc.&lt;name&gt;.longrun.lock-descriptor</a></h2>
+<p><para>Configure a file descriptor to show that service is <code>running</code> </p>
+<p>If value any value other then 0, 1 or 2, this 
+service uses file-descriptor lock</para></p>
+<h4 id="type-13"><a class="header" href="#type-13">type</a></h4>
+<p>null or unsigned integer, meaning &gt;=0</p>
+<h4 id="example-13"><a class="header" href="#example-13">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.lock-descriptor = 5;
+}
+</code></pre>
+<h4 id="default-12"><a class="header" href="#default-12">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.lock-descriptor = 0;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunmax-restarts"><a class="header" href="#filesrcnamelongrunmax-restarts">files.rc.&lt;name&gt;.longrun.max-restarts</a></h2>
+<p><para>Times it should restart before we giveup</p>
+<ul>
+<li>Could not be more than 4096</para></li>
+</ul>
+<h4 id="type-14"><a class="header" href="#type-14">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-14"><a class="header" href="#example-14">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.max-restarts = 2005;
+}
+</code></pre>
+<h4 id="default-13"><a class="header" href="#default-13">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.max-restarts = 100;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunpipeline-name"><a class="header" href="#filesrcnamelongrunpipeline-name">files.rc.&lt;name&gt;.longrun.pipeline-name</a></h2>
+<p><para>Define name of this pipeline.</p>
+<p>Dependency hierarchy are calculated at activation time.</p>
+<p>See <a href="http://skarnet.org/software/s6-rc/s6-rc-compile.html">S6 documentation</a>
+for more info</para></p>
+<h4 id="type-15"><a class="header" href="#type-15">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-15"><a class="header" href="#example-15">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.pipeline-name = &quot;logMyService&quot;;
+}
+</code></pre>
+<h4 id="default-14"><a class="header" href="#default-14">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.pipeline-name = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunproducer-for"><a class="header" href="#filesrcnamelongrunproducer-for">files.rc.&lt;name&gt;.longrun.producer-for</a></h2>
+<p><para>Defines a service to read this progam stdout (ie a logger)</p>
+<p>Dependency hierarchy are calculated at activation time.</p>
+<p>See <a href="http://skarnet.org/software/s6-rc/s6-rc-compile.html">S6 documentation</a>
+for more info</para></p>
+<h4 id="type-16"><a class="header" href="#type-16">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-16"><a class="header" href="#example-16">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.producer-for = &quot;willReadMyLog&quot;;
+}
+</code></pre>
+<h4 id="default-15"><a class="header" href="#default-15">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.producer-for = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadiness"><a class="header" href="#filesrcnamelongrunreadiness">files.rc.&lt;name&gt;.longrun.readiness</a></h2>
+<p><para>Configure it to use pooling script as ready
+<a href="http://skarnet.org/software/s6/notifywhenup.html">notification method</a></p>
+<p>It make your service start script be called with s6-notifyoncheck.</p>
+<p>See also ready-descriptor.</para></p>
+<h4 id="type-17"><a class="header" href="#type-17">type</a></h4>
+<p>null or (submodule)</p>
+<h4 id="example-17"><a class="header" href="#example-17">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness = {
+    command = &quot;curl https://localhost&quot;;
+  };
+}
+</code></pre>
+<h4 id="default-16"><a class="header" href="#default-16">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinessattempts"><a class="header" href="#filesrcnamelongrunreadinessattempts">files.rc.&lt;name&gt;.longrun.readiness.attempts</a></h2>
+<p><para>Times it should run before give up from this service</para></p>
+<h4 id="type-18"><a class="header" href="#type-18">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-18"><a class="header" href="#example-18">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.attempts = 30;
+}
+</code></pre>
+<h4 id="default-17"><a class="header" href="#default-17">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.attempts = 7;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinesscommand"><a class="header" href="#filesrcnamelongrunreadinesscommand">files.rc.&lt;name&gt;.longrun.readiness.command</a></h2>
+<p><para>Command to be executed as checking method</p>
+<p>If not defined {name}-ready is assumed to be command to run</para></p>
+<h4 id="type-19"><a class="header" href="#type-19">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-19"><a class="header" href="#example-19">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.command = &quot;curl -sSf http://localhost:8080&quot;;
+}
+</code></pre>
+<h4 id="default-18"><a class="header" href="#default-18">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.command = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinessfork-fork"><a class="header" href="#filesrcnamelongrunreadinessfork-fork">files.rc.&lt;name&gt;.longrun.readiness.fork-fork</a></h2>
+<p><para>If the check script should double fork</para></p>
+<h4 id="type-20"><a class="header" href="#type-20">type</a></h4>
+<p>boolean</p>
+<h4 id="example-20"><a class="header" href="#example-20">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.fork-fork = true;
+}
+</code></pre>
+<h4 id="default-19"><a class="header" href="#default-19">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.fork-fork = false;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinessinitial-delay"><a class="header" href="#filesrcnamelongrunreadinessinitial-delay">files.rc.&lt;name&gt;.longrun.readiness.initial-delay</a></h2>
+<p><para>Time in ms to await and check if its ready</para></p>
+<h4 id="type-21"><a class="header" href="#type-21">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-21"><a class="header" href="#example-21">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.initial-delay = 10;
+}
+</code></pre>
+<h4 id="default-20"><a class="header" href="#default-20">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.initial-delay = 50;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinessinterval"><a class="header" href="#filesrcnamelongrunreadinessinterval">files.rc.&lt;name&gt;.longrun.readiness.interval</a></h2>
+<p><para>Time in ms between check attempts</para></p>
+<h4 id="type-22"><a class="header" href="#type-22">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-22"><a class="header" href="#example-22">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.interval = 1000;
+}
+</code></pre>
+<h4 id="default-21"><a class="header" href="#default-21">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.interval = 100;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinesstimeout"><a class="header" href="#filesrcnamelongrunreadinesstimeout">files.rc.&lt;name&gt;.longrun.readiness.timeout</a></h2>
+<p><para>Time in ms to give up from this service</para></p>
+<h4 id="type-23"><a class="header" href="#type-23">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-23"><a class="header" href="#example-23">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.timeout = 3000;
+}
+</code></pre>
+<h4 id="default-22"><a class="header" href="#default-22">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.timeout = 2000;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunready-descriptor"><a class="header" href="#filesrcnamelongrunready-descriptor">files.rc.&lt;name&gt;.longrun.ready-descriptor</a></h2>
+<p><para>Configure how to check if this service <code>ready</code> 
+<a href="http://skarnet.org/software/s6/notifywhenup.html">notification method</a></p>
+<p>If value any value other then 0, 1 or 2, this 
+service uses file-descriptor notification method</p>
+<p>If attr <code>readiness</code> is defined, use pooling as notification method</para></p>
+<h4 id="type-24"><a class="header" href="#type-24">type</a></h4>
+<p>null or unsigned integer, meaning &gt;=0</p>
+<h4 id="example-24"><a class="header" href="#example-24">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.ready-descriptor = 3;
+}
+</code></pre>
+<h4 id="default-23"><a class="header" href="#default-23">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.ready-descriptor = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunsignal"><a class="header" href="#filesrcnamelongrunsignal">files.rc.&lt;name&gt;.longrun.signal</a></h2>
+<p><para>Signal service expects to init down process</para></p>
+<h4 id="type-25"><a class="header" href="#type-25">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-25"><a class="header" href="#example-25">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.signal = 3;
+}
+</code></pre>
+<h4 id="default-24"><a class="header" href="#default-24">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.signal = 15;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunstart"><a class="header" href="#filesrcnamelongrunstart">files.rc.&lt;name&gt;.longrun.start</a></h2>
+<p><para>'
+execline setup script.</p>
+<pre><code>If not defined {name}-start is assumed to be command to run
+
+Example for non execline scripts:
+
+```nix
+files.rc.alo.oneshot.start =
+# creates a python script to run when srv start
+# and save it at nix store
+let start = pkgs.writeScript &quot;mySrvStartScript&quot; 
+''
+  #!/usr/bin/env -S python
+  print(&quot;Alô!&quot;)  # is hello in portuguese
+'';
+# use the nix store address
+in &quot;${start}&quot;;
+```&lt;/para&gt;
+</code></pre>
+<h4 id="type-26"><a class="header" href="#type-26">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-26"><a class="header" href="#example-26">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.start = &quot;mysqld&quot;;
+}
+</code></pre>
+<h4 id="default-25"><a class="header" href="#default-25">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.start = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunstop"><a class="header" href="#filesrcnamelongrunstop">files.rc.&lt;name&gt;.longrun.stop</a></h2>
+<p><para>execline teardown script.</p>
+<p>If not defined {name}-stop is assumed to be command to run</p>
+<p>Example for non execline scripts:</p>
+<pre><code class="language-nix">files.rc.alo.oneshot.stop = 
+# creates a python script to run when srv stop
+# and save it at nix store
+let stop = pkgs.writeScript &quot;mySrvStopScript&quot;
+''
+  #!/usr/bin/env -S bash
+  echo &quot;Tchau!&quot;  # is bye in portuguese
+'';
+# use the nix store address
+in &quot;${stop}&quot;;
+```&lt;/para&gt;
+
+#### type
+
+null or non-empty string
+
+#### example
+
+```nix
+{
+  files.rc.&lt;name&gt;.longrun.stop = &quot;abSUrDO kill -9 1 1&quot;;
+}
+</code></pre>
+<h4 id="default-26"><a class="header" href="#default-26">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.stop = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongruntimeout"><a class="header" href="#filesrcnamelongruntimeout">files.rc.&lt;name&gt;.longrun.timeout</a></h2>
+<p><para>This service should be <code>ready</code> in X <code>milliseconds</code> or it will 
+considered a <code>failure</code> transition.</p>
+<p>If null or 0 system will wait indefinitely</para></p>
+<h4 id="type-27"><a class="header" href="#type-27">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-27"><a class="header" href="#example-27">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.timeout = 10000;
+}
+</code></pre>
+<h4 id="default-27"><a class="header" href="#default-27">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.timeout = 0;
+}
+</code></pre>
+<h2 id="filesrcnamelongruntimeout-down"><a class="header" href="#filesrcnamelongruntimeout-down">files.rc.&lt;name&gt;.longrun.timeout-down</a></h2>
+<p><para>This service should be <code>stoped</code> in X <code>milliseconds</code> or it will 
+considered a <code>failure</code> transition.</p>
+<p>If null or 0 system will wait indefinitely</para></p>
+<h4 id="type-28"><a class="header" href="#type-28">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-28"><a class="header" href="#example-28">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.timeout-down = 10000;
+}
+</code></pre>
+<h4 id="default-28"><a class="header" href="#default-28">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.timeout-down = 0;
+}
+</code></pre>
+<h2 id="filesrcnameoneshot"><a class="header" href="#filesrcnameoneshot">files.rc.&lt;name&gt;.oneshot</a></h2>
+<p><para><code>oneshot</code> is a change in the system state</p>
+<p>Applications examples:</p>
+<ul>
+<li>start other service that aren't controlled by this environment</li>
+<li>mount files</li>
+<li>sync sources</para></li>
+</ul>
+<h4 id="type-29"><a class="header" href="#type-29">type</a></h4>
+<p>null or (submodule)</p>
+<h4 id="example-29"><a class="header" href="#example-29">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot = {
+    dependencies = [
+      &quot;holyMoses&quot;
+    ];
+    setup = {
+      example = &quot;echo Hello World &gt; $PRJ_DATA_DIR/hello.txt&quot;;
+    };
+    timeout = 2000;
+  };
+}
+</code></pre>
+<h4 id="default-29"><a class="header" href="#default-29">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot = null;
+}
+</code></pre>
+<h2 id="filesrcnameoneshotdeps"><a class="header" href="#filesrcnameoneshotdeps">files.rc.&lt;name&gt;.oneshot.deps</a></h2>
+<p><para>Defines names of other services required to be <code>ready</code> to this
+service work.</p>
+<p>Dependency hierarchy are calculated at activation time.</para></p>
+<h4 id="type-30"><a class="header" href="#type-30">type</a></h4>
+<p>list of non-empty string</p>
+<h4 id="example-30"><a class="header" href="#example-30">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.deps = [
+    &quot;myDependency&quot;
+  ];
+}
+</code></pre>
+<h4 id="default-30"><a class="header" href="#default-30">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.deps = [ ];
+}
+</code></pre>
+<h2 id="filesrcnameoneshotessential"><a class="header" href="#filesrcnameoneshotessential">files.rc.&lt;name&gt;.oneshot.essential</a></h2>
+<p><para>Mark this service and all its dependencies as essential</p>
+<p>It means some commands may work to stop these services</para></p>
+<h4 id="type-31"><a class="header" href="#type-31">type</a></h4>
+<p>boolean</p>
+<h4 id="example-31"><a class="header" href="#example-31">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.essential = true;
+}
+</code></pre>
+<h4 id="default-31"><a class="header" href="#default-31">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.essential = false;
+}
+</code></pre>
+<h2 id="filesrcnameoneshotstart"><a class="header" href="#filesrcnameoneshotstart">files.rc.&lt;name&gt;.oneshot.start</a></h2>
+<p><para>execline setup script.</p>
+<p>If not defined {name}-start is assumed to be command to run</p>
+<p>Example for non execline scripts:</p>
+<pre><code class="language-nix">files.rc.alo.oneshot.start =
+# creates a python script to run when srv start
+# and save it at nix store
+let start = pkgs.writeScript &quot;mySrvStartScript&quot; 
+''
+  #!/usr/bin/env -S python
+  print(&quot;Alô!&quot;)  # is hello in portuguese
+'';
+# use the nix store address
+in &quot;${start}&quot;;
+```&lt;/para&gt;
+
+#### type
+
+null or non-empty string
+
+#### example
+
+```nix
+{
+  files.rc.&lt;name&gt;.oneshot.start = &quot;echo Hello World &gt; $PRJ_DATA_DIR/hello.txt&quot;;
+}
+</code></pre>
+<h4 id="default-32"><a class="header" href="#default-32">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.start = null;
+}
+</code></pre>
+<h2 id="filesrcnameoneshotstop"><a class="header" href="#filesrcnameoneshotstop">files.rc.&lt;name&gt;.oneshot.stop</a></h2>
+<p><para>execline teardown script.</p>
+<p>If not defined {name}-stop is assumed to be command to run</p>
+<p>Example for non execline scripts:</p>
+<pre><code class="language-nix">files.rc.alo.oneshot.stop = 
+# creates a python script to run when srv stop
+# and save it at nix store
+let stop = pkgs.writeScript &quot;mySrvStopScript&quot;
+''
+  #!/usr/bin/env -S bash
+  echo &quot;Tchau!&quot;  # is bye in portuguese
+'';
+# use the nix store address
+in &quot;${stop}&quot;;
+```&lt;/para&gt;
+
+#### type
+
+null or non-empty string
+
+#### example
+
+```nix
+{
+  files.rc.&lt;name&gt;.oneshot.stop = &quot;rm $PRJ_DATA_DIR/hello.txt&quot;;
+}
+</code></pre>
+<h4 id="default-33"><a class="header" href="#default-33">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.stop = null;
+}
+</code></pre>
+<h2 id="filesrcnameoneshottimeout"><a class="header" href="#filesrcnameoneshottimeout">files.rc.&lt;name&gt;.oneshot.timeout</a></h2>
+<p><para>This service should be <code>ready</code> in X <code>milliseconds</code> or it will 
+considered be in <code>failure</code> status.</p>
+<p>If null or 0 system will wait indefinitely</para></p>
+<h4 id="type-32"><a class="header" href="#type-32">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-32"><a class="header" href="#example-32">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.timeout = 10000;
+}
+</code></pre>
+<h4 id="default-34"><a class="header" href="#default-34">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.timeout = 0;
+}
+</code></pre>
+<h2 id="filesrcnameoneshottimeout-down"><a class="header" href="#filesrcnameoneshottimeout-down">files.rc.&lt;name&gt;.oneshot.timeout-down</a></h2>
+<p><para>This service should be stop in X <code>milliseconds</code> or it will
+considered be in <code>failure</code> status.</p>
+<p>If null or 0 system will wait indefinitely</para></p>
+<h4 id="type-33"><a class="header" href="#type-33">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-33"><a class="header" href="#example-33">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.timeout-down = 10000;
+}
+</code></pre>
+<h4 id="default-35"><a class="header" href="#default-35">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.timeout-down = 0;
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../modules/nush.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../modules/services.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../modules/nush.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../modules/services.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

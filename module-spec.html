@@ -1,0 +1,426 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Module Attributes</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="modules.html"><strong aria-hidden="true">4.</strong> Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix-lang.html"><strong aria-hidden="true">4.1.</strong> Nix Lang</a></li><li class="chapter-item expanded "><a href="json-nix.html"><strong aria-hidden="true">4.2.</strong> JSON as Nix</a></li><li class="chapter-item expanded "><a href="module-spec.html" class="active"><strong aria-hidden="true">4.3.</strong> Module Attributes</a></li><li class="chapter-item expanded "><a href="share.html"><strong aria-hidden="true">4.4.</strong> Share Our Module</a></li><li class="chapter-item expanded "><a href="document.html"><strong aria-hidden="true">4.5.</strong> Document It</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="builtins.html"><strong aria-hidden="true">5.</strong> Builtin Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modules/alias.html"><strong aria-hidden="true">5.1.</strong> alias module</a></li><li class="chapter-item expanded "><a href="modules/cmds.html"><strong aria-hidden="true">5.2.</strong> cmds module</a></li><li class="chapter-item expanded "><a href="modules/files.html"><strong aria-hidden="true">5.3.</strong> files module</a></li><li class="chapter-item expanded "><a href="modules/git.html"><strong aria-hidden="true">5.4.</strong> git module</a></li><li class="chapter-item expanded "><a href="modules/gitignore.html"><strong aria-hidden="true">5.5.</strong> gitignore module</a></li><li class="chapter-item expanded "><a href="modules/hcl.html"><strong aria-hidden="true">5.6.</strong> hcl module</a></li><li class="chapter-item expanded "><a href="modules/json.html"><strong aria-hidden="true">5.7.</strong> json module</a></li><li class="chapter-item expanded "><a href="modules/mdbook.html"><strong aria-hidden="true">5.8.</strong> mdbook module</a></li><li class="chapter-item expanded "><a href="modules/nim.html"><strong aria-hidden="true">5.9.</strong> nim module</a></li><li class="chapter-item expanded "><a href="modules/nushell.html"><strong aria-hidden="true">5.10.</strong> nushell module</a></li><li class="chapter-item expanded "><a href="modules/nush.html"><strong aria-hidden="true">5.11.</strong> nush module</a></li><li class="chapter-item expanded "><a href="modules/rc.html"><strong aria-hidden="true">5.12.</strong> rc module (WIP)</a></li><li class="chapter-item expanded "><a href="modules/services.html"><strong aria-hidden="true">5.13.</strong> services module</a></li><li class="chapter-item expanded "><a href="modules/spdx.html"><strong aria-hidden="true">5.14.</strong> spdx module</a></li><li class="chapter-item expanded "><a href="modules/text.html"><strong aria-hidden="true">5.15.</strong> text module</a></li><li class="chapter-item expanded "><a href="modules/toml.html"><strong aria-hidden="true">5.16.</strong> toml module</a></li><li class="chapter-item expanded "><a href="modules/watch.html"><strong aria-hidden="true">5.17.</strong> watch module</a></li><li class="chapter-item expanded "><a href="modules/yaml.html"><strong aria-hidden="true">5.18.</strong> yaml module</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="todo.html"><strong aria-hidden="true">6.</strong> TODO</a></li><li class="chapter-item expanded "><a href="issues.html"><strong aria-hidden="true">7.</strong> Issues</a></li><li class="chapter-item expanded "><a href="seeAlso.html"><strong aria-hidden="true">8.</strong> See Also</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h3 id="module"><a class="header" href="#module">Module</a></h3>
+<p>Modules can be defined in two formats:</p>
+<h4 id="as-attrset-aka-object-json-dict-python"><a class="header" href="#as-attrset-aka-object-json-dict-python">As attrset, aka. object (JSON), dict (Python):</a></h4>
+<pre><code class="language-nix">{                            #  &lt;|
+  imports = [];              #   |
+  config  = {};              #   | module info
+  options = {};              #   |
+}                            #  &lt;|
+</code></pre>
+<p>All those attributes are optional</p>
+<ul>
+<li>imports: array  with paths to other modules</li>
+<li>config:  object with actual configurations</li>
+<li>options: object with our config type definition</li>
+</ul>
+<h4 id="as-function"><a class="header" href="#as-function">As function:</a></h4>
+<p>Functions has following arguments:</p>
+<ul>
+<li><code>config</code> with all evaluated configs values, </li>
+<li><code>pkgs</code> with all <a href="https://search.nixos.org/">nixpkgs</a> available.</li>
+<li><code>lib</code> <a href="https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions">library</a> of useful functions.</li>
+<li>And may receive others (we use <code>...</code> to ignore them)</li>
+</ul>
+<pre><code class="language-nix">{ config, pkgs, lib, ... }:  #  &lt;| function args
+{                            #  &lt;|
+  imports = [];              #   |
+  config  = {};              #   | module info
+  options = {};              #   |
+}                            #  &lt;|
+</code></pre>
+<h4 id="imports"><a class="header" href="#imports">Imports</a></h4>
+<p>Points to other modules files to be imported in this module</p>
+<pre><code class="language-nix">{ 
+  imports = [
+    ./gh-actions-options.nix
+    ./gh-actions-impl.nix
+  ];
+}
+</code></pre>
+<p>Hint, split modules in two files:</p>
+<ul>
+<li>One mostly with options, where your definition goes</li>
+<li>Other with config, where your information goes</li>
+</ul>
+<p>It has two advantages, let share options definitions across projects more easily.</p>
+<p>And it hides complexity, <a href="http://mourlot.free.fr/english/fmtaureau.html">hiding complexity is what abstraction is all about</a>,
+we didn't share options definitions across projects to type less, but because we could reuse an abstraction that helps hiding complexity.</p>
+<h4 id="config"><a class="header" href="#config">Config</a></h4>
+<p>Are values to our options</p>
+<p>We can set value by ourself, or use lib functions to import json/toml/text files.</p>
+<pre><code class="language-nix">{ lib, ...}:
+{
+  config.files.text.&quot;/HW.txt&quot; = &quot;Hello World!&quot;;
+  config.files.text.&quot;/EO.txt&quot; = lib.concatStringsSep &quot;&quot; [&quot;48&quot; &quot;65&quot; &quot;6c&quot; &quot;6c&quot; &quot;6f&quot;];
+  config.files.text.&quot;/LR.txt&quot; = (lib.importJSON   ./hello.json).msg; # { &quot;msg&quot;: &quot;Hello World!&quot; }
+  config.files.text.&quot;/LL.txt&quot; = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
+  config.files.text.&quot;/OD.txt&quot; = lib.readFile      ./hello.txt;       # Hello World!
+}
+</code></pre>
+<p>If file has no <code>options.</code>, <code>config.</code> can be ommited.</p>
+<p>And this file produce the same result</p>
+<pre><code class="language-nix">{ lib, ...}:
+{
+  files.text.&quot;/HW.txt&quot; = &quot;Hello World!&quot;;
+  files.text.&quot;/EO.txt&quot; = lib.concatStringsSep &quot;&quot; [&quot;48&quot; &quot;65&quot; &quot;6c&quot; &quot;6c&quot; &quot;6f&quot;];
+  files.text.&quot;/LR.txt&quot; = (lib.importJSON   ./hello.json).msg; # { &quot;msg&quot;: &quot;Hello World!&quot; }
+  files.text.&quot;/LL.txt&quot; = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
+  files.text.&quot;/OD.txt&quot; = lib.readFile      ./hello.txt;       # Hello World!
+}
+</code></pre>
+<h4 id="options"><a class="header" href="#options">Options</a></h4>
+<p>Options are schema definition for configs values.</p>
+<p>Example, to create a github action file, it could be done like this:</p>
+<pre><code class="language-nix">{
+  config.files.yaml.&quot;/.github/workflows/ci-cd.yaml&quot; = {
+    on = &quot;push&quot;;
+    jobs.ci-cd.runs-on = &quot;ubuntu-latest&quot;;
+    jobs.ci-cd.steps   = [
+      { uses = &quot;actions/checkout@v2.4.0&quot;; }
+      { run = &quot;npm i&quot;; }
+      { run = &quot;npm run build&quot;; }
+      { run = &quot;npm run test&quot;; }
+      { run = &quot;aws s3 sync ./build s3://some-s3-bucket&quot;; }
+    ];
+  };
+}
+</code></pre>
+<p>This only works because this project has another module with:</p>
+<pre><code class="language-nix">{lib, ...}:
+{
+  options.files = submodule {
+    options.yaml.type = lib.types.attrsOf lib.types.anything;
+  };
+}
+</code></pre>
+<p>But if we always set ci-cd.yaml like that,
+no complexity has been hidden, and requires copy and past it in every project.</p>
+<p>Since most CI/CD are just: 'Pre Build', 'Build', 'Test', 'Deploy'</p>
+<p>What most projects really need is something like:</p>
+<pre><code class="language-nix"># any module file (maybe project.nix)
+{
+  # our build steps
+  config.gh-actions.setup  = &quot;npm i&quot;;
+  config.gh-actions.build  = &quot;npm run build&quot;;
+  config.gh-actions.test   = &quot;npm run test&quot;;
+  config.gh-actions.deploy = &quot;aws s3 sync ./build s3://some-s3-bucket&quot;;
+}
+</code></pre>
+<p>Adding this to project.nix, throws an error <code>undefined config.gh-actions</code>, and command fails.</p>
+<p>It doesn't knows these options.</p>
+<p>To make aware of it, we had to add <code>options</code> schema of that.</p>
+<pre><code class="language-nix"># gh-actions-options.nix
+{ lib, ...}:
+{
+  # a property 'gh-actions.setup'
+  options.gh-actions.setup = lib.mkOption {
+    default     = &quot;echo setup&quot;;
+    description = &quot;Command to run before build&quot;;
+    example     = &quot;npm i&quot;;
+    type        = lib.types.str;
+  };
+  # a property 'gh-actions.build'
+  options.gh-actions.build = lib.mkOption {
+    default     = &quot;echo build&quot;;
+    description = &quot;Command to run as build step&quot;;
+    example     = &quot;npm run build&quot;;
+    type        = lib.types.str;
+  };
+  # a property 'gh-actions.test'
+  options.gh-actions.test = lib.mkOption {
+    default     = &quot;echo test&quot;;
+    description = &quot;Command to run as test step&quot;;
+    example     = &quot;npm test&quot;;
+    type        = lib.types.str;
+  };
+  # a property 'gh-actions.deploy'
+  options.gh-actions.deploy = lib.mkOption {
+    default     = &quot;echo deploy&quot;;
+    description = &quot;Command to run as deploy step&quot;;
+    example     = &quot;aws s3 sync ./build s3://my-bucket&quot;;
+    type        = lib.types.lines;
+  };
+}
+</code></pre>
+<p>Or using <code>lib.types.fluent</code></p>
+<pre><code class="language-nix"># gh-actions-options.nix
+{ lib, ...}:
+lib.types.fluent {
+  options.gh-actions.options = {
+    # defines a property 'gh-actions.setup'
+    setup.default  = &quot;echo setup&quot;;  #default is string
+    setup.mdDoc    = &quot;Command to run before build&quot;;
+    setup.example  = &quot;npm i&quot;;
+    # defines a property 'gh-actions.build'
+    build.default  = &quot;echo build&quot;;
+    build.mdDoc    = &quot;Command to run as build step&quot;;
+    build.example  = &quot;npm run build&quot;;
+    # defines a property 'gh-actions.test'
+    test.default   = &quot;echo test&quot;;
+    test.mdDoc     = &quot;Command to run as test step&quot;;
+    test.example   = &quot;npm test&quot;;
+    # defines a property 'gh-actions.deploy'
+    deploy.default = &quot;echo deploy&quot;;
+    deploy.mdDoc   = &quot;Command to run as deploy step&quot;;
+    deploy.example = &quot;aws s3 sync ./build s3://my-bucket&quot;;
+    deploy.type    = lib.types.lines;
+  };
+}
+</code></pre>
+<p>Now, previous config can be used, but it does nothing, it doesn't create yaml.</p>
+<p>It knowns what options can be accepted as <code>config</code>, but not what to do with it.</p>
+<p>The following code uses parameter <code>config</code> that has all evaluated <code>config</code> values.</p>
+<pre><code class="language-nix"># gh-actions.nix
+{ config, lib, ... }:
+{
+  imports = [ ./gh-actions-options.nix ];
+  # use other module that simplify file creation to create config file
+  files.yaml.&quot;/.github/workflows/ci-cd.yaml&quot;.jobs.ci-cd.steps   = [
+    { uses = &quot;actions/checkout@v2.4.0&quot;; }
+
+    { run  = config.gh-actions.setup;   }  # 
+    { run  = config.gh-actions.build;   }  #  Read step scripts from
+    { run  = config.gh-actions.test;    }  #  config.gh-actions
+    { run  = config.gh-actions.deploy&quot;; }  # 
+  ];
+  files.yaml.&quot;/.github/workflows/ci-cd.yaml&quot;.on = &quot;push&quot;;
+  files.yaml.&quot;/.github/workflows/ci-cd.yaml&quot;.jobs.ci-cd.runs-on = &quot;ubuntu-latest&quot;;
+}
+</code></pre>
+<p>Now it can be imported and set 'setup', 'build', 'test' and 'deploy' configs</p>
+<pre><code class="language-nix"># any other module file, maybe project.nix
+{
+  imports = [ ./gh-actions.nix ];
+  gh-actions.setup  = &quot;echo 'paranaue'&quot;;
+  gh-actions.build  = &quot;echo 'paranaue parana'&quot;;
+  gh-actions.build  = &quot;echo 'paranaue'&quot;;
+  gh-actions.deploy = ''
+    echo &quot;paranaue 
+            parana&quot;
+  '';
+}
+</code></pre>
+<p>If something that is not a string is set, an error will raise, cheking it against the options schema.</p>
+<p>There are <a href="https://nixos.org/manual/nixos/stable/index.html#sec-option-types">other types</a> that can be used (some of them):</p>
+<ul>
+<li>lib.types.bool </li>
+<li>lib.types.path </li>
+<li>lib.types.package </li>
+<li>lib.types.int </li>
+<li>lib.types.ints.unsigned</li>
+<li>lib.types.ints.positive</li>
+<li>lib.types.ints.port</li>
+<li>lib.types.ints.between</li>
+<li>lib.types.str</li>
+<li>lib.types.lines</li>
+<li>lib.types.enum</li>
+<li>lib.types.submodule</li>
+<li>lib.types.nullOr (typed nullable)</li>
+<li>lib.types.listOf (typed array)</li>
+<li>lib.types.attrsOf (typed hash map)</li>
+<li>lib.types.uniq (typed set)</li>
+</ul>
+<p>And lib has some modules <a href="https://teu5us.github.io/nix-lib.html#lib.modules.mkif">helpers functions</a> like:</p>
+<ul>
+<li>lib.mkIf          : to only set a property if some informaiton is true</li>
+<li>lib.optionals     : to return an array  or an empty array</li>
+<li>lib.optionalString: to return an string or an empty string</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="json-nix.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="share.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="json-nix.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="share.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,2889 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="examples.html"><strong aria-hidden="true">3.</strong> Examples</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="modules.html"><strong aria-hidden="true">4.</strong> Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix-lang.html"><strong aria-hidden="true">4.1.</strong> Nix Lang</a></li><li class="chapter-item expanded "><a href="json-nix.html"><strong aria-hidden="true">4.2.</strong> JSON as Nix</a></li><li class="chapter-item expanded "><a href="module-spec.html"><strong aria-hidden="true">4.3.</strong> Module Attributes</a></li><li class="chapter-item expanded "><a href="share.html"><strong aria-hidden="true">4.4.</strong> Share Our Module</a></li><li class="chapter-item expanded "><a href="document.html"><strong aria-hidden="true">4.5.</strong> Document It</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="builtins.html"><strong aria-hidden="true">5.</strong> Builtin Modules</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="modules/alias.html"><strong aria-hidden="true">5.1.</strong> alias module</a></li><li class="chapter-item expanded "><a href="modules/cmds.html"><strong aria-hidden="true">5.2.</strong> cmds module</a></li><li class="chapter-item expanded "><a href="modules/files.html"><strong aria-hidden="true">5.3.</strong> files module</a></li><li class="chapter-item expanded "><a href="modules/git.html"><strong aria-hidden="true">5.4.</strong> git module</a></li><li class="chapter-item expanded "><a href="modules/gitignore.html"><strong aria-hidden="true">5.5.</strong> gitignore module</a></li><li class="chapter-item expanded "><a href="modules/hcl.html"><strong aria-hidden="true">5.6.</strong> hcl module</a></li><li class="chapter-item expanded "><a href="modules/json.html"><strong aria-hidden="true">5.7.</strong> json module</a></li><li class="chapter-item expanded "><a href="modules/mdbook.html"><strong aria-hidden="true">5.8.</strong> mdbook module</a></li><li class="chapter-item expanded "><a href="modules/nim.html"><strong aria-hidden="true">5.9.</strong> nim module</a></li><li class="chapter-item expanded "><a href="modules/nushell.html"><strong aria-hidden="true">5.10.</strong> nushell module</a></li><li class="chapter-item expanded "><a href="modules/nush.html"><strong aria-hidden="true">5.11.</strong> nush module</a></li><li class="chapter-item expanded "><a href="modules/rc.html"><strong aria-hidden="true">5.12.</strong> rc module (WIP)</a></li><li class="chapter-item expanded "><a href="modules/services.html"><strong aria-hidden="true">5.13.</strong> services module</a></li><li class="chapter-item expanded "><a href="modules/spdx.html"><strong aria-hidden="true">5.14.</strong> spdx module</a></li><li class="chapter-item expanded "><a href="modules/text.html"><strong aria-hidden="true">5.15.</strong> text module</a></li><li class="chapter-item expanded "><a href="modules/toml.html"><strong aria-hidden="true">5.16.</strong> toml module</a></li><li class="chapter-item expanded "><a href="modules/watch.html"><strong aria-hidden="true">5.17.</strong> watch module</a></li><li class="chapter-item expanded "><a href="modules/yaml.html"><strong aria-hidden="true">5.18.</strong> yaml module</a></li><li class="spacer"></li></ol></li><li class="chapter-item expanded "><a href="todo.html"><strong aria-hidden="true">6.</strong> TODO</a></li><li class="chapter-item expanded "><a href="issues.html"><strong aria-hidden="true">7.</strong> Issues</a></li><li class="chapter-item expanded "><a href="seeAlso.html"><strong aria-hidden="true">8.</strong> See Also</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title"></h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h2 id="about"><a class="header" href="#about">About</a></h2>
+<p>Helps static file/configuration creation with <a href="https://nixos.org/guides/how-nix-works.html">Nix</a> and <a href="https://github.com/numtide/devshell">devshell</a>.</p>
+<p>There is a bunch of ways static file/configuration are hard, this will help you generate, validate and distribute JSON, YAML, TOML or TXT.</p>
+<h4 id="generate"><a class="header" href="#generate">Generate</a></h4>
+<p>Your content will be defined in <a href="https://github.com/tazjin/nix-1p">Nix Language</a>, it means you can use variables, functions, imports, read files, etc.</p>
+<p>The modular system helps layering configurations, hiding complexity and making it easier for OPS teams.</p>
+<h4 id="validate"><a class="header" href="#validate">Validate</a></h4>
+<p>Your content <a href="https://nixos.org/manual/nixos/stable/index.html#ex-module-syntax">modules</a> could optionally be well defined and type checked in build proccess with this same tool.</p>
+<p>Or you could use <a href="https://nixos.org/manual/nix/stable/">Nix</a> as package manager and <a href="https://search.nixos.org/packages?query=validator">install any tool</a> to validate your configuration (ie integrating it with existing JSON Schema).</p>
+<h4 id="distribute"><a class="header" href="#distribute">Distribute</a></h4>
+<p>Nix integrates well with git and http, it could be also used to read JSON, YAML, TOML, zip and gz files.</p>
+<p>In fact Nix isn't a configuration tool but a package manger, we are only using it as configuration tool because the language is simple and flexible.</p>
+<p>You can recreate files of a repository directly to your local machine by running <code>nix develop &lt;flake-uri&gt; --build</code>, example:</p>
+<pre><code class="language-bash"># copy all my dogfood to your current folder
+nix develop github:cruel-intentions/devshell-files --build
+</code></pre>
+<p>With help of <a href="https://nixos.org/guides/how-nix-works.html">Nix</a> and <a href="https://github.com/numtide/devshell">devshell</a> you could install any development or deployment tool of its <a href="https://search.nixos.org/">80 000</a> packages.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="instructions"><a class="header" href="#instructions">Instructions</a></h2>
+<p>Installing <a href="https://nixos.wiki/wiki/Flakes">Nix</a></p>
+<pre><code class="language-sh">curl -sSf -L https://install.determinate.systems/nix | sh -s -- install
+</code></pre>
+<p>Configuring new projects:</p>
+<pre><code class="language-sh">nix flake new -t github:cruel-intentions/devshell-files my-project
+cd my-project
+git init
+git add *.nix flake.lock
+</code></pre>
+<p>Configuring existing projects:</p>
+<pre><code class="language-sh">nix flake new -t github:cruel-intentions/devshell-files ./
+git add *.nix
+git add flake.lock
+</code></pre>
+<h4 id="generating-files"><a class="header" href="#generating-files">Generating files:</a></h4>
+<pre><code class="language-sh">nix develop --build
+</code></pre>
+<p>or entering in shell with all commands and alias</p>
+<pre><code class="language-sh">nix develop -c $SHELL
+# to list commands and alias
+# now run: menu 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<p>Creating JSON, TEXT, TOML or YAML files</p>
+<pre><code class="language-nix"># examples/hello.nix
+#
+# this is one nix file
+{
+  files.json.&quot;/generated/hello.json&quot;.hello = &quot;world&quot;;
+  files.toml.&quot;/generated/hello.toml&quot;.hello = &quot;world&quot;;
+  files.yaml.&quot;/generated/hello.yaml&quot;.hello = &quot;world&quot;;
+  files.hcl.&quot;/generated/hello.hcl&quot;.hello   = &quot;world&quot;;
+  files.text.&quot;/generated/hello.txt&quot; = &quot;world&quot;;
+}
+
+</code></pre>
+<p>Your file can be complemented with another module</p>
+<pre><code class="language-nix"># examples/world.nix
+# almost same as previous example
+# but show some language feature
+let 
+  name = &quot;hello&quot;; # a variable
+in
+{
+  files = {
+    json.&quot;/generated/${name}.json&quot;.baz = [&quot;foo&quot; &quot;bar&quot; name];
+    toml.&quot;/generated/${name}.toml&quot;.baz = [&quot;foo&quot; &quot;bar&quot; name];
+    yaml = {
+      &quot;/generated/${name}.yaml&quot; = {
+        baz = [
+          &quot;foo&quot;
+          &quot;bar&quot;
+          name
+        ];
+      };
+    };
+  };
+}
+
+</code></pre>
+<p>Content generated by those examples are in <a href="./generated/">generated</a></p>
+<pre><code class="language-YAML"># ie ./generated/hello.yaml
+baz:
+  - foo
+  - bar
+  - hello
+hello: world
+
+</code></pre>
+<h3 id="dogfooding"><a class="header" href="#dogfooding">Dogfooding</a></h3>
+<p>This project is configured by module <a href="./project.nix">project.nix</a></p>
+<pre><code class="language-nix"># ./project.nix
+{
+  # import other modules
+  imports = [
+    ./examples/hello.nix
+    ./examples/world.nix
+    ./examples/readme.nix
+    ./examples/gitignore.nix
+    ./examples/license.nix
+    ./examples/interpolation.nix
+    ./examples/docs.nix
+    ./examples/book.nix
+    ./examples/services.nix
+    ./examples/nim.nix
+    ./examples/nushell.nix
+    ./examples/watch.nix
+  ];
+
+  # My shell name
+  devshell.name = &quot;devshell-files&quot;;
+
+  # install development or deployment tools
+  packages = [
+    &quot;convco&quot;
+    # now we can use 'convco' command https://convco.github.io
+
+    # but could be:
+    # &quot;awscli&quot;
+    # &quot;azure-cli&quot;
+    # &quot;cargo&quot;
+    # &quot;conda&quot;
+    # &quot;go&quot;
+    # &quot;nim&quot;
+    # &quot;nodejs&quot;
+    # &quot;nodejs-18_x&quot;
+    # &quot;nushell&quot;
+    # &quot;pipenv&quot;
+    # &quot;python39&quot;
+    # &quot;ruby&quot;
+    # &quot;rustc&quot;
+    # &quot;terraform&quot;
+    # &quot;yarn&quot;
+    # look at https://search.nixos.org for more packages
+  ];
+
+  # create alias
+  files.alias.feat = ''convco commit --feat $@'';
+  files.alias.fix  = ''convco commit --fix  $@'';
+  files.alias.docs = ''convco commit --docs $@'';
+  files.alias.alou = ''
+    #!/usr/bin/env python
+    print(&quot;Alo!&quot;) # is hello in portuguese
+  '';
+
+  # now we can use feat, fix, docs and alou commands
+
+  # create .envrc for direnv
+  files.direnv.enable = true;
+
+  # disabe file creation when entering in the shell
+  # call devshell-files instead
+  # files.on-call = true;
+}
+
+</code></pre>
+<p>This README.md is also a module defined as above</p>
+<pre><code class="language-nix"># There is a lot things we could use to write static file
+# Basic intro to nix language https://github.com/tazjin/nix-1p
+# Some nix functions https://teu5us.github.io/nix-lib.html
+{lib, ...}:
+{
+  files.text.&quot;/README.md&quot; = builtins.concatStringsSep &quot;\n&quot; [
+    &quot;# Devshell Files Maker&quot;
+    (builtins.readFile ./readme/toc.md)
+    (builtins.readFile ./readme/about.md)
+    (builtins.readFile ./readme/installation.md)
+    (builtins.import   ./readme/examples.nix)
+    ((builtins.import  ./readme/modules.nix) lib)
+    (builtins.readFile ./readme/todo.md)
+    (builtins.readFile ./readme/issues.md)
+    (builtins.readFile ./readme/seeAlso.md)
+  ];
+}
+
+</code></pre>
+<p>Our .gitignore is defined like this</p>
+<pre><code class="language-nix"># ./examples/gitignore.nix
+{
+  # create my .gitignore copying ignore patterns from
+  # github.com/github/gitignore
+  files.gitignore.enable = true;
+  files.gitignore.template.&quot;Global/Archives&quot; = true;
+  files.gitignore.template.&quot;Global/Backup&quot;   = true;
+  files.gitignore.template.&quot;Global/Diff&quot;     = true;
+  files.gitignore.pattern.&quot;**/.data&quot;         = true;
+  files.gitignore.pattern.&quot;**/.direnv&quot;       = true;
+  files.gitignore.pattern.&quot;**/.envrc&quot;        = true;
+  files.gitignore.pattern.&quot;**/.gitignore&quot;    = true;
+  files.gitignore.pattern.&quot;**/flake.lock&quot;    = true;
+}
+
+</code></pre>
+<p>And our LICENSE file is</p>
+<pre><code class="language-nix"># ./examples/license.nix
+{
+  # LICENSE file creation
+  # using templates from https://github.com/spdx/license-list-data
+  files.license.enable = true;
+  files.license.spdx.name = &quot;MIT&quot;;
+  files.license.spdx.vars.year = &quot;2023&quot;;
+  files.license.spdx.vars.&quot;copyright holders&quot; = &quot;Cruel Intentions&quot;;
+}
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="writing-new-modules"><a class="header" href="#writing-new-modules">Writing new modules</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="nix-lang"><a class="header" href="#nix-lang">Nix lang</a></h3>
+<p>Jump this part if aready know Nix Lang, if don't there is a small concise content of <a href="https://github.com/tazjin/nix-1p">Nix Lang</a>.</p>
+<p>If one page is too much to you, the basic is:</p>
+<ul>
+<li><code>:</code> defines a new function, <code>arg: &quot;Hello ${arg}&quot;</code></li>
+<li>that's why we use <code>=</code> instaed of <code>:</code>, <code>{ attr-key = &quot;value&quot;; }</code></li>
+<li><code>;</code> instead of <code>,</code> and they <strong>aren't optional</strong></li>
+<li>array aren't separated by <code>,</code> ie. <code>[ &quot;some&quot; &quot;value&quot; ]</code></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="json-as-nix"><a class="header" href="#json-as-nix">JSON as NIX</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>name</th><th>JSON</th><th>NIX</th></tr></thead><tbody>
+<tr><td>null</td><td><code>null</code></td><td><code>null</code></td></tr>
+<tr><td>bool</td><td><code>true</code></td><td><code>true</code></td></tr>
+<tr><td>int</td><td><code>123</code></td><td><code>123</code></td></tr>
+<tr><td>float</td><td><code>12.3</code></td><td><code>12.3</code></td></tr>
+<tr><td>string</td><td><code>&quot;string&quot;</code></td><td><code>&quot;string&quot;</code></td></tr>
+<tr><td>array</td><td><code>[&quot;some&quot;,&quot;array&quot;]</code></td><td><code>[&quot;some&quot; &quot;array&quot;]</code></td></tr>
+<tr><td>object</td><td><code>{&quot;some&quot;:&quot;value&quot;}</code></td><td><code>{ some = &quot;value&quot;; }</code></td></tr>
+<tr><td>multiline-string</td><td></td><td><code>''... multiline string ... ''</code></td></tr>
+<tr><td>variables</td><td></td><td><code>let my-var = 1; other-var = 2; in my-var + other-var</code></td></tr>
+<tr><td>function</td><td></td><td><code>my-arg: &quot;Hello ${my-arg}!&quot;</code></td></tr>
+<tr><td>variable-function</td><td></td><td><code>let my-function = my-arg: &quot;Hello ${my-arg}!&quot;; in ...</code></td></tr>
+<tr><td>calling-a-function</td><td></td><td><code>... in my-function &quot;World&quot;</code></td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h3 id="module"><a class="header" href="#module">Module</a></h3>
+<p>Modules can be defined in two formats:</p>
+<h4 id="as-attrset-aka-object-json-dict-python"><a class="header" href="#as-attrset-aka-object-json-dict-python">As attrset, aka. object (JSON), dict (Python):</a></h4>
+<pre><code class="language-nix">{                            #  &lt;|
+  imports = [];              #   |
+  config  = {};              #   | module info
+  options = {};              #   |
+}                            #  &lt;|
+</code></pre>
+<p>All those attributes are optional</p>
+<ul>
+<li>imports: array  with paths to other modules</li>
+<li>config:  object with actual configurations</li>
+<li>options: object with our config type definition</li>
+</ul>
+<h4 id="as-function"><a class="header" href="#as-function">As function:</a></h4>
+<p>Functions has following arguments:</p>
+<ul>
+<li><code>config</code> with all evaluated configs values, </li>
+<li><code>pkgs</code> with all <a href="https://search.nixos.org/">nixpkgs</a> available.</li>
+<li><code>lib</code> <a href="https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions">library</a> of useful functions.</li>
+<li>And may receive others (we use <code>...</code> to ignore them)</li>
+</ul>
+<pre><code class="language-nix">{ config, pkgs, lib, ... }:  #  &lt;| function args
+{                            #  &lt;|
+  imports = [];              #   |
+  config  = {};              #   | module info
+  options = {};              #   |
+}                            #  &lt;|
+</code></pre>
+<h4 id="imports"><a class="header" href="#imports">Imports</a></h4>
+<p>Points to other modules files to be imported in this module</p>
+<pre><code class="language-nix">{ 
+  imports = [
+    ./gh-actions-options.nix
+    ./gh-actions-impl.nix
+  ];
+}
+</code></pre>
+<p>Hint, split modules in two files:</p>
+<ul>
+<li>One mostly with options, where your definition goes</li>
+<li>Other with config, where your information goes</li>
+</ul>
+<p>It has two advantages, let share options definitions across projects more easily.</p>
+<p>And it hides complexity, <a href="http://mourlot.free.fr/english/fmtaureau.html">hiding complexity is what abstraction is all about</a>,
+we didn't share options definitions across projects to type less, but because we could reuse an abstraction that helps hiding complexity.</p>
+<h4 id="config"><a class="header" href="#config">Config</a></h4>
+<p>Are values to our options</p>
+<p>We can set value by ourself, or use lib functions to import json/toml/text files.</p>
+<pre><code class="language-nix">{ lib, ...}:
+{
+  config.files.text.&quot;/HW.txt&quot; = &quot;Hello World!&quot;;
+  config.files.text.&quot;/EO.txt&quot; = lib.concatStringsSep &quot;&quot; [&quot;48&quot; &quot;65&quot; &quot;6c&quot; &quot;6c&quot; &quot;6f&quot;];
+  config.files.text.&quot;/LR.txt&quot; = (lib.importJSON   ./hello.json).msg; # { &quot;msg&quot;: &quot;Hello World!&quot; }
+  config.files.text.&quot;/LL.txt&quot; = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
+  config.files.text.&quot;/OD.txt&quot; = lib.readFile      ./hello.txt;       # Hello World!
+}
+</code></pre>
+<p>If file has no <code>options.</code>, <code>config.</code> can be ommited.</p>
+<p>And this file produce the same result</p>
+<pre><code class="language-nix">{ lib, ...}:
+{
+  files.text.&quot;/HW.txt&quot; = &quot;Hello World!&quot;;
+  files.text.&quot;/EO.txt&quot; = lib.concatStringsSep &quot;&quot; [&quot;48&quot; &quot;65&quot; &quot;6c&quot; &quot;6c&quot; &quot;6f&quot;];
+  files.text.&quot;/LR.txt&quot; = (lib.importJSON   ./hello.json).msg; # { &quot;msg&quot;: &quot;Hello World!&quot; }
+  files.text.&quot;/LL.txt&quot; = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
+  files.text.&quot;/OD.txt&quot; = lib.readFile      ./hello.txt;       # Hello World!
+}
+</code></pre>
+<h4 id="options"><a class="header" href="#options">Options</a></h4>
+<p>Options are schema definition for configs values.</p>
+<p>Example, to create a github action file, it could be done like this:</p>
+<pre><code class="language-nix">{
+  config.files.yaml.&quot;/.github/workflows/ci-cd.yaml&quot; = {
+    on = &quot;push&quot;;
+    jobs.ci-cd.runs-on = &quot;ubuntu-latest&quot;;
+    jobs.ci-cd.steps   = [
+      { uses = &quot;actions/checkout@v2.4.0&quot;; }
+      { run = &quot;npm i&quot;; }
+      { run = &quot;npm run build&quot;; }
+      { run = &quot;npm run test&quot;; }
+      { run = &quot;aws s3 sync ./build s3://some-s3-bucket&quot;; }
+    ];
+  };
+}
+</code></pre>
+<p>This only works because this project has another module with:</p>
+<pre><code class="language-nix">{lib, ...}:
+{
+  options.files = submodule {
+    options.yaml.type = lib.types.attrsOf lib.types.anything;
+  };
+}
+</code></pre>
+<p>But if we always set ci-cd.yaml like that,
+no complexity has been hidden, and requires copy and past it in every project.</p>
+<p>Since most CI/CD are just: 'Pre Build', 'Build', 'Test', 'Deploy'</p>
+<p>What most projects really need is something like:</p>
+<pre><code class="language-nix"># any module file (maybe project.nix)
+{
+  # our build steps
+  config.gh-actions.setup  = &quot;npm i&quot;;
+  config.gh-actions.build  = &quot;npm run build&quot;;
+  config.gh-actions.test   = &quot;npm run test&quot;;
+  config.gh-actions.deploy = &quot;aws s3 sync ./build s3://some-s3-bucket&quot;;
+}
+</code></pre>
+<p>Adding this to project.nix, throws an error <code>undefined config.gh-actions</code>, and command fails.</p>
+<p>It doesn't knows these options.</p>
+<p>To make aware of it, we had to add <code>options</code> schema of that.</p>
+<pre><code class="language-nix"># gh-actions-options.nix
+{ lib, ...}:
+{
+  # a property 'gh-actions.setup'
+  options.gh-actions.setup = lib.mkOption {
+    default     = &quot;echo setup&quot;;
+    description = &quot;Command to run before build&quot;;
+    example     = &quot;npm i&quot;;
+    type        = lib.types.str;
+  };
+  # a property 'gh-actions.build'
+  options.gh-actions.build = lib.mkOption {
+    default     = &quot;echo build&quot;;
+    description = &quot;Command to run as build step&quot;;
+    example     = &quot;npm run build&quot;;
+    type        = lib.types.str;
+  };
+  # a property 'gh-actions.test'
+  options.gh-actions.test = lib.mkOption {
+    default     = &quot;echo test&quot;;
+    description = &quot;Command to run as test step&quot;;
+    example     = &quot;npm test&quot;;
+    type        = lib.types.str;
+  };
+  # a property 'gh-actions.deploy'
+  options.gh-actions.deploy = lib.mkOption {
+    default     = &quot;echo deploy&quot;;
+    description = &quot;Command to run as deploy step&quot;;
+    example     = &quot;aws s3 sync ./build s3://my-bucket&quot;;
+    type        = lib.types.lines;
+  };
+}
+</code></pre>
+<p>Or using <code>lib.types.fluent</code></p>
+<pre><code class="language-nix"># gh-actions-options.nix
+{ lib, ...}:
+lib.types.fluent {
+  options.gh-actions.options = {
+    # defines a property 'gh-actions.setup'
+    setup.default  = &quot;echo setup&quot;;  #default is string
+    setup.mdDoc    = &quot;Command to run before build&quot;;
+    setup.example  = &quot;npm i&quot;;
+    # defines a property 'gh-actions.build'
+    build.default  = &quot;echo build&quot;;
+    build.mdDoc    = &quot;Command to run as build step&quot;;
+    build.example  = &quot;npm run build&quot;;
+    # defines a property 'gh-actions.test'
+    test.default   = &quot;echo test&quot;;
+    test.mdDoc     = &quot;Command to run as test step&quot;;
+    test.example   = &quot;npm test&quot;;
+    # defines a property 'gh-actions.deploy'
+    deploy.default = &quot;echo deploy&quot;;
+    deploy.mdDoc   = &quot;Command to run as deploy step&quot;;
+    deploy.example = &quot;aws s3 sync ./build s3://my-bucket&quot;;
+    deploy.type    = lib.types.lines;
+  };
+}
+</code></pre>
+<p>Now, previous config can be used, but it does nothing, it doesn't create yaml.</p>
+<p>It knowns what options can be accepted as <code>config</code>, but not what to do with it.</p>
+<p>The following code uses parameter <code>config</code> that has all evaluated <code>config</code> values.</p>
+<pre><code class="language-nix"># gh-actions.nix
+{ config, lib, ... }:
+{
+  imports = [ ./gh-actions-options.nix ];
+  # use other module that simplify file creation to create config file
+  files.yaml.&quot;/.github/workflows/ci-cd.yaml&quot;.jobs.ci-cd.steps   = [
+    { uses = &quot;actions/checkout@v2.4.0&quot;; }
+
+    { run  = config.gh-actions.setup;   }  # 
+    { run  = config.gh-actions.build;   }  #  Read step scripts from
+    { run  = config.gh-actions.test;    }  #  config.gh-actions
+    { run  = config.gh-actions.deploy&quot;; }  # 
+  ];
+  files.yaml.&quot;/.github/workflows/ci-cd.yaml&quot;.on = &quot;push&quot;;
+  files.yaml.&quot;/.github/workflows/ci-cd.yaml&quot;.jobs.ci-cd.runs-on = &quot;ubuntu-latest&quot;;
+}
+</code></pre>
+<p>Now it can be imported and set 'setup', 'build', 'test' and 'deploy' configs</p>
+<pre><code class="language-nix"># any other module file, maybe project.nix
+{
+  imports = [ ./gh-actions.nix ];
+  gh-actions.setup  = &quot;echo 'paranaue'&quot;;
+  gh-actions.build  = &quot;echo 'paranaue parana'&quot;;
+  gh-actions.build  = &quot;echo 'paranaue'&quot;;
+  gh-actions.deploy = ''
+    echo &quot;paranaue 
+            parana&quot;
+  '';
+}
+</code></pre>
+<p>If something that is not a string is set, an error will raise, cheking it against the options schema.</p>
+<p>There are <a href="https://nixos.org/manual/nixos/stable/index.html#sec-option-types">other types</a> that can be used (some of them):</p>
+<ul>
+<li>lib.types.bool </li>
+<li>lib.types.path </li>
+<li>lib.types.package </li>
+<li>lib.types.int </li>
+<li>lib.types.ints.unsigned</li>
+<li>lib.types.ints.positive</li>
+<li>lib.types.ints.port</li>
+<li>lib.types.ints.between</li>
+<li>lib.types.str</li>
+<li>lib.types.lines</li>
+<li>lib.types.enum</li>
+<li>lib.types.submodule</li>
+<li>lib.types.nullOr (typed nullable)</li>
+<li>lib.types.listOf (typed array)</li>
+<li>lib.types.attrsOf (typed hash map)</li>
+<li>lib.types.uniq (typed set)</li>
+</ul>
+<p>And lib has some modules <a href="https://teu5us.github.io/nix-lib.html#lib.modules.mkif">helpers functions</a> like:</p>
+<ul>
+<li>lib.mkIf          : to only set a property if some informaiton is true</li>
+<li>lib.optionals     : to return an array  or an empty array</li>
+<li>lib.optionalString: to return an string or an empty string</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="sharing-our-module"><a class="header" href="#sharing-our-module">Sharing our module</a></h3>
+<p>Now to not just copy and past it everywhere, we could create a git repository, ie. <a href="https://github.com/cruel-intentions/gh-actions">gh-actions</a></p>
+<p>Then we could let nix manage it for us adding it to flake.nix file like</p>
+<pre><code class="language-nix">{
+  description = &quot;Dev Environment&quot;;
+
+  inputs.dsf.url = &quot;github:cruel-intentions/devshell-files&quot;;
+  inputs.gha.url = &quot;github:cruel-intentions/gh-actions&quot;;
+  # for private repository use git url
+  # inputs.gha.url = &quot;git+ssh://git@github.com/cruel-intentions/gh-actions.git&quot;;
+
+  outputs = inputs: inputs.dsf.lib.mkShell [
+    &quot;${inputs.gha}/gh-actions.nix&quot;
+    ./project.nix
+  ];
+}
+</code></pre>
+<p>Or manage version adding it directly to project.nix (or any other module file)</p>
+<pre><code class="language-nix">{
+  imports = 
+    let gh-actions = builtins.fetchGit {
+      url = &quot;git+ssh://git@github.com/cruel-intentions/gh-actions.git&quot;;
+      ref = &quot;master&quot;;
+      rev = &quot;46eead778911b5786d299ecf1a95c9ed4c130844&quot;;
+    };
+    in [
+      &quot;${gh-actions}/gh-actions.nix&quot;
+    ];
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="document-our-module"><a class="header" href="#document-our-module">Document our module</a></h3>
+<p>To document our modules is simple, we just need to use <code>config.files.docs</code> as follow</p>
+<pre><code class="language-nix"># examples/docs.nix
+
+{lib, pkgs, ...}:
+{
+  files.docs.&quot;/gh-pages/src/modules/alias.md&quot;.modules     = [ ../modules/alias.nix ../modules/alias-complete.nix ];
+  files.docs.&quot;/gh-pages/src/modules/cmds.md&quot;.modules      = [ ../modules/cmds.nix        ];
+  files.docs.&quot;/gh-pages/src/modules/files.md&quot;.modules     = [ ../modules/files.nix       ];
+  files.docs.&quot;/gh-pages/src/modules/git.md&quot;.modules       = [ ../modules/git.nix         ];
+  files.docs.&quot;/gh-pages/src/modules/on-call.md&quot;.modules   = [ ../modules/startup.nix     ];
+  files.docs.&quot;/gh-pages/src/modules/gitignore.md&quot;.modules = [ ../modules/gitignore.nix   ];
+  files.docs.&quot;/gh-pages/src/modules/hcl.md&quot;.modules       = [ ../modules/hcl.nix         ];
+  files.docs.&quot;/gh-pages/src/modules/json.md&quot;.modules      = [ ../modules/json.nix        ];
+  files.docs.&quot;/gh-pages/src/modules/mdbook.md&quot;.modules    = [ ../modules/mdbook.nix      ];
+  files.docs.&quot;/gh-pages/src/modules/nim.md&quot;.modules       = [ ../modules/nim.nix         ];
+  files.docs.&quot;/gh-pages/src/modules/nushell.md&quot;.modules   = [ ../modules/nushell.nix     ];
+  files.docs.&quot;/gh-pages/src/modules/nush.md&quot;.modules      = [ ../modules/nush.nix ../modules/nuon.nix ];
+  files.docs.&quot;/gh-pages/src/modules/rc.md&quot;.modules        = [ ../modules/services/rc-devshell.nix     ];
+  files.docs.&quot;/gh-pages/src/modules/services.md&quot;.modules  = [ ../modules/services.nix    ];
+  files.docs.&quot;/gh-pages/src/modules/spdx.md&quot;.modules      = [ ../modules/spdx.nix        ];
+  files.docs.&quot;/gh-pages/src/modules/text.md&quot;.modules      = [ ../modules/text.nix        ];
+  files.docs.&quot;/gh-pages/src/modules/toml.md&quot;.modules      = [ ../modules/toml.nix        ];
+  files.docs.&quot;/gh-pages/src/modules/watch.md&quot;.modules     = [ ../modules/watch           ];
+  files.docs.&quot;/gh-pages/src/modules/yaml.md&quot;.modules      = [ ../modules/yaml.nix        ];
+}
+
+</code></pre>
+<details>
+<summary>We could also generate a mdbook with it</summary>
+<br>
+<pre><code class="language-nix"># examples/book.nix
+
+{lib, ...}:
+let
+  project   = &quot;devshell-files&quot;;
+  author    = &quot;cruel-intentions&quot;;
+  org-url   = &quot;https://github.com/${author}&quot;;
+  edit-path = &quot;${org-url}/${project}/edit/master/examples/{path}&quot;;
+in
+{
+  files.mdbook.authors      = [&quot;Cruel Intentions &lt;${org-url}&gt;&quot;];
+  files.mdbook.enable       = true;
+  files.mdbook.gh-author    = author;
+  files.mdbook.gh-project   = project;
+  files.mdbook.language     = &quot;en&quot;;
+  files.mdbook.multilingual = false;
+  files.mdbook.summary      = builtins.readFile ./summary.md;
+  files.mdbook.title        = &quot;Nix DevShell Files Maker&quot;;
+  files.mdbook.output.html.edit-url-template   = edit-path;
+  files.mdbook.output.html.fold.enable         = true;
+  files.mdbook.output.html.git-repository-url  = &quot;${org-url}/${project}/tree/master&quot;;
+  files.mdbook.output.html.no-section-label    = true;
+  files.mdbook.output.html.site-url            = &quot;/${project}/&quot;;
+  files.gitignore.pattern.gh-pages             = true;
+  files.text.&quot;/gh-pages/src/introduction.md&quot; = builtins.readFile ./readme/about.md;
+  files.text.&quot;/gh-pages/src/installation.md&quot; = builtins.readFile ./readme/installation.md;
+  files.text.&quot;/gh-pages/src/examples.md&quot;     = builtins.import   ./readme/examples.nix;
+  files.text.&quot;/gh-pages/src/modules.md&quot;      = &quot;## Writing new modules&quot;;
+  files.text.&quot;/gh-pages/src/nix-lang.md&quot;     = builtins.readFile ./readme/modules/nix-lang.md;
+  files.text.&quot;/gh-pages/src/json-nix.md&quot;     = builtins.import   ./readme/modules/json-vs-nix.nix lib;
+  files.text.&quot;/gh-pages/src/module-spec.md&quot;  = builtins.readFile ./readme/modules/modules.md;
+  files.text.&quot;/gh-pages/src/share.md&quot;        = builtins.readFile ./readme/modules/share.md;
+  files.text.&quot;/gh-pages/src/document.md&quot;     = builtins.import   ./readme/modules/document.nix;
+  files.text.&quot;/gh-pages/src/builtins.md&quot;     = builtins.readFile ./readme/modules/builtins.md;
+  files.text.&quot;/gh-pages/src/todo.md&quot;         = builtins.readFile ./readme/todo.md;
+  files.text.&quot;/gh-pages/src/issues.md&quot;       = builtins.readFile ./readme/issues.md;
+  files.text.&quot;/gh-pages/src/seeAlso.md&quot;      = builtins.readFile ./readme/seeAlso.md;
+  files.alias.publish-as-gh-pages-from-local = ''
+    # same as publish-as-gh-pages but works local
+    cd $PRJ_ROOT
+    ORIGIN=`git remote get-url origin`
+    cd gh-pages
+    mdbook build
+    cd book
+    git init .
+    git add .
+    git checkout -b gh-pages
+    git commit -m &quot;docs(gh-pages): update gh-pages&quot; .
+    git remote add origin $ORIGIN
+    git push -u origin gh-pages --force
+  '';  
+}
+
+</code></pre>
+</details>
+<p>And publish this mdbook to github pages with <code>book-as-gh-pages</code> alias.</p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="builtin-modules"><a class="header" href="#builtin-modules">Builtin Modules</a></h2>
+<p>Builtin Modules are modules defined with this same package.</p>
+<p>They are already included when we use this package.</p>
+<ul>
+<li><code>files.alias</code>, create bash script alias</li>
+<li><code>files.cmds</code>, install packages from <a href="https://search.nixos.org/">nix repository</a></li>
+<li><code>files.docs</code>, convert our modules file into markdown using <a href="https://gitlab.com/rycee/nmd">nmd</a></li>
+<li><code>files.git</code>, configure git with file creation</li>
+<li><code>files.on-call</code>, connfigure file to created only when devshell-files command is called, not on shell start</li>
+<li><code>files.gitignore</code>, copy .gitignore from <a href="https://github.com/github/gitignore/">templates</a></li>
+<li><code>files.hcl</code>, create HCL files with nix syntax</li>
+<li><code>files.json</code>, create JSON files with nix syntax</li>
+<li><code>files.mdbook</code>, convert your markdown files to HTML using <a href="https://rust-lang.github.io/mdBook/">mdbook</a></li>
+<li><code>files.nim</code>, similar to <code>files.alias</code>, but compiles <a href="https://github.com/nim-lang/Nim/wiki#getting-started">Nim</a> code</li>
+<li><code>files.nus</code>, similar to <code>files.alias</code>, but runs in <a href="https://www.nushell.sh/">Nushell</a></li>
+<li><code>files.nush</code>, similar to <code>files.nus</code>, but for subcommands</li>
+<li><code>files.services</code>, process supervisor for development services using <a href="http://skarnet.org/software/s6">s6</a></li>
+<li><code>files.rc</code> , WIP, process supervisor for development services using <a href="http://skarnet.org/software/s6-rc">s6-rc</a></li>
+<li><code>files.spdx</code>, copy LICENSE from <a href="https://github.com/spdx/license-list-data/tree/master/text">templates</a></li>
+<li><code>files.text</code>, create free text files with nix syntax</li>
+<li><code>files.toml</code>, create TOML files with nix syntax</li>
+<li><code>files.watch</code>, create an alias and service to run command when file changes using <a href="https://github.com/inotify-tools/inotify-tools/wiki">inotify-tools</a></li>
+<li><code>files.yaml</code>, create YAML files with nix syntax</li>
+</ul>
+<p>Our <a href="https://cruel-intentions.github.io/devshell-files/">documentation</a> is generated by <code>files.text</code>, <code>files.docs</code> and <code>files.mdbook</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="files"><a class="header" href="#files">files</a></h2>
+<h4 id="type"><a class="header" href="#type">type</a></h4>
+<p>submodule</p>
+<h2 id="filesalias"><a class="header" href="#filesalias">files.alias</a></h2>
+<p><para>bash script to create an alias</para></p>
+<h4 id="type-1"><a class="header" href="#type-1">type</a></h4>
+<p>attribute set of Concatenated string</p>
+<h4 id="example"><a class="header" href="#example">example</a></h4>
+<pre><code class="language-nix">{
+  files.alias = {
+    hello = &quot;echo hello&quot;;
+    world = ''
+      #!/usr/bin/env python
+      print(&quot;world&quot;)
+    '';
+  };
+}
+</code></pre>
+<h4 id="default"><a class="header" href="#default">default</a></h4>
+<pre><code class="language-nix">{
+  files.alias = { };
+}
+</code></pre>
+<h2 id="filescomplete"><a class="header" href="#filescomplete">files.complete</a></h2>
+<p><simpara>Auto complete for your alias or commands</simpara></p>
+<h4 id="type-2"><a class="header" href="#type-2">type</a></h4>
+<p>lazy attribute set of (submodule)</p>
+<h4 id="example-1"><a class="header" href="#example-1">example</a></h4>
+<pre><code class="language-nix">{
+  files.complete = {
+    svcCtl = {
+      bash = &quot;complete -W \&quot;$PRJ_SVCS\&quot; svcCtl&quot;;
+      fish = &quot;complete -c svcCtl -a \&quot;$PRJ_SVCS\&quot;&quot;;
+    };
+  };
+}
+</code></pre>
+<h4 id="default-1"><a class="header" href="#default-1">default</a></h4>
+<pre><code class="language-nix">{
+  files.complete = { };
+}
+</code></pre>
+<h2 id="filescompletenamebash"><a class="header" href="#filescompletenamebash">files.complete.&lt;name&gt;.bash</a></h2>
+<h4 id="type-3"><a class="header" href="#type-3">type</a></h4>
+<p>null or string</p>
+<h4 id="default-2"><a class="header" href="#default-2">default</a></h4>
+<pre><code class="language-nix">{
+  files.complete.&lt;name&gt;.bash = null;
+}
+</code></pre>
+<h2 id="filescompletenamefish"><a class="header" href="#filescompletenamefish">files.complete.&lt;name&gt;.fish</a></h2>
+<h4 id="type-4"><a class="header" href="#type-4">type</a></h4>
+<p>null or string</p>
+<h4 id="default-3"><a class="header" href="#default-3">default</a></h4>
+<pre><code class="language-nix">{
+  files.complete.&lt;name&gt;.fish = null;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filescmds"><a class="header" href="#filescmds">files.cmds</a></h2>
+<p><para>Add commands to the environment.</p>
+<p>https://search.nixos.org for more tools</para></p>
+<h4 id="type-5"><a class="header" href="#type-5">type</a></h4>
+<p>attribute set of boolean</p>
+<h4 id="example-2"><a class="header" href="#example-2">example</a></h4>
+<pre><code class="language-nix">{
+  files.cmds = {
+    awscli = true;
+    azure-cli = true;
+    cargo = true;
+    conda = true;
+    convco = true;
+    go_1_17 = true;
+    nodejs-16_x = true;
+    pipenv = true;
+    python39 = true;
+    ruby_3_0 = true;
+    rustc = true;
+    terraform = true;
+    yarn = true;
+  };
+}
+</code></pre>
+<h4 id="default-4"><a class="header" href="#default-4">default</a></h4>
+<pre><code class="language-nix">{
+  files.cmds = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="file"><a class="header" href="#file">file</a></h2>
+<p><para>Attribute set of files to create into the project root.</para></p>
+<h4 id="type-6"><a class="header" href="#type-6">type</a></h4>
+<p>attribute set of (submodule)</p>
+<h4 id="default-5"><a class="header" href="#default-5">default</a></h4>
+<pre><code class="language-nix">{
+  file = { };
+}
+</code></pre>
+<h2 id="filenameexecutable"><a class="header" href="#filenameexecutable">file.&lt;name&gt;.executable</a></h2>
+<p><para>Set the execute bit. If <literal>null</literal>, defaults to the mode
+of the <varname>source</varname> file or to <literal>false</literal>
+for files created through the <varname>text</varname> option.</para></p>
+<h4 id="type-7"><a class="header" href="#type-7">type</a></h4>
+<p>null or boolean</p>
+<h4 id="default-6"><a class="header" href="#default-6">default</a></h4>
+<pre><code class="language-nix">{
+  file.&lt;name&gt;.executable = null;
+}
+</code></pre>
+<h2 id="filenamegit-add"><a class="header" href="#filenamegit-add">file.&lt;name&gt;.git-add</a></h2>
+<p><para>To add this file to git repository after creation</para></p>
+<h4 id="type-8"><a class="header" href="#type-8">type</a></h4>
+<p>null or boolean</p>
+<h4 id="default-7"><a class="header" href="#default-7">default</a></h4>
+<pre><code class="language-nix">{
+  file.&lt;name&gt;.git-add = null;
+}
+</code></pre>
+<h2 id="filenameinterpolate"><a class="header" href="#filenameinterpolate">file.&lt;name&gt;.interpolate</a></h2>
+<p><para>Substitute $VAR with environment var before create file</para></p>
+<h4 id="type-9"><a class="header" href="#type-9">type</a></h4>
+<p>boolean</p>
+<h4 id="default-8"><a class="header" href="#default-8">default</a></h4>
+<pre><code class="language-nix">{
+  file.&lt;name&gt;.interpolate = false;
+}
+</code></pre>
+<h2 id="filenameon-enter"><a class="header" href="#filenameon-enter">file.&lt;name&gt;.on-enter</a></h2>
+<p><para>This file will be created on enter in development shell</para></p>
+<h4 id="type-10"><a class="header" href="#type-10">type</a></h4>
+<p>null or boolean</p>
+<h4 id="default-9"><a class="header" href="#default-9">default</a></h4>
+<pre><code class="language-nix">{
+  file.&lt;name&gt;.on-enter = true;
+}
+</code></pre>
+<h2 id="filenamesource"><a class="header" href="#filenamesource">file.&lt;name&gt;.source</a></h2>
+<p><para>Path of the source file or directory. If</p>
+<link linkend="devshell.file._name_.text">devshell.file.&lt;name?&gt;.text</link>
+is non-null then this option will automatically point to a file
+containing that text.</para>
+<h4 id="type-11"><a class="header" href="#type-11">type</a></h4>
+<p>path</p>
+<h2 id="filenametarget"><a class="header" href="#filenametarget">file.&lt;name&gt;.target</a></h2>
+<p><para>Path to target file relative to <envar>PRJ_ROOT</envar>.</para></p>
+<h4 id="type-12"><a class="header" href="#type-12">type</a></h4>
+<p>string</p>
+<h4 id="default-10"><a class="header" href="#default-10">default</a></h4>
+<pre><code class="language-nix">{
+  file.&lt;name&gt;.target = &lt;name&gt;;
+}
+</code></pre>
+<h2 id="filenametext"><a class="header" href="#filenametext">file.&lt;name&gt;.text</a></h2>
+<p><para>Text of the file. If this option is null then</p>
+<link linkend="devshell.file._name_.source">devshel.file.&lt;name?&gt;.source</link>
+must be set.</para>
+<h4 id="type-13"><a class="header" href="#type-13">type</a></h4>
+<p>null or strings concatenated with &quot;\n&quot;</p>
+<h4 id="default-11"><a class="header" href="#default-11">default</a></h4>
+<pre><code class="language-nix">{
+  file.&lt;name&gt;.text = null;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesgitauto-add"><a class="header" href="#filesgitauto-add">files.git.auto-add</a></h2>
+<p><para>Whether to enable auto add files to git after creation.</para></p>
+<h4 id="type-14"><a class="header" href="#type-14">type</a></h4>
+<p>boolean</p>
+<h4 id="example-3"><a class="header" href="#example-3">example</a></h4>
+<pre><code class="language-nix">{
+  files.git.auto-add = true;
+}
+</code></pre>
+<h4 id="default-12"><a class="header" href="#default-12">default</a></h4>
+<pre><code class="language-nix">{
+  files.git.auto-add = false;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesgitignoreenable"><a class="header" href="#filesgitignoreenable">files.gitignore.enable</a></h2>
+<p><para>Whether to enable Auto generated .gitignore file.</para></p>
+<h4 id="type-15"><a class="header" href="#type-15">type</a></h4>
+<p>boolean</p>
+<h4 id="example-4"><a class="header" href="#example-4">example</a></h4>
+<pre><code class="language-nix">{
+  files.gitignore.enable = true;
+}
+</code></pre>
+<h4 id="default-13"><a class="header" href="#default-13">default</a></h4>
+<pre><code class="language-nix">{
+  files.gitignore.enable = false;
+}
+</code></pre>
+<h2 id="filesgitignorepattern"><a class="header" href="#filesgitignorepattern">files.gitignore.pattern</a></h2>
+<p><para>Gitignore pattern to ignore</para></p>
+<h4 id="type-16"><a class="header" href="#type-16">type</a></h4>
+<p>attribute set of boolean</p>
+<h4 id="example-5"><a class="header" href="#example-5">example</a></h4>
+<pre><code class="language-nix">{
+  files.gitignore.pattern = {
+    &quot;ignore-this-file.txt&quot; = true;
+  };
+}
+</code></pre>
+<h4 id="default-14"><a class="header" href="#default-14">default</a></h4>
+<pre><code class="language-nix">{
+  files.gitignore.pattern = { };
+}
+</code></pre>
+<h2 id="filesgitignoretemplate"><a class="header" href="#filesgitignoretemplate">files.gitignore.template</a></h2>
+<p><para>Append gitignore template from https://github.com/github/gitignore</para></p>
+<h4 id="type-17"><a class="header" href="#type-17">type</a></h4>
+<p>attribute set of boolean</p>
+<h4 id="example-6"><a class="header" href="#example-6">example</a></h4>
+<pre><code class="language-nix">{
+  files.gitignore.template = {
+    Android = true;
+    &quot;community/AWS/SAM&quot; = true;
+  };
+}
+</code></pre>
+<h4 id="default-15"><a class="header" href="#default-15">default</a></h4>
+<pre><code class="language-nix">{
+  files.gitignore.template = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="fileshcl"><a class="header" href="#fileshcl">files.hcl</a></h2>
+<p><para>Create hcl files with correponding content</para></p>
+<h4 id="type-18"><a class="header" href="#type-18">type</a></h4>
+<p>attribute set of (JSON value)</p>
+<h4 id="example-7"><a class="header" href="#example-7">example</a></h4>
+<pre><code class="language-nix">{
+  files.hcl = {
+    &quot;/hellaos.hcl&quot; = {
+      greeting = &quot;hello World&quot;;
+    };
+    &quot;/hellows.hcl&quot; = {
+      greetings = [
+        [
+          &quot;Hello World&quot;
+        ]
+        [
+          &quot;Ola Mundo&quot;
+          [
+            &quot;Holla Que Tal&quot;
+          ]
+        ]
+      ];
+    };
+  };
+}
+</code></pre>
+<h4 id="default-16"><a class="header" href="#default-16">default</a></h4>
+<pre><code class="language-nix">{
+  files.hcl = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesjson"><a class="header" href="#filesjson">files.json</a></h2>
+<p><para>Create json files with correponding content</para></p>
+<h4 id="type-19"><a class="header" href="#type-19">type</a></h4>
+<p>attribute set of (JSON value)</p>
+<h4 id="example-8"><a class="header" href="#example-8">example</a></h4>
+<pre><code class="language-nix">{
+  files.json = {
+    &quot;/hellaos.json&quot; = {
+      greeting = &quot;hello World&quot;;
+    };
+    &quot;/hellows.json&quot; = {
+      greetings = [
+        [
+          &quot;Hello World&quot;
+        ]
+        [
+          &quot;Ola Mundo&quot;
+          [
+            &quot;Holla Que Tal&quot;
+          ]
+        ]
+      ];
+    };
+  };
+}
+</code></pre>
+<h4 id="default-17"><a class="header" href="#default-17">default</a></h4>
+<pre><code class="language-nix">{
+  files.json = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesmdbook"><a class="header" href="#filesmdbook">files.mdbook</a></h2>
+<p><para>Helps with mdbook creation https://rust-lang.github.io/mdBook/</p>
+<p>by default it creates gh-pages/mdbook.toml and gh-pages/src/SUMMARY.md</p>
+<p>It also create publish-as-gh-pages helper</p>
+<details>
+<summary>Full configuration example</summary>
+<br>
+<pre><code class="language-nix">#examples/book.nix
+
+{lib, ...}:
+let
+  project   = &quot;devshell-files&quot;;
+  author    = &quot;cruel-intentions&quot;;
+  org-url   = &quot;https://github.com/${author}&quot;;
+  edit-path = &quot;${org-url}/${project}/edit/master/examples/{path}&quot;;
+in
+{
+  files.mdbook.authors      = [&quot;Cruel Intentions &lt;${org-url}&gt;&quot;];
+  files.mdbook.enable       = true;
+  files.mdbook.gh-author    = author;
+  files.mdbook.gh-project   = project;
+  files.mdbook.language     = &quot;en&quot;;
+  files.mdbook.multilingual = false;
+  files.mdbook.summary      = builtins.readFile ./summary.md;
+  files.mdbook.title        = &quot;Nix DevShell Files Maker&quot;;
+  files.mdbook.output.html.edit-url-template   = edit-path;
+  files.mdbook.output.html.fold.enable         = true;
+  files.mdbook.output.html.git-repository-url  = &quot;${org-url}/${project}/tree/master&quot;;
+  files.mdbook.output.html.no-section-label    = true;
+  files.mdbook.output.html.site-url            = &quot;/${project}/&quot;;
+  files.gitignore.pattern.gh-pages             = true;
+  files.text.&quot;/gh-pages/src/introduction.md&quot; = builtins.readFile ./readme/about.md;
+  files.text.&quot;/gh-pages/src/installation.md&quot; = builtins.readFile ./readme/installation.md;
+  files.text.&quot;/gh-pages/src/examples.md&quot;     = builtins.import   ./readme/examples.nix;
+  files.text.&quot;/gh-pages/src/modules.md&quot;      = &quot;## Writing new modules&quot;;
+  files.text.&quot;/gh-pages/src/nix-lang.md&quot;     = builtins.readFile ./readme/modules/nix-lang.md;
+  files.text.&quot;/gh-pages/src/json-nix.md&quot;     = builtins.import   ./readme/modules/json-vs-nix.nix lib;
+  files.text.&quot;/gh-pages/src/module-spec.md&quot;  = builtins.readFile ./readme/modules/modules.md;
+  files.text.&quot;/gh-pages/src/share.md&quot;        = builtins.readFile ./readme/modules/share.md;
+  files.text.&quot;/gh-pages/src/document.md&quot;     = builtins.import   ./readme/modules/document.nix;
+  files.text.&quot;/gh-pages/src/builtins.md&quot;     = builtins.readFile ./readme/modules/builtins.md;
+  files.text.&quot;/gh-pages/src/todo.md&quot;         = builtins.readFile ./readme/todo.md;
+  files.text.&quot;/gh-pages/src/issues.md&quot;       = builtins.readFile ./readme/issues.md;
+  files.text.&quot;/gh-pages/src/seeAlso.md&quot;      = builtins.readFile ./readme/seeAlso.md;
+  files.alias.publish-as-gh-pages-from-local = ''
+    # same as publish-as-gh-pages but works local
+    cd $PRJ_ROOT
+    ORIGIN=`git remote get-url origin`
+    cd gh-pages
+    mdbook build
+    cd book
+    git init .
+    git add .
+    git checkout -b gh-pages
+    git commit -m &quot;docs(gh-pages): update gh-pages&quot; .
+    git remote add origin $ORIGIN
+    git push -u origin gh-pages --force
+  '';  
+}
+
+</code></pre>
+</details></para>
+<h4 id="type-20"><a class="header" href="#type-20">type</a></h4>
+<p>submodule</p>
+<h4 id="default-18"><a class="header" href="#default-18">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook = { };
+}
+</code></pre>
+<h2 id="filesmdbookenable"><a class="header" href="#filesmdbookenable">files.mdbook.enable</a></h2>
+<p><para>Whether to enable mdbook module.</para></p>
+<h4 id="type-21"><a class="header" href="#type-21">type</a></h4>
+<p>boolean</p>
+<h4 id="example-9"><a class="header" href="#example-9">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.enable = true;
+}
+</code></pre>
+<h4 id="default-19"><a class="header" href="#default-19">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.enable = false;
+}
+</code></pre>
+<h2 id="filesmdbookauthors"><a class="header" href="#filesmdbookauthors">files.mdbook.authors</a></h2>
+<p><para>Book author</para></p>
+<h4 id="type-22"><a class="header" href="#type-22">type</a></h4>
+<p>null or (non-empty (list of string))</p>
+<h4 id="example-10"><a class="header" href="#example-10">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.authors = [
+    &quot;Cruel Intentions&quot;
+  ];
+}
+</code></pre>
+<h4 id="default-20"><a class="header" href="#default-20">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.authors = null;
+}
+</code></pre>
+<h2 id="filesmdbookbuild"><a class="header" href="#filesmdbookbuild">files.mdbook.build</a></h2>
+<p><para>mdbook output options</para></p>
+<h4 id="type-23"><a class="header" href="#type-23">type</a></h4>
+<p>JSON value</p>
+<h4 id="example-11"><a class="header" href="#example-11">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.build = {
+    build-dir = &quot;book&quot;;
+  };
+}
+</code></pre>
+<h4 id="default-21"><a class="header" href="#default-21">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.build = { };
+}
+</code></pre>
+<h2 id="filesmdbookdescription"><a class="header" href="#filesmdbookdescription">files.mdbook.description</a></h2>
+<p><para>Desciption of this book</para></p>
+<h4 id="type-24"><a class="header" href="#type-24">type</a></h4>
+<p>null or string</p>
+<h4 id="example-12"><a class="header" href="#example-12">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.description = &quot;Modules Docummentation&quot;;
+}
+</code></pre>
+<h4 id="default-22"><a class="header" href="#default-22">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.description = null;
+}
+</code></pre>
+<h2 id="filesmdbookgh-author"><a class="header" href="#filesmdbookgh-author">files.mdbook.gh-author</a></h2>
+<p><para>Github Owner</para></p>
+<h4 id="type-25"><a class="header" href="#type-25">type</a></h4>
+<p>null or string</p>
+<h4 id="example-13"><a class="header" href="#example-13">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.gh-author = &quot;cruel-intentions&quot;;
+}
+</code></pre>
+<h4 id="default-23"><a class="header" href="#default-23">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.gh-author = null;
+}
+</code></pre>
+<h2 id="filesmdbookgh-project"><a class="header" href="#filesmdbookgh-project">files.mdbook.gh-project</a></h2>
+<p><para>Github project</para></p>
+<h4 id="type-26"><a class="header" href="#type-26">type</a></h4>
+<p>null or string</p>
+<h4 id="example-14"><a class="header" href="#example-14">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.gh-project = &quot;devshell-files&quot;;
+}
+</code></pre>
+<h4 id="default-24"><a class="header" href="#default-24">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.gh-project = null;
+}
+</code></pre>
+<h2 id="filesmdbooklanguage"><a class="header" href="#filesmdbooklanguage">files.mdbook.language</a></h2>
+<p><para>Book language</para></p>
+<h4 id="type-27"><a class="header" href="#type-27">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-15"><a class="header" href="#example-15">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.language = &quot;en&quot;;
+}
+</code></pre>
+<h4 id="default-25"><a class="header" href="#default-25">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.language = null;
+}
+</code></pre>
+<h2 id="filesmdbookmultilingual"><a class="header" href="#filesmdbookmultilingual">files.mdbook.multilingual</a></h2>
+<p><para>If book has multilingual support</para></p>
+<h4 id="type-28"><a class="header" href="#type-28">type</a></h4>
+<p>boolean</p>
+<h4 id="example-16"><a class="header" href="#example-16">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.multilingual = true;
+}
+</code></pre>
+<h4 id="default-26"><a class="header" href="#default-26">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.multilingual = false;
+}
+</code></pre>
+<h2 id="filesmdbookoutput"><a class="header" href="#filesmdbookoutput">files.mdbook.output</a></h2>
+<p><para>mdbook output options</para></p>
+<h4 id="type-29"><a class="header" href="#type-29">type</a></h4>
+<p>JSON value</p>
+<h4 id="example-17"><a class="header" href="#example-17">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.output = {
+    html = {
+      fold = {
+        enable = true;
+      };
+    };
+  };
+}
+</code></pre>
+<h4 id="default-27"><a class="header" href="#default-27">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.output = { };
+}
+</code></pre>
+<h2 id="filesmdbookpreprocessor"><a class="header" href="#filesmdbookpreprocessor">files.mdbook.preprocessor</a></h2>
+<p><para>mdbook preprocessor options</para></p>
+<h4 id="type-30"><a class="header" href="#type-30">type</a></h4>
+<p>JSON value</p>
+<h4 id="example-18"><a class="header" href="#example-18">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.preprocessor = {
+    mathjax = {
+      renderers = [
+        &quot;html&quot;
+      ];
+    };
+  };
+}
+</code></pre>
+<h4 id="default-28"><a class="header" href="#default-28">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.preprocessor = { };
+}
+</code></pre>
+<h2 id="filesmdbookroot-dir"><a class="header" href="#filesmdbookroot-dir">files.mdbook.root-dir</a></h2>
+<p><para>root path of book</para></p>
+<h4 id="type-31"><a class="header" href="#type-31">type</a></h4>
+<p>non-empty string</p>
+<h4 id="example-19"><a class="header" href="#example-19">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.root-dir = &quot;/gh-pages&quot;;
+}
+</code></pre>
+<h4 id="default-29"><a class="header" href="#default-29">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.root-dir = &quot;/gh-pages&quot;;
+}
+</code></pre>
+<h2 id="filesmdbookrust"><a class="header" href="#filesmdbookrust">files.mdbook.rust</a></h2>
+<p><para>mdbook rust options</para></p>
+<h4 id="type-32"><a class="header" href="#type-32">type</a></h4>
+<p>JSON value</p>
+<h4 id="example-20"><a class="header" href="#example-20">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.rust = {
+    edition = &quot;2018&quot;;
+  };
+}
+</code></pre>
+<h4 id="default-30"><a class="header" href="#default-30">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.rust = { };
+}
+</code></pre>
+<h2 id="filesmdbooksummary"><a class="header" href="#filesmdbooksummary">files.mdbook.summary</a></h2>
+<p><para>Summary of our mkdbook</para></p>
+<h4 id="type-33"><a class="header" href="#type-33">type</a></h4>
+<p>strings concatenated with &quot;\n&quot;</p>
+<h4 id="example-21"><a class="header" href="#example-21">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.summary = ''
+    # SUMMARY
+    - [Intro](./intro.md)
+  '';
+}
+</code></pre>
+<h4 id="default-31"><a class="header" href="#default-31">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.summary = ''
+    # SUMMARY
+  '';
+}
+</code></pre>
+<h2 id="filesmdbooktitle"><a class="header" href="#filesmdbooktitle">files.mdbook.title</a></h2>
+<p><para>Book title</para></p>
+<h4 id="type-34"><a class="header" href="#type-34">type</a></h4>
+<p>null or string</p>
+<h4 id="example-22"><a class="header" href="#example-22">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.title = &quot;Devshell Files Modules&quot;;
+}
+</code></pre>
+<h4 id="default-32"><a class="header" href="#default-32">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.title = null;
+}
+</code></pre>
+<h2 id="filesmdbookuse-default-preprocessor"><a class="header" href="#filesmdbookuse-default-preprocessor">files.mdbook.use-default-preprocessor</a></h2>
+<p><para>Disable the default preprocessors</para></p>
+<h4 id="type-35"><a class="header" href="#type-35">type</a></h4>
+<p>boolean</p>
+<h4 id="example-23"><a class="header" href="#example-23">example</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.use-default-preprocessor = false;
+}
+</code></pre>
+<h4 id="default-33"><a class="header" href="#default-33">default</a></h4>
+<pre><code class="language-nix">{
+  files.mdbook.use-default-preprocessor = true;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesnim"><a class="header" href="#filesnim">files.nim</a></h2>
+<p><para>Nim code to create an command</p>
+<p>It includes some helpers and libraries for laziness, so it better 
+fit prototyping and simples commands/script.</p>
+<p>Vars:</p>
+<ul>
+<li>PRJ_ROOT : devshell PRJ_ROOT env information</li>
+<li>ARGS     : Arguments command arguments</li>
+<li>NO_ARGS  : empty arguments</li>
+<li>PWD      : DirPath &quot;.&quot;</li>
+<li>All devshell like: <code>let PRJ_DATA_DIR = env &quot;PRJ_DATA_DIR&quot;</code></li>
+</ul>
+<p>Procs:</p>
+<ul>
+<li>arg  : get arg n, default=&quot;&quot;, ie. <code>1.arg</code></li>
+<li>env  : get env name, default=&quot;&quot;, ie. <code>&quot;PRJ_DATA_DIR&quot;.env</code></li>
+<li>cd   : set current dir</li>
+<li>exec : execute {cmd}, args=NO_ARGS, dir=&quot;.&quot;.dirPath</li>
+<li>jPath: creates a path to access json ie: <code>&quot;foo/0/^1/0..1/0..^1/bar&quot;.jPath</code>
+<ul>
+<li>/  : concat paths, ie: <code>myPath / &quot;blerg&quot; / 0 / ^1 / 0 .. 1 / 0 .. ^1/baz</code></li>
+<li>get  : get JsonNode in path of object, <code>myPath.get myObj</code></li>
+<li>[]   : get JsonNode in pat  of object, <code>myObj[myPath]</code></li>
+<li>set  : set JsonNode in path of object, <code>myPath.set myObj, myVal</code></li>
+<li>[]=  : set JsonNode in path of object, <code>myObj[myPath] = myVal</code></li>
+</ul>
+</li>
+</ul>
+<p><a href="https://blog.johnnovak.net/2020/12/21/nim-apocrypha-vol.-i/#6-nbsp-using-keyword">Using</a>:</p>
+<ul>
+<li>sep : string</li>
+<li>dir : string</li>
+<li>path: JsonPath</li>
+<li>obj : JsonNode</li>
+</ul>
+<p>Imports:</p>
+<ul>
+<li>Import almost all std libraries</li>
+</ul>
+<p>Flags:</p>
+<ul>
+<li><code>-w:off -d:ssl --threads:on --mm:orc --hints:off --parallelBuild:4 --tlsEmulation:on</code></li>
+</ul>
+<p>Todo:</p>
+<ul>
+<li>Add an option to configure flags</li>
+<li>Add an option for static linking</li>
+</ul>
+<p>Examples:</p>
+<pre><code class="language-nix"># examples/nim.nix
+{pkgs, ...}:{
+  # compile nim files and them to shell
+  files.nim.helloNim    = ''echo ARGS'';
+  # keep an /tmp file with last result for n seconds
+  files.nim.memoise     = builtins.readFile ./nim/memoise.nim;
+  # clustersSTS is a good candidate to be used with services
+  files.nim.clustersSTS = builtins.readFile ./nim/clustersSTS.nim;
+  # our poor man jq alternative
+  files.nim.jsonildo    = builtins.readFile ./nim/jsonildo.nim;
+  files.nim.helloNimAgain.deps = [ pkgs.termbox pkgs.nimPackages.nimbox ];
+  files.nim.helloNimAgain.src  = ''
+    import nimbox
+    proc main() =
+      var nb = newNimbox()
+      defer: nb.shutdown()
+    
+      nb.print(0, 0, &quot;Hello, world!&quot;)
+      nb.present()
+      sleep(1000)
+    
+    when isMainModule:
+      main()
+  '';
+}
+
+```&lt;/para&gt;
+
+#### type
+
+attribute set of ((submodule) or Concatenated string)
+
+#### example
+
+```nix
+{
+  files.nim = {
+    dokr = ''
+      // create an docker compose alias
+      // cd $PRJ_ROOT/subdir; docker &quot;compose&quot; $@
+      exec &quot;docker&quot;, &quot;compose&quot; + ARGS, PRJ_ROOT / &quot;subdir&quot;
+    '';
+    hello = ''
+      #compile-at-mkshell
+      
+      # by default nim commands were compiled at first run to reduce
+      # shell activation time, add comment #compile-at-mkshell to 
+      # compile at shell activation
+      echo &quot;hello&quot;
+    '';
+    manage = ''
+      // create an pipenv alias
+      // pipenv run python ./manage.py
+      exec &quot;pipenv&quot;, args(&quot;run python ./manage.py&quot;) + ARGS
+    '';
+  };
+}
+</code></pre>
+<h4 id="default-34"><a class="header" href="#default-34">default</a></h4>
+<pre><code class="language-nix">{
+  files.nim = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesnus"><a class="header" href="#filesnus">files.nus</a></h2>
+<p><para><a href="https://www.nushell.sh/book/command_reference.html">Nushell</a> script to create an alias.</para></p>
+<h4 id="type-36"><a class="header" href="#type-36">type</a></h4>
+<p>attribute set of (Concatenated string or list of Concatenated string)</p>
+<h4 id="example-24"><a class="header" href="#example-24">example</a></h4>
+<pre><code class="language-nix">{
+  files.nus = {
+    hello = [
+      &quot;name&quot;
+      &quot;{hello: $name}&quot;
+    ];
+    world = ''
+      # it could use previous commands
+      hello world
+    '';
+  };
+}
+</code></pre>
+<h4 id="default-35"><a class="header" href="#default-35">default</a></h4>
+<pre><code class="language-nix">{
+  files.nus = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesnuonenable"><a class="header" href="#filesnuonenable">files.nuon.enable</a></h2>
+<p><para>Enable nuon command</para></p>
+<h4 id="type-37"><a class="header" href="#type-37">type</a></h4>
+<p>boolean</p>
+<h4 id="example-25"><a class="header" href="#example-25">example</a></h4>
+<pre><code class="language-nix">{
+  files.nuon.enable = true;
+}
+</code></pre>
+<h4 id="default-36"><a class="header" href="#default-36">default</a></h4>
+<pre><code class="language-nix">{
+  files.nuon.enable = false;
+}
+</code></pre>
+<h2 id="filesnush"><a class="header" href="#filesnush">files.nush</a></h2>
+<p><para><a href="https://www.nushell.sh/book/command_reference.html">Nushell</a> script to create an alias.</para></p>
+<h4 id="type-38"><a class="header" href="#type-38">type</a></h4>
+<p>attribute set of attribute set of (Concatenated string or list of Concatenated string)</p>
+<h4 id="example-26"><a class="header" href="#example-26">example</a></h4>
+<pre><code class="language-nix">{
+  files.nush = {
+    hello = {
+      en = [
+        &quot;arg&quot;
+        &quot;{hello: $arg}&quot;
+      ];
+      pt = [
+        &quot;arg&quot;
+        &quot;{ola: $arg}&quot;
+      ];
+    };
+    world = {
+      hello = ''
+        # it could use previous commands
+        hello en &quot;World&quot;
+        hello pt &quot;Mundo&quot;
+      '';
+    };
+  };
+}
+</code></pre>
+<h4 id="default-37"><a class="header" href="#default-37">default</a></h4>
+<pre><code class="language-nix">{
+  files.nush = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesrc"><a class="header" href="#filesrc">files.rc</a></h2>
+<p><para>Service name/command and its configuration</p>
+<ul>
+<li>{name}.bundle  for bundles</li>
+<li>{name}.oneshot for one shot activations scripts</li>
+<li>{name}.longrun for deamons services</li>
+</ul>
+<p>All services are disabled by default.</p>
+<p>It will fail at activation time if:</p>
+<ul>
+<li>More then onde type (bundle, oneshot, longrun) were defined for the same {name}</li>
+<li>One dependency service ins't defined but required</para></li>
+</ul>
+<h4 id="type-39"><a class="header" href="#type-39">type</a></h4>
+<p>attribute set of (submodule)</p>
+<h4 id="example-27"><a class="header" href="#example-27">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc = {
+    hello = {
+      enable = true;
+      longrun = {
+        run = &quot;mySquirelD&quot;;
+      };
+    };
+    hola = {
+      bundle = {
+        contents = [
+          &quot;hello&quot;
+          &quot;world&quot;
+        ];
+      };
+      enable = true;
+    };
+    world = {
+      enable = true;
+      oneshot = {
+        setup = &quot;echo Hello World &gt; $PRJ_DATA_DIR/hello.txt&quot;;
+      };
+    };
+  };
+}
+</code></pre>
+<h4 id="default-38"><a class="header" href="#default-38">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc = { };
+}
+</code></pre>
+<h2 id="filesrcnameenable"><a class="header" href="#filesrcnameenable">files.rc.&lt;name&gt;.enable</a></h2>
+<p><para>Enable this service</para></p>
+<h4 id="type-40"><a class="header" href="#type-40">type</a></h4>
+<p>boolean</p>
+<h4 id="example-28"><a class="header" href="#example-28">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.enable = true;
+}
+</code></pre>
+<h4 id="default-39"><a class="header" href="#default-39">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.enable = false;
+}
+</code></pre>
+<h2 id="filesrcnamebundle"><a class="header" href="#filesrcnamebundle">files.rc.&lt;name&gt;.bundle</a></h2>
+<p><para><code>bundle</code> is a service aggregator</p>
+<p>For example we can bundle every system (db, http, config) by microservice.</p>
+<p>Like:</p>
+<ul>
+<li>Commerce Bundle:
+<ul>
+<li>commerce database service</li>
+<li>commerce api service</li>
+<li>commerce cache service</li>
+</ul>
+</li>
+<li>BPMN Bundle
+<ul>
+<li>BPMN database service</li>
+<li>BPMN api service</li>
+<li>BPMN cache service</para></li>
+</ul>
+</li>
+</ul>
+<h4 id="type-41"><a class="header" href="#type-41">type</a></h4>
+<p>null or (submodule)</p>
+<h4 id="example-29"><a class="header" href="#example-29">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle = {
+    contents = [
+      &quot;myFancyServiceName&quot;
+    ];
+    essential = true;
+  };
+}
+</code></pre>
+<h4 id="default-40"><a class="header" href="#default-40">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle = null;
+}
+</code></pre>
+<h2 id="filesrcnamebundledeps"><a class="header" href="#filesrcnamebundledeps">files.rc.&lt;name&gt;.bundle.deps</a></h2>
+<p><para>Defines what makes part of this bundle</para></p>
+<h4 id="type-42"><a class="header" href="#type-42">type</a></h4>
+<p>non-empty (list of non-empty string)</p>
+<h4 id="example-30"><a class="header" href="#example-30">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle.deps = [
+    &quot;myDep&quot;
+    &quot;myOtherDep&quot;
+  ];
+}
+</code></pre>
+<h2 id="filesrcnamebundleessential"><a class="header" href="#filesrcnamebundleessential">files.rc.&lt;name&gt;.bundle.essential</a></h2>
+<p><para>Mark this bundle and all its dependencies as essential</p>
+<p>It means some commands may work to stop these services</para></p>
+<h4 id="type-43"><a class="header" href="#type-43">type</a></h4>
+<p>boolean</p>
+<h4 id="example-31"><a class="header" href="#example-31">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle.essential = true;
+}
+</code></pre>
+<h4 id="default-41"><a class="header" href="#default-41">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.bundle.essential = false;
+}
+</code></pre>
+<h2 id="filesrcnamelongrun"><a class="header" href="#filesrcnamelongrun">files.rc.&lt;name&gt;.longrun</a></h2>
+<p><para><code>longrun</code> are commands that run as deamon (in a infinity loop).</p>
+<p>Applications:</p>
+<ul>
+<li>static site service</li>
+<li>test watcher</li>
+<li>some script to warn that your coffe bottle is empty</para></li>
+</ul>
+<h4 id="type-44"><a class="header" href="#type-44">type</a></h4>
+<p>null or (submodule)</p>
+<h4 id="example-32"><a class="header" href="#example-32">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun = {
+    agreement = {
+      description = &quot;Check to confirm&quot;;
+      label = &quot;Are you sure?&quot;;
+    };
+  };
+}
+</code></pre>
+<h4 id="default-42"><a class="header" href="#default-42">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunconsumer-for"><a class="header" href="#filesrcnamelongrunconsumer-for">files.rc.&lt;name&gt;.longrun.consumer-for</a></h2>
+<p><para>Defines names of other services this services expects
+receive data at stdin from theirs stdout</p>
+<p>Dependency hierarchy are calculated at activation time.</p>
+<p>See <a href="http://skarnet.org/software/s6-rc/s6-rc-compile.html">S6 documentation</a>
+for more info</para></p>
+<h4 id="type-45"><a class="header" href="#type-45">type</a></h4>
+<p>list of non-empty string</p>
+<h4 id="example-33"><a class="header" href="#example-33">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.consumer-for = [
+    &quot;myService&quot;
+  ];
+}
+</code></pre>
+<h4 id="default-43"><a class="header" href="#default-43">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.consumer-for = [ ];
+}
+</code></pre>
+<h2 id="filesrcnamelongrundata"><a class="header" href="#filesrcnamelongrundata">files.rc.&lt;name&gt;.longrun.data</a></h2>
+<p><para>Path that contains data for your service</para></p>
+<h4 id="type-46"><a class="header" href="#type-46">type</a></h4>
+<p>null or path</p>
+<h4 id="example-34"><a class="header" href="#example-34">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.data = &quot;./.data&quot;;
+}
+</code></pre>
+<h4 id="default-44"><a class="header" href="#default-44">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.data = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrundeps"><a class="header" href="#filesrcnamelongrundeps">files.rc.&lt;name&gt;.longrun.deps</a></h2>
+<p><para>Defines names of other services required to be <code>ready</code> to this
+service work.</p>
+<p>Dependency hierarchy are calculated at activation time.</p>
+<p>See <a href="http://skarnet.org/software/s6-rc/s6-rc-compile.html">S6 documentation</a>
+for more info</para></p>
+<h4 id="type-47"><a class="header" href="#type-47">type</a></h4>
+<p>list of non-empty string</p>
+<h4 id="example-35"><a class="header" href="#example-35">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.deps = [
+    &quot;myDependency&quot;
+  ];
+}
+</code></pre>
+<h4 id="default-45"><a class="header" href="#default-45">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.deps = [ ];
+}
+</code></pre>
+<h2 id="filesrcnamelongrunenv"><a class="header" href="#filesrcnamelongrunenv">files.rc.&lt;name&gt;.longrun.env</a></h2>
+<p><para>Path that contains env data for your service</para></p>
+<h4 id="type-48"><a class="header" href="#type-48">type</a></h4>
+<p>null or path</p>
+<h4 id="example-36"><a class="header" href="#example-36">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.env = &quot;./.direnv&quot;;
+}
+</code></pre>
+<h4 id="default-46"><a class="header" href="#default-46">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.env = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunessential"><a class="header" href="#filesrcnamelongrunessential">files.rc.&lt;name&gt;.longrun.essential</a></h2>
+<p><para>Mark this service and all its dependencies as essential</p>
+<p>It means some commands may work to stop this service</para></p>
+<h4 id="type-49"><a class="header" href="#type-49">type</a></h4>
+<p>boolean</p>
+<h4 id="example-37"><a class="header" href="#example-37">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.essential = true;
+}
+</code></pre>
+<h4 id="default-47"><a class="header" href="#default-47">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.essential = false;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunkill-after"><a class="header" href="#filesrcnamelongrunkill-after">files.rc.&lt;name&gt;.longrun.kill-after</a></h2>
+<p><para>Time in ms to give up from this service shutdown process
+and kill it anyway.</p>
+<ul>
+<li>0 means never</para></li>
+</ul>
+<h4 id="type-50"><a class="header" href="#type-50">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-38"><a class="header" href="#example-38">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.kill-after = 2005;
+}
+</code></pre>
+<h4 id="default-48"><a class="header" href="#default-48">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.kill-after = 0;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunkill-finish-after"><a class="header" href="#filesrcnamelongrunkill-finish-after">files.rc.&lt;name&gt;.longrun.kill-finish-after</a></h2>
+<p><para>Time in ms to give up from this service finish script
+and kill it.</p>
+<ul>
+<li>0 means never</para></li>
+</ul>
+<h4 id="type-51"><a class="header" href="#type-51">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-39"><a class="header" href="#example-39">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.kill-finish-after = 2005;
+}
+</code></pre>
+<h4 id="default-49"><a class="header" href="#default-49">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.kill-finish-after = 0;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunlock-descriptor"><a class="header" href="#filesrcnamelongrunlock-descriptor">files.rc.&lt;name&gt;.longrun.lock-descriptor</a></h2>
+<p><para>Configure a file descriptor to show that service is <code>running</code> </p>
+<p>If value any value other then 0, 1 or 2, this 
+service uses file-descriptor lock</para></p>
+<h4 id="type-52"><a class="header" href="#type-52">type</a></h4>
+<p>null or unsigned integer, meaning &gt;=0</p>
+<h4 id="example-40"><a class="header" href="#example-40">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.lock-descriptor = 5;
+}
+</code></pre>
+<h4 id="default-50"><a class="header" href="#default-50">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.lock-descriptor = 0;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunmax-restarts"><a class="header" href="#filesrcnamelongrunmax-restarts">files.rc.&lt;name&gt;.longrun.max-restarts</a></h2>
+<p><para>Times it should restart before we giveup</p>
+<ul>
+<li>Could not be more than 4096</para></li>
+</ul>
+<h4 id="type-53"><a class="header" href="#type-53">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-41"><a class="header" href="#example-41">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.max-restarts = 2005;
+}
+</code></pre>
+<h4 id="default-51"><a class="header" href="#default-51">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.max-restarts = 100;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunpipeline-name"><a class="header" href="#filesrcnamelongrunpipeline-name">files.rc.&lt;name&gt;.longrun.pipeline-name</a></h2>
+<p><para>Define name of this pipeline.</p>
+<p>Dependency hierarchy are calculated at activation time.</p>
+<p>See <a href="http://skarnet.org/software/s6-rc/s6-rc-compile.html">S6 documentation</a>
+for more info</para></p>
+<h4 id="type-54"><a class="header" href="#type-54">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-42"><a class="header" href="#example-42">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.pipeline-name = &quot;logMyService&quot;;
+}
+</code></pre>
+<h4 id="default-52"><a class="header" href="#default-52">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.pipeline-name = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunproducer-for"><a class="header" href="#filesrcnamelongrunproducer-for">files.rc.&lt;name&gt;.longrun.producer-for</a></h2>
+<p><para>Defines a service to read this progam stdout (ie a logger)</p>
+<p>Dependency hierarchy are calculated at activation time.</p>
+<p>See <a href="http://skarnet.org/software/s6-rc/s6-rc-compile.html">S6 documentation</a>
+for more info</para></p>
+<h4 id="type-55"><a class="header" href="#type-55">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-43"><a class="header" href="#example-43">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.producer-for = &quot;willReadMyLog&quot;;
+}
+</code></pre>
+<h4 id="default-53"><a class="header" href="#default-53">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.producer-for = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadiness"><a class="header" href="#filesrcnamelongrunreadiness">files.rc.&lt;name&gt;.longrun.readiness</a></h2>
+<p><para>Configure it to use pooling script as ready
+<a href="http://skarnet.org/software/s6/notifywhenup.html">notification method</a></p>
+<p>It make your service start script be called with s6-notifyoncheck.</p>
+<p>See also ready-descriptor.</para></p>
+<h4 id="type-56"><a class="header" href="#type-56">type</a></h4>
+<p>null or (submodule)</p>
+<h4 id="example-44"><a class="header" href="#example-44">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness = {
+    command = &quot;curl https://localhost&quot;;
+  };
+}
+</code></pre>
+<h4 id="default-54"><a class="header" href="#default-54">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinessattempts"><a class="header" href="#filesrcnamelongrunreadinessattempts">files.rc.&lt;name&gt;.longrun.readiness.attempts</a></h2>
+<p><para>Times it should run before give up from this service</para></p>
+<h4 id="type-57"><a class="header" href="#type-57">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-45"><a class="header" href="#example-45">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.attempts = 30;
+}
+</code></pre>
+<h4 id="default-55"><a class="header" href="#default-55">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.attempts = 7;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinesscommand"><a class="header" href="#filesrcnamelongrunreadinesscommand">files.rc.&lt;name&gt;.longrun.readiness.command</a></h2>
+<p><para>Command to be executed as checking method</p>
+<p>If not defined {name}-ready is assumed to be command to run</para></p>
+<h4 id="type-58"><a class="header" href="#type-58">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-46"><a class="header" href="#example-46">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.command = &quot;curl -sSf http://localhost:8080&quot;;
+}
+</code></pre>
+<h4 id="default-56"><a class="header" href="#default-56">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.command = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinessfork-fork"><a class="header" href="#filesrcnamelongrunreadinessfork-fork">files.rc.&lt;name&gt;.longrun.readiness.fork-fork</a></h2>
+<p><para>If the check script should double fork</para></p>
+<h4 id="type-59"><a class="header" href="#type-59">type</a></h4>
+<p>boolean</p>
+<h4 id="example-47"><a class="header" href="#example-47">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.fork-fork = true;
+}
+</code></pre>
+<h4 id="default-57"><a class="header" href="#default-57">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.fork-fork = false;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinessinitial-delay"><a class="header" href="#filesrcnamelongrunreadinessinitial-delay">files.rc.&lt;name&gt;.longrun.readiness.initial-delay</a></h2>
+<p><para>Time in ms to await and check if its ready</para></p>
+<h4 id="type-60"><a class="header" href="#type-60">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-48"><a class="header" href="#example-48">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.initial-delay = 10;
+}
+</code></pre>
+<h4 id="default-58"><a class="header" href="#default-58">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.initial-delay = 50;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinessinterval"><a class="header" href="#filesrcnamelongrunreadinessinterval">files.rc.&lt;name&gt;.longrun.readiness.interval</a></h2>
+<p><para>Time in ms between check attempts</para></p>
+<h4 id="type-61"><a class="header" href="#type-61">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-49"><a class="header" href="#example-49">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.interval = 1000;
+}
+</code></pre>
+<h4 id="default-59"><a class="header" href="#default-59">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.interval = 100;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunreadinesstimeout"><a class="header" href="#filesrcnamelongrunreadinesstimeout">files.rc.&lt;name&gt;.longrun.readiness.timeout</a></h2>
+<p><para>Time in ms to give up from this service</para></p>
+<h4 id="type-62"><a class="header" href="#type-62">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-50"><a class="header" href="#example-50">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.timeout = 3000;
+}
+</code></pre>
+<h4 id="default-60"><a class="header" href="#default-60">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.readiness.timeout = 2000;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunready-descriptor"><a class="header" href="#filesrcnamelongrunready-descriptor">files.rc.&lt;name&gt;.longrun.ready-descriptor</a></h2>
+<p><para>Configure how to check if this service <code>ready</code> 
+<a href="http://skarnet.org/software/s6/notifywhenup.html">notification method</a></p>
+<p>If value any value other then 0, 1 or 2, this 
+service uses file-descriptor notification method</p>
+<p>If attr <code>readiness</code> is defined, use pooling as notification method</para></p>
+<h4 id="type-63"><a class="header" href="#type-63">type</a></h4>
+<p>null or unsigned integer, meaning &gt;=0</p>
+<h4 id="example-51"><a class="header" href="#example-51">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.ready-descriptor = 3;
+}
+</code></pre>
+<h4 id="default-61"><a class="header" href="#default-61">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.ready-descriptor = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunsignal"><a class="header" href="#filesrcnamelongrunsignal">files.rc.&lt;name&gt;.longrun.signal</a></h2>
+<p><para>Signal service expects to init down process</para></p>
+<h4 id="type-64"><a class="header" href="#type-64">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-52"><a class="header" href="#example-52">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.signal = 3;
+}
+</code></pre>
+<h4 id="default-62"><a class="header" href="#default-62">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.signal = 15;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunstart"><a class="header" href="#filesrcnamelongrunstart">files.rc.&lt;name&gt;.longrun.start</a></h2>
+<p><para>'
+execline setup script.</p>
+<pre><code>If not defined {name}-start is assumed to be command to run
+
+Example for non execline scripts:
+
+```nix
+files.rc.alo.oneshot.start =
+# creates a python script to run when srv start
+# and save it at nix store
+let start = pkgs.writeScript &quot;mySrvStartScript&quot; 
+''
+  #!/usr/bin/env -S python
+  print(&quot;Alô!&quot;)  # is hello in portuguese
+'';
+# use the nix store address
+in &quot;${start}&quot;;
+```&lt;/para&gt;
+</code></pre>
+<h4 id="type-65"><a class="header" href="#type-65">type</a></h4>
+<p>null or non-empty string</p>
+<h4 id="example-53"><a class="header" href="#example-53">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.start = &quot;mysqld&quot;;
+}
+</code></pre>
+<h4 id="default-63"><a class="header" href="#default-63">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.start = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongrunstop"><a class="header" href="#filesrcnamelongrunstop">files.rc.&lt;name&gt;.longrun.stop</a></h2>
+<p><para>execline teardown script.</p>
+<p>If not defined {name}-stop is assumed to be command to run</p>
+<p>Example for non execline scripts:</p>
+<pre><code class="language-nix">files.rc.alo.oneshot.stop = 
+# creates a python script to run when srv stop
+# and save it at nix store
+let stop = pkgs.writeScript &quot;mySrvStopScript&quot;
+''
+  #!/usr/bin/env -S bash
+  echo &quot;Tchau!&quot;  # is bye in portuguese
+'';
+# use the nix store address
+in &quot;${stop}&quot;;
+```&lt;/para&gt;
+
+#### type
+
+null or non-empty string
+
+#### example
+
+```nix
+{
+  files.rc.&lt;name&gt;.longrun.stop = &quot;abSUrDO kill -9 1 1&quot;;
+}
+</code></pre>
+<h4 id="default-64"><a class="header" href="#default-64">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.stop = null;
+}
+</code></pre>
+<h2 id="filesrcnamelongruntimeout"><a class="header" href="#filesrcnamelongruntimeout">files.rc.&lt;name&gt;.longrun.timeout</a></h2>
+<p><para>This service should be <code>ready</code> in X <code>milliseconds</code> or it will 
+considered a <code>failure</code> transition.</p>
+<p>If null or 0 system will wait indefinitely</para></p>
+<h4 id="type-66"><a class="header" href="#type-66">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-54"><a class="header" href="#example-54">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.timeout = 10000;
+}
+</code></pre>
+<h4 id="default-65"><a class="header" href="#default-65">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.timeout = 0;
+}
+</code></pre>
+<h2 id="filesrcnamelongruntimeout-down"><a class="header" href="#filesrcnamelongruntimeout-down">files.rc.&lt;name&gt;.longrun.timeout-down</a></h2>
+<p><para>This service should be <code>stoped</code> in X <code>milliseconds</code> or it will 
+considered a <code>failure</code> transition.</p>
+<p>If null or 0 system will wait indefinitely</para></p>
+<h4 id="type-67"><a class="header" href="#type-67">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-55"><a class="header" href="#example-55">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.timeout-down = 10000;
+}
+</code></pre>
+<h4 id="default-66"><a class="header" href="#default-66">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.longrun.timeout-down = 0;
+}
+</code></pre>
+<h2 id="filesrcnameoneshot"><a class="header" href="#filesrcnameoneshot">files.rc.&lt;name&gt;.oneshot</a></h2>
+<p><para><code>oneshot</code> is a change in the system state</p>
+<p>Applications examples:</p>
+<ul>
+<li>start other service that aren't controlled by this environment</li>
+<li>mount files</li>
+<li>sync sources</para></li>
+</ul>
+<h4 id="type-68"><a class="header" href="#type-68">type</a></h4>
+<p>null or (submodule)</p>
+<h4 id="example-56"><a class="header" href="#example-56">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot = {
+    dependencies = [
+      &quot;holyMoses&quot;
+    ];
+    setup = {
+      example = &quot;echo Hello World &gt; $PRJ_DATA_DIR/hello.txt&quot;;
+    };
+    timeout = 2000;
+  };
+}
+</code></pre>
+<h4 id="default-67"><a class="header" href="#default-67">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot = null;
+}
+</code></pre>
+<h2 id="filesrcnameoneshotdeps"><a class="header" href="#filesrcnameoneshotdeps">files.rc.&lt;name&gt;.oneshot.deps</a></h2>
+<p><para>Defines names of other services required to be <code>ready</code> to this
+service work.</p>
+<p>Dependency hierarchy are calculated at activation time.</para></p>
+<h4 id="type-69"><a class="header" href="#type-69">type</a></h4>
+<p>list of non-empty string</p>
+<h4 id="example-57"><a class="header" href="#example-57">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.deps = [
+    &quot;myDependency&quot;
+  ];
+}
+</code></pre>
+<h4 id="default-68"><a class="header" href="#default-68">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.deps = [ ];
+}
+</code></pre>
+<h2 id="filesrcnameoneshotessential"><a class="header" href="#filesrcnameoneshotessential">files.rc.&lt;name&gt;.oneshot.essential</a></h2>
+<p><para>Mark this service and all its dependencies as essential</p>
+<p>It means some commands may work to stop these services</para></p>
+<h4 id="type-70"><a class="header" href="#type-70">type</a></h4>
+<p>boolean</p>
+<h4 id="example-58"><a class="header" href="#example-58">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.essential = true;
+}
+</code></pre>
+<h4 id="default-69"><a class="header" href="#default-69">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.essential = false;
+}
+</code></pre>
+<h2 id="filesrcnameoneshotstart"><a class="header" href="#filesrcnameoneshotstart">files.rc.&lt;name&gt;.oneshot.start</a></h2>
+<p><para>execline setup script.</p>
+<p>If not defined {name}-start is assumed to be command to run</p>
+<p>Example for non execline scripts:</p>
+<pre><code class="language-nix">files.rc.alo.oneshot.start =
+# creates a python script to run when srv start
+# and save it at nix store
+let start = pkgs.writeScript &quot;mySrvStartScript&quot; 
+''
+  #!/usr/bin/env -S python
+  print(&quot;Alô!&quot;)  # is hello in portuguese
+'';
+# use the nix store address
+in &quot;${start}&quot;;
+```&lt;/para&gt;
+
+#### type
+
+null or non-empty string
+
+#### example
+
+```nix
+{
+  files.rc.&lt;name&gt;.oneshot.start = &quot;echo Hello World &gt; $PRJ_DATA_DIR/hello.txt&quot;;
+}
+</code></pre>
+<h4 id="default-70"><a class="header" href="#default-70">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.start = null;
+}
+</code></pre>
+<h2 id="filesrcnameoneshotstop"><a class="header" href="#filesrcnameoneshotstop">files.rc.&lt;name&gt;.oneshot.stop</a></h2>
+<p><para>execline teardown script.</p>
+<p>If not defined {name}-stop is assumed to be command to run</p>
+<p>Example for non execline scripts:</p>
+<pre><code class="language-nix">files.rc.alo.oneshot.stop = 
+# creates a python script to run when srv stop
+# and save it at nix store
+let stop = pkgs.writeScript &quot;mySrvStopScript&quot;
+''
+  #!/usr/bin/env -S bash
+  echo &quot;Tchau!&quot;  # is bye in portuguese
+'';
+# use the nix store address
+in &quot;${stop}&quot;;
+```&lt;/para&gt;
+
+#### type
+
+null or non-empty string
+
+#### example
+
+```nix
+{
+  files.rc.&lt;name&gt;.oneshot.stop = &quot;rm $PRJ_DATA_DIR/hello.txt&quot;;
+}
+</code></pre>
+<h4 id="default-71"><a class="header" href="#default-71">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.stop = null;
+}
+</code></pre>
+<h2 id="filesrcnameoneshottimeout"><a class="header" href="#filesrcnameoneshottimeout">files.rc.&lt;name&gt;.oneshot.timeout</a></h2>
+<p><para>This service should be <code>ready</code> in X <code>milliseconds</code> or it will 
+considered be in <code>failure</code> status.</p>
+<p>If null or 0 system will wait indefinitely</para></p>
+<h4 id="type-71"><a class="header" href="#type-71">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-59"><a class="header" href="#example-59">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.timeout = 10000;
+}
+</code></pre>
+<h4 id="default-72"><a class="header" href="#default-72">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.timeout = 0;
+}
+</code></pre>
+<h2 id="filesrcnameoneshottimeout-down"><a class="header" href="#filesrcnameoneshottimeout-down">files.rc.&lt;name&gt;.oneshot.timeout-down</a></h2>
+<p><para>This service should be stop in X <code>milliseconds</code> or it will
+considered be in <code>failure</code> status.</p>
+<p>If null or 0 system will wait indefinitely</para></p>
+<h4 id="type-72"><a class="header" href="#type-72">type</a></h4>
+<p>unsigned integer, meaning &gt;=0</p>
+<h4 id="example-60"><a class="header" href="#example-60">example</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.timeout-down = 10000;
+}
+</code></pre>
+<h4 id="default-73"><a class="header" href="#default-73">default</a></h4>
+<pre><code class="language-nix">{
+  files.rc.&lt;name&gt;.oneshot.timeout-down = 0;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesservices"><a class="header" href="#filesservices">files.services</a></h2>
+<p><para>Service name/command to enable</p>
+<p>{name} must be a executable command that runs forever.</p>
+<p>Optionally could exist a {name}-finish command to stop it properly.</p>
+<p>Optionally could exist a {name}-log    command to log  it properly.</p>
+<p>Default log informations goes to $PRJ_SVCS_LOG/{name}/current .</p>
+<p><code>initSvcs</code> is a special name to auto start the process supervisor
+<a href="http://skarnet.org/software/s6/">s6</a>, it control all other services.</p>
+<p>If we don't set initSvcs service, we can start it running <code>initSvcs</code>.</p>
+<p><code>stopSvcsd</code> is a special name to auto stop the process supervisor
+If S6 wont stop by itself, we could run <code>stopSvcs</code> when it's done.</p>
+<p>It defines two env vars:</p>
+<ul>
+<li>PRJ_SVCS_DIR: $PRJ_DATA_DIR/services</li>
+<li>PRJ_SVCS_LOG: $PRJ_DATA_DIR/log</li>
+</ul>
+<p>See <a href="http://skarnet.org/software/s6/s6-supervise.html">S6 documentation</a>.</p>
+<p>We can use config.files.alias to help create your services scripts.</p>
+<p>examples:</p>
+<p>Use some program as service</p>
+<p>Configure httplz (http static server) as service</p>
+<pre><code class="language-nix">{
+  # # Make services start when you enter in shell
+  # files.services.initSvcs = true;
+
+  # static http service
+  files.cmds.httplz    = true; # Install httplz
+  files.services.httpd = true; # Use cmd 'httpd' as service
+  files.alias.httpd    = ''
+    # This is an alias of httplz
+    cd $PRJ_ROOT/gh-pages
+    mdbook build
+
+    # IMPORTANT NOTE:
+    # if we don't use `exec` it may not stop with stopSvcs
+    exec httplz --port 8022 $PRJ_ROOT/gh-pages/book/
+  '';
+
+  # greeting service
+  files.cmds.notify-desktop = true; # Install notify-desktop
+  files.services.greet      = true; # Use cmd 'greet' as service
+  files.alias.greet         = ''
+    # Greet people
+    set +e # ignore errors bacause this service isn't critical
+    notify-desktop -i network-server &quot;Welcome&quot;
+
+    # our stdout goes to .data/log/greet
+    echo Dornröschen
+
+    # if service ends, it will restarted
+    # we sleep emulating some actual service
+    exec sleep infinity 
+  '';
+  files.alias.greet-finish  = ''
+    notify-desktop -i network-server &quot;See you later&quot;
+  '';
+
+  # This is a service to speedup direnv
+  files.direnv.auto-build.enable = true;
+
+  # special service to auto start
+  files.services.initSvcs  = true;
+
+  # special service to auto stopSvcs
+  files.services.stopSvcsd = true;
+
+  # files.services-opts.tini.enable = true;
+  # files.services-opts.namespace.enable = true;
+
+  # # RC (unstable) is another interface it uses s6-rc
+  # # http://skarnet.org/software/s6-rc/why.html
+  #
+  # files.rc.hello.enable  = true;
+  # files.rc.hello.oneshot.start    = ''wait 1000000 &quot;hello world&quot;'';
+  # files.rc.hello.oneshot.stop     = ''echo &quot;bye bye world&quot;'';
+  # files.rc.hello.oneshot.timeout  = 1200;
+  #
+  # files.rc.olla.enable   = true;
+  # files.rc.olla.longrun.start     = ''echo &quot;hello world&quot;'';
+  # files.rc.olla.longrun.stop      = ''echo &quot;bye bye world&quot;'';
+  # files.rc.olla.longrun.deps      = [&quot;hello&quot;];
+  #
+  # files.rc.hellos.enable = true;
+  # files.rc.hellos.bundle.deps     = [&quot;hello&quot; &quot;olla&quot;];
+}
+
+</code></pre>
+<p>Create your own service with bash</p>
+<pre><code class="language-nix">{
+  # Make all services start when you enter in shell
+  files.services.initSvcs = true;
+
+  # Use hello configured below as service
+  files.services.hello    = true;
+
+  # Creates an hello command in terminal
+  files.alias.hello       = ''
+    while :
+    do
+      echo &quot;Hello World!&quot;
+    	sleep 60
+    done
+  '';
+}
+</code></pre>
+<p>See also:</p>
+<ul>
+<li><code>files.services-opts.tini.enable</code> to use <a href="https://github.com/krallin/tini">Tini</a> as supervisor supervisor</li>
+<li><code>files.services-opts.namespace.enable</code> to use <a href="https://docs.kernel.org/userspace-api/unshare.html">namespace</a></li>
+</ul>
+<p>Know bugs:</p>
+<p>If we don't use <code>exec</code> in our alias, some necromancer could
+form an army of undead process, and start a war against our
+system, since they both may require the most scarse resource
+of our lands.</p>
+<p>You can enable namespace if it is an problem</para></p>
+<h4 id="type-73"><a class="header" href="#type-73">type</a></h4>
+<p>attribute set of boolean</p>
+<h4 id="example-61"><a class="header" href="#example-61">example</a></h4>
+<pre><code class="language-nix">{
+  files.services = {
+    hello = true;
+  };
+}
+</code></pre>
+<h4 id="default-74"><a class="header" href="#default-74">default</a></h4>
+<pre><code class="language-nix">{
+  files.services = { };
+}
+</code></pre>
+<h2 id="filesservices-optsnamespaceenable"><a class="header" href="#filesservices-optsnamespaceenable">files.services-opts.namespace.enable</a></h2>
+<p><para>Whether to enable <a href="https://docs.kernel.org/userspace-api/unshare.html">Linux Namespaces</a>.</para></p>
+<h4 id="type-74"><a class="header" href="#type-74">type</a></h4>
+<p>boolean</p>
+<h4 id="example-62"><a class="header" href="#example-62">example</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.namespace.enable = true;
+}
+</code></pre>
+<h4 id="default-75"><a class="header" href="#default-75">default</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.namespace.enable = false;
+}
+</code></pre>
+<h2 id="filesservices-optsnamespaceoptions"><a class="header" href="#filesservices-optsnamespaceoptions">files.services-opts.namespace.options</a></h2>
+<h4 id="type-75"><a class="header" href="#type-75">type</a></h4>
+<p>string</p>
+<h4 id="default-76"><a class="header" href="#default-76">default</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.namespace.options = &quot;--pid --fork --map-root-user&quot;;
+}
+</code></pre>
+<h2 id="filesservices-optstinienable"><a class="header" href="#filesservices-optstinienable">files.services-opts.tini.enable</a></h2>
+<p><para>Whether to enable <a href="https://github.com/krallin/tini">Tini</a> Supervisor.</para></p>
+<h4 id="type-76"><a class="header" href="#type-76">type</a></h4>
+<p>boolean</p>
+<h4 id="example-63"><a class="header" href="#example-63">example</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.tini.enable = true;
+}
+</code></pre>
+<h4 id="default-77"><a class="header" href="#default-77">default</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.tini.enable = false;
+}
+</code></pre>
+<h2 id="filesservices-optstinioptions"><a class="header" href="#filesservices-optstinioptions">files.services-opts.tini.options</a></h2>
+<h4 id="type-77"><a class="header" href="#type-77">type</a></h4>
+<p>string</p>
+<h4 id="default-78"><a class="header" href="#default-78">default</a></h4>
+<pre><code class="language-nix">{
+  files.services-opts.tini.options = &quot;-sp SIGTERM&quot;;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="fileslicenseenable"><a class="header" href="#fileslicenseenable">files.license.enable</a></h2>
+<p><para>Whether to enable auto generated license file.</para></p>
+<h4 id="type-78"><a class="header" href="#type-78">type</a></h4>
+<p>boolean</p>
+<h4 id="example-64"><a class="header" href="#example-64">example</a></h4>
+<pre><code class="language-nix">{
+  files.license.enable = true;
+}
+</code></pre>
+<h4 id="default-79"><a class="header" href="#default-79">default</a></h4>
+<pre><code class="language-nix">{
+  files.license.enable = false;
+}
+</code></pre>
+<h2 id="fileslicensespdx"><a class="header" href="#fileslicensespdx">files.license.spdx</a></h2>
+<p><para>Use SPDX as template https://github.com/spdx/license-list-data/tree/master/text</para></p>
+<h4 id="type-79"><a class="header" href="#type-79">type</a></h4>
+<p>submodule</p>
+<h4 id="example-65"><a class="header" href="#example-65">example</a></h4>
+<pre><code class="language-nix">{
+  files.license.spdx = {
+    name = &quot;MIT&quot;;
+    vars = {
+      &quot;copyright holders&quot; = &quot;Cruel Intentions&quot;;
+      year = &quot;2021&quot;;
+    };
+  };
+}
+</code></pre>
+<h4 id="default-80"><a class="header" href="#default-80">default</a></h4>
+<pre><code class="language-nix">{
+  files.license.spdx = { };
+}
+</code></pre>
+<h2 id="fileslicensespdxname"><a class="header" href="#fileslicensespdxname">files.license.spdx.name</a></h2>
+<p><para>SPDX text name without extension</para></p>
+<h4 id="type-80"><a class="header" href="#type-80">type</a></h4>
+<p>string</p>
+<h4 id="example-66"><a class="header" href="#example-66">example</a></h4>
+<pre><code class="language-nix">{
+  files.license.spdx.name = &quot;MIT&quot;;
+}
+</code></pre>
+<h2 id="fileslicensespdxvars"><a class="header" href="#fileslicensespdxvars">files.license.spdx.vars</a></h2>
+<p><para>Most SPDX templates has some placeholders like &lt;OWNER&gt;, it is case sensitive</para></p>
+<h4 id="type-81"><a class="header" href="#type-81">type</a></h4>
+<p>attribute set of string</p>
+<h4 id="example-67"><a class="header" href="#example-67">example</a></h4>
+<pre><code class="language-nix">{
+  files.license.spdx.vars = {
+    OWNER = &quot;cruel-intentions&quot;;
+    &quot;URL for Development Group/Institution&quot; = &quot;https://github.com/cruel-intentions&quot;;
+    year = &quot;2021&quot;;
+    &quot;yyyy, yyyy&quot; = &quot;2021, 2099&quot;;
+  };
+}
+</code></pre>
+<h4 id="default-81"><a class="header" href="#default-81">default</a></h4>
+<pre><code class="language-nix">{
+  files.license.spdx.vars = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filestext"><a class="header" href="#filestext">files.text</a></h2>
+<p><para>Create text files with correponding content</para></p>
+<h4 id="type-82"><a class="header" href="#type-82">type</a></h4>
+<p>attribute set of strings concatenated with &quot;\n&quot;</p>
+<h4 id="example-68"><a class="header" href="#example-68">example</a></h4>
+<pre><code class="language-nix">{
+  files.text = {
+    &quot;/hello.txt&quot; = ''
+                         (((((            *********          ****                    
+                        (((((((            *********        *******                  
+                        (((((((((           .*********    *********                  
+                         (((((((((            *********  *********                   
+                           (((((((((           *****************                     
+                            (((((((((            **************                      
+                 (((((((((((((((((((((((((((((((( ***********            (           
+               (((((((((((((((((((((((((((((((((((( *********          (((((         
+              (((((((((((((((((((((((((((((((((((((( *********        (((((((        
+                           *********                   *********    /((((((((        
+                          *********                     *********  (((((((((         
+                        *********                         ******* ((((((((/          
+                       *********                           **** (((((((((            
+       ***********************.                             ,* (((((((((((((((((((((.
+      ***********************                                ((((((((((((((((((((((((
+       *********************.((                             (((((((((((((((((((((((( 
+                 ********* ((((((                         (((((((((                  
+                ********* ((((((((                       (((((((((                   
+              *********    (((((((((                   (((((((((                     
+             *********      (((((((((                                                
+              .*****         /((((((((**************************************         
+                ***           *((((((((( **********************************          
+                             (((((((((((( *******************************,           
+                            (((((((((((((((           ,********                      
+                          ((((((((((((((((((            *********                    
+                         (((((((((   (((((((((           *********                   
+                       (((((((((      (((((((((            *********                 
+                         ((((((         (((((((((           ******                   
+    '';
+  };
+}
+</code></pre>
+<h4 id="default-82"><a class="header" href="#default-82">default</a></h4>
+<pre><code class="language-nix">{
+  files.text = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filestoml"><a class="header" href="#filestoml">files.toml</a></h2>
+<p><para>Create toml files with correponding content</para></p>
+<h4 id="type-83"><a class="header" href="#type-83">type</a></h4>
+<p>attribute set of (JSON value)</p>
+<h4 id="example-69"><a class="header" href="#example-69">example</a></h4>
+<pre><code class="language-nix">{
+  files.toml = {
+    &quot;/hellaos.toml&quot; = {
+      greeting = &quot;hello World&quot;;
+    };
+    &quot;/hellows.toml&quot; = {
+      greetings = [
+        [
+          &quot;Hello World&quot;
+        ]
+        [
+          &quot;Ola Mundo&quot;
+          [
+            &quot;Holla Que Tal&quot;
+          ]
+        ]
+      ];
+    };
+  };
+}
+</code></pre>
+<h4 id="default-83"><a class="header" href="#default-83">default</a></h4>
+<pre><code class="language-nix">{
+  files.toml = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="files-1"><a class="header" href="#files-1">files</a></h2>
+<h4 id="type-84"><a class="header" href="#type-84">type</a></h4>
+<p>submodule</p>
+<h2 id="fileswatch"><a class="header" href="#fileswatch">files.watch</a></h2>
+<p><simpara>Alias that run commands when files changes using inotify</simpara>
+<simpara>Note: 
+It uses files.services so you should to start services with <literal>initSvcs</literal>.</simpara>
+<simpara>Or you could auto start/stop by adding</simpara>
+<programlisting language="nix">
+files.services.initSvcs  = true;
+files.services.stopSvcsd = true;
+</programlisting></p>
+<h4 id="type-85"><a class="header" href="#type-85">type</a></h4>
+<p>lazy attribute set of (submodule)</p>
+<h4 id="example-70"><a class="header" href="#example-70">example</a></h4>
+<pre><code class="language-nix">{
+  files.watch = {
+    FOO = {
+      cmd = &quot;echo $file $dir $time $events&quot;;
+      event = {
+        modify = true;
+      };
+      exclude = &quot;.+\\.png$&quot;;
+      files = &quot;$PRJ_ROOT/src&quot;;
+      include = &quot;.+\\.js$&quot;;
+      recursive = true;
+    };
+  };
+}
+</code></pre>
+<h4 id="default-84"><a class="header" href="#default-84">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch = { };
+}
+</code></pre>
+<h2 id="fileswatchnameenable"><a class="header" href="#fileswatchnameenable">files.watch.&lt;name&gt;.enable</a></h2>
+<p><simpara>Run it when all other services start</simpara></p>
+<h4 id="type-86"><a class="header" href="#type-86">type</a></h4>
+<p>boolean</p>
+<h4 id="default-85"><a class="header" href="#default-85">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.enable = true;
+}
+</code></pre>
+<h2 id="fileswatchnamecmd"><a class="header" href="#fileswatchnamecmd">files.watch.&lt;name&gt;.cmd</a></h2>
+<p><simpara>Command that will run with args $file $dir $time $events</simpara></p>
+<h4 id="type-87"><a class="header" href="#type-87">type</a></h4>
+<p>string</p>
+<h2 id="fileswatchnameevent"><a class="header" href="#fileswatchnameevent">files.watch.&lt;name&gt;.event</a></h2>
+<p><simpara>What kinds of events must be watched</simpara></p>
+<h4 id="type-88"><a class="header" href="#type-88">type</a></h4>
+<p>submodule</p>
+<h4 id="default-86"><a class="header" href="#default-86">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event = { };
+}
+</code></pre>
+<h2 id="fileswatchnameeventaccess"><a class="header" href="#fileswatchnameeventaccess">files.watch.&lt;name&gt;.event.access</a></h2>
+<h4 id="type-89"><a class="header" href="#type-89">type</a></h4>
+<p>boolean</p>
+<h4 id="default-87"><a class="header" href="#default-87">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.access = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventattrib"><a class="header" href="#fileswatchnameeventattrib">files.watch.&lt;name&gt;.event.attrib</a></h2>
+<h4 id="type-90"><a class="header" href="#type-90">type</a></h4>
+<p>boolean</p>
+<h4 id="default-88"><a class="header" href="#default-88">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.attrib = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventclose"><a class="header" href="#fileswatchnameeventclose">files.watch.&lt;name&gt;.event.close</a></h2>
+<h4 id="type-91"><a class="header" href="#type-91">type</a></h4>
+<p>boolean</p>
+<h4 id="default-89"><a class="header" href="#default-89">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.close = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventclose_nonwrite"><a class="header" href="#fileswatchnameeventclose_nonwrite">files.watch.&lt;name&gt;.event.close_nonwrite</a></h2>
+<h4 id="type-92"><a class="header" href="#type-92">type</a></h4>
+<p>boolean</p>
+<h4 id="default-90"><a class="header" href="#default-90">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.close_nonwrite = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventclose_write"><a class="header" href="#fileswatchnameeventclose_write">files.watch.&lt;name&gt;.event.close_write</a></h2>
+<h4 id="type-93"><a class="header" href="#type-93">type</a></h4>
+<p>boolean</p>
+<h4 id="default-91"><a class="header" href="#default-91">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.close_write = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventcreate"><a class="header" href="#fileswatchnameeventcreate">files.watch.&lt;name&gt;.event.create</a></h2>
+<h4 id="type-94"><a class="header" href="#type-94">type</a></h4>
+<p>boolean</p>
+<h4 id="default-92"><a class="header" href="#default-92">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.create = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventdelete"><a class="header" href="#fileswatchnameeventdelete">files.watch.&lt;name&gt;.event.delete</a></h2>
+<h4 id="type-95"><a class="header" href="#type-95">type</a></h4>
+<p>boolean</p>
+<h4 id="default-93"><a class="header" href="#default-93">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.delete = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventmodify"><a class="header" href="#fileswatchnameeventmodify">files.watch.&lt;name&gt;.event.modify</a></h2>
+<h4 id="type-96"><a class="header" href="#type-96">type</a></h4>
+<p>boolean</p>
+<h4 id="default-94"><a class="header" href="#default-94">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.modify = true;
+}
+</code></pre>
+<h2 id="fileswatchnameeventmove"><a class="header" href="#fileswatchnameeventmove">files.watch.&lt;name&gt;.event.move</a></h2>
+<h4 id="type-97"><a class="header" href="#type-97">type</a></h4>
+<p>boolean</p>
+<h4 id="default-95"><a class="header" href="#default-95">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.move = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventmove_from"><a class="header" href="#fileswatchnameeventmove_from">files.watch.&lt;name&gt;.event.move_from</a></h2>
+<h4 id="type-98"><a class="header" href="#type-98">type</a></h4>
+<p>boolean</p>
+<h4 id="default-96"><a class="header" href="#default-96">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.move_from = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventmove_to"><a class="header" href="#fileswatchnameeventmove_to">files.watch.&lt;name&gt;.event.move_to</a></h2>
+<h4 id="type-99"><a class="header" href="#type-99">type</a></h4>
+<p>boolean</p>
+<h4 id="default-97"><a class="header" href="#default-97">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.move_to = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventopen"><a class="header" href="#fileswatchnameeventopen">files.watch.&lt;name&gt;.event.open</a></h2>
+<h4 id="type-100"><a class="header" href="#type-100">type</a></h4>
+<p>boolean</p>
+<h4 id="default-98"><a class="header" href="#default-98">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.open = false;
+}
+</code></pre>
+<h2 id="fileswatchnameeventunmount"><a class="header" href="#fileswatchnameeventunmount">files.watch.&lt;name&gt;.event.unmount</a></h2>
+<h4 id="type-101"><a class="header" href="#type-101">type</a></h4>
+<p>boolean</p>
+<h4 id="default-99"><a class="header" href="#default-99">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.event.unmount = false;
+}
+</code></pre>
+<h2 id="fileswatchnameexclude"><a class="header" href="#fileswatchnameexclude">files.watch.&lt;name&gt;.exclude</a></h2>
+<p><simpara>Regexp to exclude matching files</simpara></p>
+<h4 id="type-102"><a class="header" href="#type-102">type</a></h4>
+<p>string</p>
+<h4 id="default-100"><a class="header" href="#default-100">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.exclude = &quot;(.*/\\.|.+~$)&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnameexcludei"><a class="header" href="#fileswatchnameexcludei">files.watch.&lt;name&gt;.excludei</a></h2>
+<p><simpara>Case insesitive regexp to exclude matching files</simpara></p>
+<h4 id="type-103"><a class="header" href="#type-103">type</a></h4>
+<p>string</p>
+<h4 id="default-101"><a class="header" href="#default-101">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.excludei = &quot;&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnamefiles"><a class="header" href="#fileswatchnamefiles">files.watch.&lt;name&gt;.files</a></h2>
+<p><simpara>Files to be watched</simpara></p>
+<h4 id="type-104"><a class="header" href="#type-104">type</a></h4>
+<p>strings concatenated with &quot;\n&quot;</p>
+<h4 id="default-102"><a class="header" href="#default-102">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.files = &quot;$PRJ_ROOT&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnamefollow"><a class="header" href="#fileswatchnamefollow">files.watch.&lt;name&gt;.follow</a></h2>
+<p><simpara>Follow symbolic links</simpara></p>
+<h4 id="type-105"><a class="header" href="#type-105">type</a></h4>
+<p>boolean</p>
+<h4 id="default-103"><a class="header" href="#default-103">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.follow = false;
+}
+</code></pre>
+<h2 id="fileswatchnameinclude"><a class="header" href="#fileswatchnameinclude">files.watch.&lt;name&gt;.include</a></h2>
+<p><simpara>Regexp to include only matching files</simpara></p>
+<h4 id="type-106"><a class="header" href="#type-106">type</a></h4>
+<p>string</p>
+<h4 id="default-104"><a class="header" href="#default-104">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.include = &quot;&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnameincludei"><a class="header" href="#fileswatchnameincludei">files.watch.&lt;name&gt;.includei</a></h2>
+<p><simpara>Case insesitive regexp to include only matching files</simpara></p>
+<h4 id="type-107"><a class="header" href="#type-107">type</a></h4>
+<p>string</p>
+<h4 id="default-105"><a class="header" href="#default-105">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.includei = &quot;&quot;;
+}
+</code></pre>
+<h2 id="fileswatchnamerecursive"><a class="header" href="#fileswatchnamerecursive">files.watch.&lt;name&gt;.recursive</a></h2>
+<p><simpara>Recursivelly watch directories</simpara></p>
+<h4 id="type-108"><a class="header" href="#type-108">type</a></h4>
+<p>boolean</p>
+<h4 id="default-106"><a class="header" href="#default-106">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.recursive = true;
+}
+</code></pre>
+<h2 id="fileswatchnametimefmt"><a class="header" href="#fileswatchnametimefmt">files.watch.&lt;name&gt;.timefmt</a></h2>
+<h4 id="type-109"><a class="header" href="#type-109">type</a></h4>
+<p>string</p>
+<h4 id="default-107"><a class="header" href="#default-107">default</a></h4>
+<pre><code class="language-nix">{
+  files.watch.&lt;name&gt;.timefmt = &quot;%FT%T.000%zZ&quot;;
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="filesyaml"><a class="header" href="#filesyaml">files.yaml</a></h2>
+<p><para>Create yaml files with correponding content</para></p>
+<h4 id="type-110"><a class="header" href="#type-110">type</a></h4>
+<p>attribute set of (JSON value)</p>
+<h4 id="example-71"><a class="header" href="#example-71">example</a></h4>
+<pre><code class="language-nix">{
+  files.yaml = {
+    &quot;/hellaos.yaml&quot; = {
+      greeting = &quot;hello World&quot;;
+    };
+    &quot;/hellows.yaml&quot; = {
+      greetings = [
+        [
+          &quot;Hello World&quot;
+        ]
+        [
+          &quot;Ola Mundo&quot;
+          [
+            &quot;Holla Que Tal&quot;
+          ]
+        ]
+      ];
+    };
+  };
+}
+</code></pre>
+<h4 id="default-108"><a class="header" href="#default-108">default</a></h4>
+<pre><code class="language-nix">{
+  files.yaml = { };
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="todo"><a class="header" href="#todo">TODO</a></h2>
+<ul>
+<li>Add modules for especific cases:
+<ul>
+<li>ini files</li>
+<li>most common ci/cd configuration</li>
+</ul>
+</li>
+<li>Verify if devshell could add it as default</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="issues"><a class="header" href="#issues">Issues</a></h2>
+<p>This project uses git as version control, if your are using other version control system it may not work.</p>
+<div style="break-before: page; page-break-before: always;"></div><h3 id="see-also"><a class="header" href="#see-also">See also</a></h3>
+<ul>
+<li><a href="https://nixos.org/">Nix</a> the tool</li>
+<li><a href="https://github.com/numtide/devshell">DevShell</a> the framework</li>
+<li><a href="https://github.com/divnix/digga">Digga</a> similar project</li>
+<li><a href="https://github.com/fluidattacks/makes">Makes</a> similar project</li>
+<li><a href="https://github.com/jmgilman/nixago">Nixago</a> similar project</li>
+<li><a href="https://github.com/nix-community/home-manager">Home Manager</a> similar project (for user home configs)</li>
+<li><a href="https://nixos.org/">NixOS</a> similar project (for system configs)</li>
+<li><a href="https://nixos.wiki/wiki/Nix_Ecosystem">Nix Ecosystem</a> more projects using same tool</li>
+<li><a href="https://coggle.it/diagram/Y9k9VVmUw-1okyFh/t/nix">Nix Mindmap</a> of how nix ecosystem works</li>
+<li><a href="https://nix.dev/">Nix.Dev</a></li>
+<li><a href="https://www.youtube.com/watch?v=NYyImy-lqaA&amp;list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs">Nixology</a></li>
+</ul>
+<h3 id="dont-look-at"><a class="header" href="#dont-look-at">Don't look at</a></h3>
+<ul>
+<li><code>*nix</code>       general definition of Unix/Linux</li>
+<li>Nixos.com    NSFW</li>
+<li>Nixos.com.br furniture</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
