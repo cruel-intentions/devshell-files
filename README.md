@@ -314,15 +314,21 @@ If one page is too much to you, the basic is:
 Modules can be defined in two formats:
 
 
-#### As attrset, aka. object (JS), dict (Python):
+#### As attrset, aka. object (JSON), dict (Python):
 
 ```nix
 {                            #  <|
   imports = [];              #   |
-  config  = {};              #   | module result
+  config  = {};              #   | module info
   options = {};              #   |
 }                            #  <|
 ```
+
+All those attributes are optional
+
+- imports: array  with paths to other modules
+- config:  object with actual configurations
+- options: object with our config type definition
 
 
 #### As function:
@@ -332,23 +338,30 @@ Functions has following arguments:
 - `config` with all evaluated configs values, 
 - `pkgs` with all [nixpkgs](https://search.nixos.org/) available.
 - `lib` [library](https://teu5us.github.io/nix-lib.html#nixpkgs-library-functions) of useful functions.
-- And may receive others (use `...` to ignore them)
+- And may receive others (we use `...` to ignore them)
 
 ```nix
 { config, pkgs, lib, ... }:  #  <| function args
 {                            #  <|
   imports = [];              #   |
-  config  = {};              #   | module result
+  config  = {};              #   | module info
   options = {};              #   |
 }                            #  <|
 ```
 
 
-All those attributes are optional
+#### Imports
 
-- imports: array  with paths to other modules
-- config:  object with actual configurations
-- options: object with our config type definition
+Points to other modules files to be imported in this module
+
+```nix
+{ 
+  imports = [
+    ./gh-actions-options.nix
+    ./gh-actions-impl.nix
+  ];
+}
+```
 
 Hint, split modules in two files:
 - One mostly with options, where your definition goes
@@ -360,39 +373,21 @@ And it hides complexity, [hiding complexity is what abstraction is all about](ht
 we didn't share options definitions across projects to type less, but because we could reuse an abstraction that helps hiding complexity.
 
 
-#### Imports
-
-Points to other modules files to be imported in this module
-
-```nix
-{ 
-  imports = [
-    ./gh-actions-options.nix
-    ./some-other-module.nix
-  ];
-}
-```
-
-
 #### Config
 
 Are values to our options
 
-```nix
-{
-  config.gh-actions.setup = "npm i";
-}
-```
+We can set value by ourself, or use lib functions to import json/toml/text files.
 
-Use builtin functions to import nix/json/toml/text files.
 
 ```nix
 { lib, ...}:
 {
-  config.files.text."/hi.txt" = (builtins.import  ./hello.nix ).msg; # { msg = "Hello World!"; }
-  config.files.text."/hI.txt" = (lib.importJSON   ./hello.json).msg; # { "msg": "Hello World!" }
-  config.files.text."/h1.txt" = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
-  config.files.text."/Hi.txt" = builtins.readFile ./hello.txt;       # Hello World!
+  config.files.text."/HW.txt" = "Hello World!";
+  config.files.text."/EO.txt" = lib.concatStringsSep "" ["48" "65" "6c" "6c" "6f"];
+  config.files.text."/LR.txt" = (lib.importJSON   ./hello.json).msg; # { "msg": "Hello World!" }
+  config.files.text."/LL.txt" = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
+  config.files.text."/OD.txt" = lib.readFile      ./hello.txt;       # Hello World!
 }
 ```
 
@@ -403,23 +398,23 @@ And this file produce the same result
 ```nix
 { lib, ...}:
 {
-  files.text."/hi.txt" = (builtins.import  ./hello.nix ).msg; # { msg = "Hello World!"; }
-  files.text."/hI.txt" = (lib.importJSON   ./hello.json).msg; # { "msg": "Hello World!" }
-  files.text."/h1.txt" = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
-  files.text."/Hi.txt" = builtins.readFile ./hello.txt;       # Hello World!
-  gh-actions.setup = "npm i";
+  files.text."/HW.txt" = "Hello World!";
+  files.text."/EO.txt" = lib.concatStringsSep "" ["48" "65" "6c" "6c" "6f"];
+  files.text."/LR.txt" = (lib.importJSON   ./hello.json).msg; # { "msg": "Hello World!" }
+  files.text."/LL.txt" = (lib.importTOML   ./hello.toml).msg; # msg = Hello World!
+  files.text."/OD.txt" = lib.readFile      ./hello.txt;       # Hello World!
 }
 ```
 
 #### Options
 
-Options are schema definition for config.
+Options are schema definition for configs values.
 
 Example, to create a github action file, it could be done like this:
 
 ```nix
 {
-  files.yaml."/.github/workflows/ci-cd.yaml" = {
+  config.files.yaml."/.github/workflows/ci-cd.yaml" = {
     on = "push";
     jobs.ci-cd.runs-on = "ubuntu-latest";
     jobs.ci-cd.steps   = [
@@ -433,53 +428,68 @@ Example, to create a github action file, it could be done like this:
 }
 ```
 
-No complexity has been hidden, and requires copy and past it in every project.
+This only works because this project has another module with:
+
+
+```nix
+{lib, ...}:
+{
+  options.files = submodule {
+    options.yaml.type = lib.types.attrsOf lib.types.anything;
+  };
+}
+```
+
+But if we always set ci-cd.yaml like that,
+no complexity has been hidden, and requires copy and past it in every project.
 
 Since most CI/CD are just: 'Pre Build', 'Build', 'Test', 'Deploy'
 
-What project user really needs to define is:
+What most projects really need is something like:
 
 ```nix
 # any module file (maybe project.nix)
 {
   # our build steps
-  gh-actions.setup  = "npm i";
-  gh-actions.build  = "npm run build";
-  gh-actions.test   = "npm run test";
-  gh-actions.deploy = "aws s3 sync ./build s3://some-s3-bucket";
+  config.gh-actions.setup  = "npm i";
+  config.gh-actions.build  = "npm run build";
+  config.gh-actions.test   = "npm run test";
+  config.gh-actions.deploy = "aws s3 sync ./build s3://some-s3-bucket";
 }
 ```
 
-Adding this to project.nix, throw an error `undefined config.gh-actions`, and command fails.
+Adding this to project.nix, throws an error `undefined config.gh-actions`, and command fails.
 
-To create it, add `options` definition of that.
+It doesn't knows these options.
+
+To make aware of it, we had to add `options` schema of that.
 
 ```nix
 # gh-actions-options.nix
 { lib, ...}:
 {
-  # defines a property 'gh-actions.setup'
+  # a property 'gh-actions.setup'
   options.gh-actions.setup = lib.mkOption {
     default     = "echo setup";
     description = "Command to run before build";
     example     = "npm i";
     type        = lib.types.str;
   };
-  # defines a property 'gh-actions.build'
+  # a property 'gh-actions.build'
   options.gh-actions.build = lib.mkOption {
     default     = "echo build";
     description = "Command to run as build step";
     example     = "npm run build";
     type        = lib.types.str;
   };
-  # defines a property 'gh-actions.test'
+  # a property 'gh-actions.test'
   options.gh-actions.test = lib.mkOption {
     default     = "echo test";
     description = "Command to run as test step";
     example     = "npm test";
     type        = lib.types.str;
   };
-  # defines a property 'gh-actions.deploy'
+  # a property 'gh-actions.deploy'
   options.gh-actions.deploy = lib.mkOption {
     default     = "echo deploy";
     description = "Command to run as deploy step";
@@ -495,23 +505,25 @@ Or using `lib.types.fluent`
 # gh-actions-options.nix
 { lib, ...}:
 lib.types.fluent {
-  # defines a property 'gh-actions.setup'
-  options.gh-actions.options.setup.default  = "echo setup";  #default is string
-  options.gh-actions.options.setup.mdDoc    = "Command to run before build";
-  options.gh-actions.options.setup.example  = "npm i";
-  # defines a property 'gh-actions.build'
-  options.gh-actions.options.build.default  = "echo build";
-  options.gh-actions.options.build.mdDoc    = "Command to run as build step";
-  options.gh-actions.options.build.example  = "npm run build";
-  # defines a property 'gh-actions.test'
-  options.gh-actions.options.test.default   = "echo test";
-  options.gh-actions.options.test.mdDoc     = "Command to run as test step";
-  options.gh-actions.options.test.example   = "npm test";
-  # defines a property 'gh-actions.deploy'
-  options.gh-actions.options.deploy.default = "echo deploy";
-  options.gh-actions.options.deploy.mdDoc   = "Command to run as deploy step";
-  options.gh-actions.options.deploy.example = "aws s3 sync ./build s3://my-bucket";
-  options.gh-actions.options.deploy.type    = lib.types.lines;
+  options.gh-actions.options = {
+    # defines a property 'gh-actions.setup'
+    setup.default  = "echo setup";  #default is string
+    setup.mdDoc    = "Command to run before build";
+    setup.example  = "npm i";
+    # defines a property 'gh-actions.build'
+    build.default  = "echo build";
+    build.mdDoc    = "Command to run as build step";
+    build.example  = "npm run build";
+    # defines a property 'gh-actions.test'
+    test.default   = "echo test";
+    test.mdDoc     = "Command to run as test step";
+    test.example   = "npm test";
+    # defines a property 'gh-actions.deploy'
+    deploy.default = "echo deploy";
+    deploy.mdDoc   = "Command to run as deploy step";
+    deploy.example = "aws s3 sync ./build s3://my-bucket";
+    deploy.type    = lib.types.lines;
+  };
 }
 ```
 
@@ -519,7 +531,7 @@ Now, previous config can be used, but it does nothing, it doesn't create yaml.
 
 It knowns what options can be accepted as `config`, but not what to do with it.
 
-Usually the next part is in same file of `options`, it isn't a requirement, and spliting it here make it simplier to explain.
+The following code uses parameter `config` that has all evaluated `config` values.
 
 
 ```nix
