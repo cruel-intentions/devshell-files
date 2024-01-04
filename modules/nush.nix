@@ -27,7 +27,7 @@ let
       NL=$'\n'
       exec ${pkgs.nushell}/bin/nu  -c "\
       source ${nuLib}\
-      ''${NL}$env.NUSH_LIB = "${nuLib}"\
+      ''${NL}\$env.NUSH_LIB = "${nuLib}"\
       ''${NL}$READIN ${name} $*"
     '';
   };
@@ -51,7 +51,7 @@ let
         msg:   "Unknown subcommand"
         label: {
           text: "expected: ${name} [${concat "|" (builtins.attrNames sub)}]",
-          start: $span.start, end: $span.end
+          span: $span
         }
       }
     }

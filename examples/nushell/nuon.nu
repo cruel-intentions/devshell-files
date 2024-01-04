@@ -55,7 +55,7 @@ def main [
 ] {
   assert ($subcmd != '') "No subcommand provided." --error-label {
     text: "Please inform a subcommand, use --help for examples",
-    start: (metadata $subcmd).span.start, end: (metadata $subcmd).span.end,
+    span: (metadata $subcmd).span,
   }
 
   let knownCmds = [
@@ -67,7 +67,7 @@ def main [
   ]
   assert ($subcmd in $knownCmds) $"Unknown subcommand ($subcmd)." --error-label {
     text: $"expected subcommand: [($knownCmds | str join '|' )]"
-    start: (metadata $subcmd).span.start, end: (metadata $subcmd).span.end
+    span: (metadata $subcmd).span, 
   }
   let knownFromFmts = [
     "csv","eml","ics","ini","json",
@@ -76,7 +76,7 @@ def main [
   ]
   assert ($from in $knownFromFmts) $"Unknown format ($from)." --error-label {
     text: $"expected formats: [($knownFromFmts | str join '|' )]"
-    start: (metadata $from).span.start, end: (metadata $from).span.end
+    span: (metadata $from).span,
   }
   let knownToFmts = [
     "csv","html","json","md","nuon",
@@ -85,13 +85,13 @@ def main [
   ]
   assert ($to in $knownToFmts) $"Unknown format ($to)."  --error-label {
     text: $"expected formats: [($knownToFmts | str join '|' )]"
-    start: (metadata $to).span.start, end: (metadata $to).span.end
+    span: (metadata $to).span,
   }
 
   let hasIN   = (bash -c "[ ! -t 0 ] && printf true || printf false")
   assert ($hasIN == 'true' or $IN != '') "STDIN is empty. Pipe to stdin or use --IN"  --error-label {
     text: "Example: nuon take 1 --IN <(printf '[1, 2, 3]') or Example: printf '[1, 2, 3]'|nuon take 1"
-    start: (metadata $IN).span.start, end: (metadata $IN).span.end
+    span: (metadata $IN).span,
   }
   let stdIn   = if $IN   == ''                      { "$in"       } else { $"open ($IN)" }
   let fArgs   = if $ARGS == ''                      { ""          } else { open $ARGS }
