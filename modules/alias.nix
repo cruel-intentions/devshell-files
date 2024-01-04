@@ -14,7 +14,7 @@ in {
   options.files.alias = lib.mkOption {
     default       = {};
     description   = "bash script to create an alias";
-    type          = lib.types.attrsOf lib.types.string;
+    type          = lib.types.attrsOf lib.types.str;
     example.hello = "echo hello";
     example.world = ''
       #!/usr/bin/env python

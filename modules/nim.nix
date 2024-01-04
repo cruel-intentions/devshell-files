@@ -130,7 +130,7 @@ in {
       // pipenv run python ./manage.py
       exec "pipenv", args("run python ./manage.py") + ARGS
     '';
-    type          = lib.types.attrsOf (lib.types.oneOf [codeAdeps lib.types.string]);
+    type          = lib.types.attrsOf (lib.types.oneOf [codeAdeps lib.types.str]);
     description   = ''
       Nim code to create an command
 

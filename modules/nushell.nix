@@ -44,7 +44,7 @@ in {
   options.files.nus = lib.mkOption {
     default       = {};
     description   = ''[Nushell](https://www.nushell.sh/book/command_reference.html) script to create an alias.'';
-    type          = with lib.types; attrsOf (oneOf [string (listOf string)]);
+    type          = with lib.types; attrsOf (oneOf [str (listOf str)]);
     example.hello = ["name" "{hello: $name}"];
     example.world = ''
       # it could use previous commands

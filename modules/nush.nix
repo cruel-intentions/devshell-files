@@ -90,7 +90,7 @@ in {
     description   = ''
       [Nushell](https://www.nushell.sh/book/command_reference.html) script to create an alias.
     '';
-    type          = with lib.types; attrsOf (attrsOf (oneOf [string (listOf string)]));
+    type          = with lib.types; attrsOf (attrsOf (oneOf [str (listOf str)]));
     example.hello.en = ["arg" "{hello: $arg}"];
     example.hello.pt = ["arg" "{ola: $arg}"];
     example.world.hello = ''
