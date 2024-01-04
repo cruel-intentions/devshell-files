@@ -1,10 +1,14 @@
-{ pkgs, lib, config,...}:
+{ pkgs, lib, config, ...}:
 let
+  pkgs-old = import (fetchTarball {
+    url = "https://github.com/NixOS/nixpkgs/archive/293a28df6d7ff3dec1e61e37cc4ee6e6c0fb0847.tar.gz";
+    sha256 = "1m6smzjz3agkyc6dm83ffd8zr744m6jpjmffppvcdngk82mf3s3r";
+  }) { system = pkgs.system; };
   nmd-src = builtins.fetchGit {
     url = "https://git.sr.ht/~rycee/nmd";
     rev = "07a6db31ae19d728ef1e4dc02b9687a6c359c216";
   };
-  nmd = pkgs.callPackage nmd-src {};
+  nmd = pkgs.callPackage nmd-src { };
   module-docs = name: cfg:
     let 
       setup-module = args: {
@@ -13,7 +17,7 @@ let
           _module.args.pkgs = lib.mkForce (nmd.scrubDerivations "pkgs" pkgs);
         }];
       };
-      buildModulesDocs = pkgs.callPackage "${nmd-src}/lib/modules-doc.nix" { };
+      buildModulesDocs = pkgs-old.callPackage "${nmd-src}/lib/modules-doc.nix" { };
       docs = buildModulesDocs {
         channelName     = "";
         docBook         = {};
