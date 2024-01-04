@@ -1,9 +1,9 @@
-{ pkgs, lib, config, ...}:
+{ pkgs, lib, config, flu, ...}:
 let
-  pkgs-old = import (fetchTarball {
+  pkgs-old = (import (fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/293a28df6d7ff3dec1e61e37cc4ee6e6c0fb0847.tar.gz";
     sha256 = "1m6smzjz3agkyc6dm83ffd8zr744m6jpjmffppvcdngk82mf3s3r";
-  }) { system = pkgs.system; };
+  }) { system = pkgs.system; }).extend flu.overlays.default;
   nmd-src = builtins.fetchGit {
     url = "https://git.sr.ht/~rycee/nmd";
     rev = "07a6db31ae19d728ef1e4dc02b9687a6c359c216";
@@ -14,6 +14,7 @@ let
       setup-module = args: {
         imports = [{
           _module.check = false;
+          _module.args.lib  = lib;
           _module.args.pkgs = lib.mkForce (nmd.scrubDerivations "pkgs" pkgs);
         }];
       };

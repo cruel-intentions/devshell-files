@@ -2,10 +2,10 @@
   description = ''devShell file generator helper'';
 
   inputs.devshell.url = "github:numtide/devshell";
-  inputs.flu.url      = "github:cruel-intentions/flu-type-a";
-  inputs.nixpkgs.url  = "github:nixos/nixpkgs/release-23.05";
+  inputs.flu     .url = "github:cruel-intentions/flu-type-a";
+  inputs.nixpkgs .url = "github:nixos/nixpkgs/release-23.11";
   inputs.devshell.inputs.nixpkgs.follows = "nixpkgs";
-  inputs.flu.inputs.nixpkgs.follows      = "nixpkgs";
+  inputs.flu     .inputs.nixpkgs.follows = "nixpkgs";
 
   outputs = { self, devshell, flu, nixpkgs }:
   let
@@ -15,6 +15,7 @@
     lib.mkShell    = mkShell;
     lib.shell      = shell;
     modules' = [
+      { _module.args.flu = flu; }
       ./modules/files.nix
       ./modules/cmds.nix
       ./modules/alias.nix
