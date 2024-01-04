@@ -27,7 +27,7 @@ let
       NL=$'\n'
       exec ${pkgs.nushell}/bin/nu  -c "\
       source ${nuLib}\
-      ''${NL}let-env NUSH_LIB = "${nuLib}"\
+      ''${NL}$env.NUSH_LIB = "${nuLib}"\
       ''${NL}$READIN ${name} $*"
     '';
   };
@@ -105,7 +105,7 @@ in {
     help    = "Run nushell with your functions loaded";
     command = ''
       #!${pkgs.nushell}/bin/nu
-      exec nu -e "source ${nuLib};let-env NUSH_LIB = '${nuLib}'"
+      exec nu -e "source ${nuLib};$env.NUSH_LIB = '${nuLib}'"
     '';
   });
 }
