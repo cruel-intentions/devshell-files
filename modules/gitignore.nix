@@ -7,7 +7,7 @@ let
   githubIgnore = builtins.fetchGit {
     url = "https://github.com/github/gitignore";
     ref = "main";
-    rev = "4488915eec0b3a45b5c63ead28f286819c0917de";
+    rev = "6b4026c2f01379bd9a7649d08f575350a121c41e";
   };
   enabledTemplates = builtins.attrNames (lib.filterAttrs (name: value: value) cfg.template);
   templatePatterns = map (name: builtins.readFile "${githubIgnore}/${name}.gitignore") enabledTemplates;
