@@ -3,7 +3,7 @@
 
   inputs.devshell.url = "github:numtide/devshell";
   inputs.flu     .url = "github:cruel-intentions/flu-type-a";
-  inputs.nixpkgs .url = "github:nixos/nixpkgs/release-23.11";
+  inputs.nixpkgs .url = "github:nixos/nixpkgs/release-24.05";
   inputs.devshell.inputs.nixpkgs.follows = "nixpkgs";
   inputs.flu     .inputs.nixpkgs.follows = "nixpkgs";
 
